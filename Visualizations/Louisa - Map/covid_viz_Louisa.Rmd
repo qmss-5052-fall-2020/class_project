@@ -1,0 +1,63 @@
+---
+title: "COVID-19 Data Visualizations"
+author: Louisa Ong
+output: html_notebook
+---
+
+
+
+```{r}
+
+library(dplyr)
+library(readr)
+library(leaflet)
+library(ggplot2)
+library(coronavirus)
+
+```
+
+
+```{r}
+
+summary_df <- coronavirus %>% 
+  filter(type == "confirmed") %>%
+  group_by(country, lat, long) %>%
+  summarize(total_cases = sum(cases)) %>%
+  arrange(-total_cases)
+
+covid <- data.frame(summary_df)
+
+names(covid)
+```
+
+```{r}
+# -------------- WORLD BUBBLE MAP SUM OF CONFIRMED CASES ------------------ # 
+
+map_covid_cases <- leaflet(covid) %>% 
+  addTiles() %>% 
+  addCircles(lng = ~long, lat = ~lat,
+             color = "#8f1d3f",
+             radius = ~covid$total_cases,
+             stroke = FALSE, 
+             opacity = 0.9) %>% 
+  addProviderTiles(providers$CartoDB.Positron)
+
+map_covid_cases
+```
+
+
+```{r}
+
+library(devtools)
+install_github("wch/webshot")
+library(htmlwidgets)
+library(webshot)
+
+## save html to png
+saveWidget(map_covid_cases, "temp.html", selfcontained = FALSE)
+webshot("temp.html", file = "map_covid_cases.png",
+        cliprect = "viewport")
+
+
+```
+
