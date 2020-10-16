@@ -1,7 +1,9 @@
 ---
 title: "COVID-19 Data Visualizations"
-author: Louisa Ong
-output: html_notebook
+author: "Louisa Ong"
+output:
+  html_document:
+    df_print: paged
 ---
 
 
@@ -12,22 +14,36 @@ library(dplyr)
 library(readr)
 library(leaflet)
 library(ggplot2)
-library(coronavirus)
+library(coronavirus) # https://cran.r-project.org/web/packages/coronavirus/coronavirus.pdf
+library(devtools)
+library(htmlwidgets)
+library(webshot)
 
+# update_dataset()
+covid_refresh <- refresh_coronavirus_jhu()
 ```
 
 
 ```{r}
+View(covid_refresh)
 
-summary_df <- coronavirus %>% 
-  filter(type == "confirmed") %>%
-  group_by(country, lat, long) %>%
-  summarize(total_cases = sum(cases)) %>%
+summary_df <- covid_refresh %>% 
+  filter(data_type == "cases_new") %>%
+  filter(location_type == "country") %>%
+  group_by(location_type, lat, long) %>%
+  summarize(total_cases = sum(value)) %>% 
+  rename(country = location_type) %>%
   arrange(-total_cases)
 
 covid <- data.frame(summary_df)
 
 names(covid)
+
+covid_all <- coronavirus
+covid_all$date <- as.Date(covid_all$date)
+
+View(summary_df)
+
 ```
 
 ```{r}
@@ -37,7 +53,7 @@ map_covid_cases <- leaflet(covid) %>%
   addTiles() %>% 
   addCircles(lng = ~long, lat = ~lat,
              color = "#8f1d3f",
-             radius = ~covid$total_cases,
+             radius = ~(covid$total_cases)/3,
              stroke = FALSE, 
              opacity = 0.9) %>% 
   addProviderTiles(providers$CartoDB.Positron)
@@ -47,17 +63,10 @@ map_covid_cases
 
 
 ```{r}
-
-library(devtools)
-install_github("wch/webshot")
-library(htmlwidgets)
-library(webshot)
-
 ## save html to png
-saveWidget(map_covid_cases, "temp.html", selfcontained = FALSE)
-webshot("temp.html", file = "map_covid_cases.png",
-        cliprect = "viewport")
-
+saveWidget(map_covid_cases, "map_covid_cases.html", selfcontained = FALSE)
+webshot("map_covid_cases.html", file = "map_covid_cases.png",
+cliprect = "viewport")
 
 ```
 
