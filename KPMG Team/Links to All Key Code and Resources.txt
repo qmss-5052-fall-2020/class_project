@@ -1,8 +1,12 @@
 COLAB IPYNB: https://colab.research.google.com/drive/1DfJCwRx_hmS10ZXOZKH1VE4puSPWa1pz?usp=sharing
 
-SPREADSHEETS
+GOOGLE SPREADSHEETS (GDRIVE)
 A) Class Things & Resources: https://docs.google.com/spreadsheets/d/1fDwcTXwAsk_t_cyiInxe-nmcOGGrP98dLFuwNncYqao/edit#gid=0
 B) Resources, Features to Share, Model: https://docs.google.com/spreadsheets/d/1tngBysNBaMf2HpQXBcLtL7OCDpOUkeXnULa4kqnrLrE/edit#gid=0
+
+GOOGLE DRIVE 
+https://drive.google.com/drive/u/1/folders/1xpJvplSKm84d7ocNPecYdP4KDQnTy1rV
+Also contains our minutes and decks
  
 SLACK 
-Ask for the link from Louisa 
+Request the link from Louisa 
