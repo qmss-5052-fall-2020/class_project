@@ -4,6 +4,8 @@ library(knitr)
 library(tidycensus)
 library(tidyverse)
 library(ggplot2)
+
+Sys.getenv("CENSUS_API_KEY")
 ```
 
 ```{r}
@@ -15,6 +17,15 @@ view(acs5_2018_vars)
 ```{r}
 sex_age_vector <- acs5_2018_vars %>%
   select(name) %>%
-  
+  slice(5:51)
+```
+
+```{r}
+MI_sex_age_acs5_2018 <- get_acs(geography = "place",
+              variables = c(sex_age_vector),
+              state = "MI",
+              year = 2018)
+
+view(MI_sex_age_acs5_2018)
 ```
 
