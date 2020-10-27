@@ -1,0 +1,20 @@
+
+```{r Setup, include = FALSE, results = 'hide', warning = FALSE}
+library(knitr)
+library(tidycensus)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+acs5_2018_vars <- load_variables(2018, "acs5", cache = TRUE)
+
+view(acs5_2018_vars)
+```
+
+```{r}
+sex_age_vector <- acs5_2018_vars %>%
+  select(name) %>%
+  
+```
+

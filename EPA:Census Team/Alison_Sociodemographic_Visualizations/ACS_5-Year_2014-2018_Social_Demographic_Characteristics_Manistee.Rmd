@@ -1,0 +1,67 @@
+
+```{r Setup, include=FALSE, results='hide', warning=FALSE}
+library(knitr)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+acs_social <- read_csv("ACS_5-Year_2014-2018_Social_Characteristics_Manistee.csv")
+acs_demo <- read_csv("ACS_5-Year_2014-2018_Demographic_Characteristics_Manistee.csv")
+```
+
+```{r}
+acs_social_clean <- acs_social %>%
+  rename(Michigan = `Michigan!!Estimate`) %>%
+  rename(Manistee_City = `Manistee city, Michigan!!Estimate`) %>%
+  select(Label, Michigan, Manistee_City)
+
+acs_demo_clean <- acs_demo %>%
+  rename(Michigan = `Michigan!!Estimate`) %>%
+  rename(Manistee_City = `Manistee city, Michigan!!Estimate`) %>%
+  select(Label, Michigan, Manistee_City)
+```
+
+```{r}
+acs_social_clean_wide <- acs_social_clean %>%
+  select(Label, Manistee_City) %>%
+  slice(2:19) %>%
+  spread(key = Label, value = Manistee_City)
+```
+
+```{r}
+acs_social <- read_csv("ACS_5-Year_2014-2018_Social_Characteristics_Manistee_WIDE.csv")
+acs_demo <- read_csv("ACS_5-Year_2014-2018_Demographic_Characteristics_Manistee_WIDE.csv")
+```
+
+```{r}
+acs_demo_age <- acs_demo %>%
+  slice(7) %>%
+  select(`SEX AND AGE!!Total population!!Under 5 years`:`SEX AND AGE!!Total population!!85 years and over`)
+
+acs_demo_age_clean <- acs_demo_age %>%
+  rename(`Under 5` = `SEX AND AGE!!Total population!!Under 5 years`) %>%
+  rename(`5 to 9` = `SEX AND AGE!!Total population!!5 to 9 years`) %>%
+  rename(`10 t0 14` = `SEX AND AGE!!Total population!!10 to 14 years`) %>%
+  rename(`15 to 19` = `SEX AND AGE!!Total population!!15 to 19 years`) %>%
+  rename(`20 to 24` = `SEX AND AGE!!Total population!!20 to 24 years`) %>%
+  rename(`25 to 34` = `SEX AND AGE!!Total population!!25 to 34 years`) %>%
+  rename(`35 to 44` = `SEX AND AGE!!Total population!!35 to 44 years`) %>%
+  rename(`45 to 54` = `SEX AND AGE!!Total population!!45 to 54 years`) %>%
+  rename(`55 to 59` = `SEX AND AGE!!Total population!!55 to 59 years`) %>%
+  rename(`60 to 64` = `SEX AND AGE!!Total population!!60 to 64 years`) %>%
+  rename(`65 to 74` = `SEX AND AGE!!Total population!!65 to 74 years`) %>%
+  rename(`75 to 84` = `SEX AND AGE!!Total population!!75 to 84 years`) %>%
+  rename(`85 and older` = `SEX AND AGE!!Total population!!85 years and over`)
+```
+
+```{r}
+ggplot(acs_demo_age_clean) +
+  geom_bar(aes(estimate))
+```
+
+```{r}
+acs_demo_Manistee <- acs_demo %>%
+  slice(7)
+```
+
