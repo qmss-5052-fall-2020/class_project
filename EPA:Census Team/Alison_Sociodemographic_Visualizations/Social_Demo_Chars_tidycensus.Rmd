@@ -10,22 +10,30 @@ Sys.getenv("CENSUS_API_KEY")
 
 ```{r}
 acs5_2018_vars <- load_variables(2018, "acs5", cache = TRUE)
-
-view(acs5_2018_vars)
 ```
 
 ```{r}
-sex_age_vector <- acs5_2018_vars %>%
-  select(name) %>%
+sex_age_vars <- acs5_2018_vars %>%
   slice(5:51)
+
+sex_age_vec <- sex_age_vars %>%
+  select(name) %>%
+  unlist()
+
+sex_age_label <- sex_age_vars %>%
+  select(label) %>%
+  unlist()
 ```
 
-```{r}
+```{r, message = FALSE}
 MI_sex_age_acs5_2018 <- get_acs(geography = "place",
-              variables = c(sex_age_vector),
+              variables = sex_age_vec,
+              place = "Manistee",
               state = "MI",
               year = 2018)
 
-view(MI_sex_age_acs5_2018)
+Manistee_sex_age_acs5_2018 <- MI_sex_age_acs5_2018 %>%
+  slice(18425:18471) %>%
+  mutate(sex_age_label = sex_age_label) %>%
+  select(sex_age_label, estimate)
 ```
-
