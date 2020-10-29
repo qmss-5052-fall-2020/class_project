@@ -36,7 +36,7 @@ MI_place_sex_age_acs5_2018 <- get_acs(geography = "place",
               state = "MI",
               year = 2018)
 
-Man_city_sex_age_acs5_2018 <- MI_sex_age_acs5_2018 %>%
+Man_city_sex_age_acs5_2018 <- MI_place_sex_age_acs5_2018 %>%
   slice(18425:18471) %>%
   mutate(sex_age_label = sex_age_label) %>%
   select(sex_age_label, estimate)
