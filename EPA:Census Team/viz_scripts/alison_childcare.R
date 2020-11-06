@@ -1,11 +1,18 @@
 
-library(knitr)
 library(tidyverse)
 library(tidycensus)
 library(ggplot2)
 library(plotly)
 
 Sys.getenv("CENSUS_API_KEY")
+
+state = "26"
+county = "101"
+survey = "acs5"
+year = 2018
+
+
+# Table B11001: Household Type (Including Living Alone): https://censusreporter.org/tables/B11001/
 
 B11001_vars = c(total = "B11001_001E", 
                 t_family = "B11001_002E", 
@@ -24,10 +31,10 @@ B11001_label = B11001_vars %>%
 
 B11001 <- get_acs(geography = "county",
                   variables = B11001_vars,
-                  state = "26",
-                  county = "101",
-                  survey = "acs5",
-                  year = 2018)
+                  state = state,
+                  county = county,
+                  survey = survey,
+                  year = year)
 
 household_type <- B11001 %>%
   mutate(label = B11001_label) %>%
@@ -41,10 +48,14 @@ household_type <- B11001 %>%
   mutate(label = factor(label, levels = c("Lives with spouse", "Lives with other family", "Lives with non-family", "Lives alone")))
 
 household_plot <- ggplot(data = household_type, aes(x = label, y = estimate_scaled)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  ggtitle("Household type") +
+  labs(caption = "Source: 2018 ACS 5-year survey")
 
 household_plotly <- ggplotly(household_plot)
 
+
+# Table B09005: Household Type for Children in Households: https://censusreporter.org/tables/B09005/
 
 B09005_vars = c(total = "B09005_001E", 
                 t_family = "B09005_002E", 
@@ -60,10 +71,10 @@ B09005_label = B09005_vars %>%
 
 B09005 <- get_acs(geography = "county",
                   variables = B09005_vars,
-                  state = "26",
-                  county = "101",
-                  survey = "acs5",
-                  year = 2018)
+                  state = state,
+                  county = county,
+                  survey = survey,
+                  year = year)
 
 household_type_children <- B09005 %>%
   mutate(label = B09005_label) %>%
@@ -78,11 +89,14 @@ household_type_children <- B09005 %>%
                                           "Lives with non-family")))
 
 children_plot <- ggplot(data = household_type_children, aes(x = label, y = estimate_scaled)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  ggtitle("Type of households that children live in") +
+  labs(caption = "Source: 2018 ACS 5-year survey")
 
 children_plotly <- ggplotly(children_plot)
 
 
+# Table B10001: Grandchildren Living With a Grandparent Householder by Age of Grandchild: https://censusreporter.org/tables/B10001/
 
 B10001_vars = c(total = "B10001_001E", 
                 t_under_6 = "B10001_002E", 
@@ -96,10 +110,10 @@ B10001_label = B10001_vars %>%
 
 B10001 <- get_acs(geography = "county",
                   variables = B10001_vars,
-                  state = "26",
-                  county = "101",
-                  survey = "acs5",
-                  year = 2018)
+                  state = state,
+                  county = county,
+                  survey = survey,
+                  year = year)
 
 grandchildren <- B10001 %>%
   mutate(label = B10001_label) %>%
@@ -112,9 +126,15 @@ grandchildren <- B10001 %>%
   mutate(label = factor(label, levels = c("Under 6 years old", "6 to 11 years old", "12 to 17 years old")))
 
 grandchildren_plot <- ggplot(data = grandchildren, aes(x = label, y = estimate_scaled)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  ggtitle("Children living with grandparents") +
+  labs(caption = "Source: 2018 ACS 5-year survey")
 
 grandchildren_plotly <- ggplotly(grandchildren_plot)
+
+
+# Table B10002: Grandchildren Living With a Grandparent Householder by Grandparent Responsibility and Presence of Parent: 
+#      https://censusreporter.org/tables/B10002/
 
 B10002_vars = c(total = "B10002_001E", 
                 t_grandparent_responsible = "B10002_002E", 
@@ -129,10 +149,10 @@ B10002_label = B10002_vars %>%
 
 B10002 <- get_acs(geography = "county",
                   variables = B10002_vars,
-                  state = "26",
-                  county = "101",
-                  survey = "acs5",
-                  year = 2018)
+                  state = state,
+                  county = county,
+                  survey = survey,
+                  year = year)
 
 grandparents <- B10002 %>%
   mutate(label = B10002_label) %>%
@@ -145,7 +165,8 @@ grandparents <- B10002 %>%
   mutate(label = factor(label, levels = c("Parent present", "Parent not present", "Grandparent not responsible")))
 
 grandparents_plot <- ggplot(data = grandparents, aes(x = label, y = estimate_scaled)) + 
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity") +
+  ggtitle("Grandparent responsibility for children") +
+  labs(caption = "Source: 2018 ACS 5-year survey")
 
 grandparents_plotly <- ggplotly(grandparents_plot)
-
