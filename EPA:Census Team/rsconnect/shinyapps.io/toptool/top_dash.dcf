@@ -1,0 +1,10 @@
+name: top_dash
+title:
+username:
+account: toptool
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3140131
+bundleId: 3807838
+url: https://toptool.shinyapps.io/top_dash/
+when: 1604261520.0632
