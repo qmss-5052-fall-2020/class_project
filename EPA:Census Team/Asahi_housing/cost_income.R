@@ -16,7 +16,7 @@ readRenviron("~/.Renviron")
 
 vars_acs5_2018 <- load_variables(year = 2018, dataset = "acs5")
 
-fair_rent <- read_xlsx("FY2018_50_County_rev.xlsx")
+fair_rent <- read_xlsx("Asahi_housing/data_files/FY2018_50_County_rev.xlsx")
 MI_fair_rent <- fair_rent[which(fair_rent$state_alpha == "MI"),]
 MI_fair_rent$GEOID <- substr(MI_fair_rent$fips2010, 0, 5)
 MI_fair_rent_trim <- MI_fair_rent[ , -which(names(MI_fair_rent) %in% c("state","cbsasub18","areaname18","county","cousub","cntyname","name","pop2010","hu2010","state_alpha"
