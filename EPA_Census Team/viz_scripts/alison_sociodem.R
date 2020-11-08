@@ -1,0 +1,126 @@
+
+library(knitr)
+library(tidyverse)
+library(tidycensus)
+library(ggplot2)
+library(ggthemes)
+library(jcolors)
+
+Sys.getenv("CENSUS_API_KEY")
+
+acs5_2018_vars <- load_variables(2018, "acs5", cache = TRUE)
+
+write_csv(acs5_2018_vars, "acs5_2018_vars.csv")
+
+
+sex_age_vars <- acs5_2018_vars %>%
+  slice(5:51)
+
+sex_age_vec <- sex_age_vars %>%
+  select(name) %>%
+  unlist()
+
+sex_age_label <- sex_age_vars %>%
+  select(label) %>%
+  unlist()
+
+
+
+MI_place_sex_age_acs5_2018 <- get_acs(geography = "place",
+                                      variables = sex_age_vec,
+                                      place = "Manistee",
+                                      state = "MI",
+                                      year = 2018)
+
+Man_city_sex_age_acs5_2018 <- MI_place_sex_age_acs5_2018 %>%
+  slice(18425:18471) %>%
+  mutate(sex_age_label = sex_age_label) %>%
+  select(sex_age_label, estimate)
+
+
+
+# https://github.com/walkerke/tidycensus/issues/131
+
+years <- lst(2013, 2018)
+
+MI_place_mob_acs5_2013_2018 <- map_dfr(
+  years,
+  ~ get_acs(
+    geography = "place",
+    variables = c("B07001_016", "B07001_033", "B07001_049", "B07001_065", "B07001_081"),
+    state = "MI",
+    place = "Manistee",
+    year = .x
+  ),
+  .id = "year"
+)
+
+
+
+Man_city_mob_acs5_2013_2018 <- MI_place_mob_acs5_2013_2018 %>%
+  filter(NAME == "Manistee city, Michigan") %>%
+  add_column(label = "") %>%
+  mutate(label = case_when(variable == "B07001_016" ~ "Same house",
+                           variable == "B07001_033" ~ "Same county",
+                           variable == "B07001_049" ~ "Different county",
+                           variable == "B07001_065" ~ "Different state",
+                           variable == "B07001_081" ~ "Moved from abroad")) %>%
+  mutate(label = factor(label, levels = c("Same house", "Same county", "Different county", "Different state", "Moved from abroad")))
+
+
+
+p1_mobility <- ggplot(data = Man_city_mob_acs5_2013_2018, aes(x = label, y = estimate, fill = year)) + 
+  geom_bar(stat = "identity", position = position_dodge())
+
+
+
+p1_mobility <- p1_mobility + theme_fivethirtyeight() +
+  scale_fill_jcolors(palette = "pal5") +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1),
+        legend.position = "top",
+        legend.title = element_blank()) +
+  ggtitle("Where Manistee residents lived compared to \nthe year before\n") +
+  labs(caption = "\nSource: 2013 and 2018 ACS 5-year surveys")
+
+
+
+
+MI_place_age_mob_acs5_2013_2018 <- map_dfr(
+  years,
+  ~ get_acs(
+    geography = "place",
+    variables = c("B07002_002", "B07002_003", "B07002_004", "B07002_005", "B07002_006"),
+    state = "MI",
+    place = "Manistee",
+    year = .x
+  ),
+  .id = "year"
+)
+
+
+
+Man_city_age_mob_acs5_2013_2018 <- MI_place_age_mob_acs5_2013_2018 %>%
+  filter(NAME == "Manistee city, Michigan") %>%
+  add_column(label = "") %>%
+  mutate(label = case_when(variable == "B07002_002" ~ "Same house",
+                           variable == "B07002_003" ~ "Same county",
+                           variable == "B07002_004" ~ "Different county",
+                           variable == "B07002_005" ~ "Different state",
+                           variable == "B07002_006" ~ "Moved from abroad")) %>%
+  mutate(label = factor(label, levels = c("Same house", "Same county", "Different county", "Different state", "Moved from abroad")))
+
+
+
+p2_mobility <- ggplot(data = Man_city_age_mob_acs5_2013_2018, aes(x = label, y = estimate, fill = year)) + 
+  geom_bar(stat = "identity", position = position_dodge())
+
+
+
+p2_mobility <- p2_mobility + theme_fivethirtyeight() +
+  scale_fill_jcolors(palette = "pal5") +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1),
+        legend.position = "top",
+        legend.title = element_blank()) +
+  ggtitle("Median age of Manistee residents \nby where they lived the year before\n") +
+  labs(caption = "\nSource: 2013 and 2018 ACS 5-year surveys")
+
