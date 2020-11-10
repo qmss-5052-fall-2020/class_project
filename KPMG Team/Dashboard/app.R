@@ -15,6 +15,7 @@
 # rShiny dashboard app app.R file
 
 library(shiny)
+library(shinythemes)
 
 
 # define UI 
@@ -28,7 +29,11 @@ ui <- pageWithSidebar(
   sidebarPanel(), 
   
   # Main panel for displaying outputs 
-  mainPanel()
+  mainPanel(
+    
+    # using a module 
+    # metroArea("", "")
+  )
   
 )
 
@@ -38,7 +43,13 @@ server <- function(input, output) {
 }
 
 
-shinyApp(ui, server)
+# run the app
+shinyApp(
+  
+  ui,# = fluidPage(theme = shinytheme("sandstone")), 
+  server
+  
+)
 
 
-runApp()
+# runApp()

@@ -10,3 +10,19 @@
 
 # ------------------------------------------------------------------------------------ # 
 # ************************************************************************************ #
+
+# module server function
+metroAreas <- function(id, label = "Metro Areas") {
+  
+  moduleServer(
+    id, 
+    
+    # actual module function
+    function(input, output, session) {
+      
+    return()
+      
+    }
+  )
+  
+}
