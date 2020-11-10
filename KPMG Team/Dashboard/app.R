@@ -5,24 +5,51 @@
 # COVID-19 Intelligent Forecasting Dashboard Functions 
 # KPMG x QMSS Practicum 2020 
 # Team: Ariel Luo, Sydney Bolim Son, Andrew Thvedt, Sherry Huang, Jen Woo, Louisa Ong 
-
+  
 # Dashboard Lead: Louisa Ong
 
 # ------------------------------------------------------------------------------------ # 
 # ************************************************************************************ #
 
-# module server function
-metroAreas <- function(id, label = "Metro Areas") {
+
+# rShiny dashboard app app.R file
+
+library(shiny)
+library(shinythemes)
+
+
+# define UI 
+
+ui <- pageWithSidebar(
   
-  moduleServer(
-    id, 
+  # App title 
+  headerPanel("COVID-19 Intelligent Forecasting"), 
+  
+  # Sidebar panel for inputs 
+  sidebarPanel(), 
+  
+  # Main panel for displaying outputs 
+  mainPanel(
     
-    # actual module function
-    function(input, output, session) {
-      
-    return()
-      
-    }
+    # using a module 
+    # metroArea("", "")
   )
   
+)
+
+
+server <- function(input, output) {
+  
 }
+
+
+# run the app
+shinyApp(
+  
+  ui,# = fluidPage(theme = shinytheme("sandstone")), 
+  server
+  
+)
+
+
+# runApp()
