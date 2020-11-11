@@ -257,3 +257,20 @@ f <- covidDeathsPlot(tx_covid, "Texas State", dal_covid) # deaths
 
 ```
 
+```{r}
+
+# Plot State Map with Metro Areas 
+
+# mapping packages needed 
+library(leaflet)
+library(maptools)
+library(rgdal)
+
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+
+
+```
+
