@@ -26,6 +26,7 @@ data <- read_csv("msa.csv")
 nyt <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
 
 # census data API, variables can be changed here 
+# find variable names: https://www.socialexplorer.com/data/ACS2010/metadata/?ds=ACS10
 census <- get_acs(geography = "county",
                    variables = c(population = "B01003_001E"), # total population), # black veterans 
                    output = "wide",
@@ -252,6 +253,23 @@ dal_covid <- metroData(19124)
 
 e <- covidCasesPlot(tx_covid, "Texas State", dal_covid) # cases
 f <- covidDeathsPlot(tx_covid, "Texas State", dal_covid) # deaths
+
+
+
+```
+
+```{r}
+
+# Plot State Map with Metro Areas 
+
+# mapping packages needed 
+library(leaflet)
+library(maptools)
+library(rgdal)
+
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
 
 
 
