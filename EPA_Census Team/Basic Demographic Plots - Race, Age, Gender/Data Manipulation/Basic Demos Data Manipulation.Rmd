@@ -1,0 +1,117 @@
+---
+title: "Graphing Demos"
+author: "Gretchen Streett"
+date: "11/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(scales)
+
+# get data - See "Data Manipulation" Folder & re-write paths
+sex_by_age_all_counties <- read.csv("~/Documents/Columbia/Practicum - Aracelis Torres/Data/sex_by_age_all_counties.csv")
+race_data <- read.csv("~/Documents/Columbia/Practicum - Aracelis Torres/Data/race_data.csv")
+```
+
+```{r Gender Pie}
+# Filter Data
+sex_by_age_manistee <- sex_by_age_all_counties[, c("United.States", "Michigan", "Manistee.County..MI", "label", "name")]
+just_sex <- sex_by_age_manistee %>% filter(name == "B01001002" | name == "B01001026")
+#write_csv(just_sex, "just_sex")
+
+# Gender Pie Chart 
+# create "Blank_theme" to remove all the axis markings for pie chart 
+blank_theme <- theme_minimal()+
+  theme(
+  axis.title.x = element_blank(),
+  axis.text.x=element_blank(),
+  axis.title.y = element_blank(),
+  panel.border = element_blank(),
+  panel.grid=element_blank(),
+  axis.ticks = element_blank(),
+  plot.title=element_text(size=14, face="bold")
+  )
+
+# Create Chart (in ggplot2 you have to make a bar chart first, then change "coordinates" to make it into a pie)
+genderbar<- ggplot(just_sex, aes(x="", y=`Manistee.County..MI`, fill=`label`))+
+geom_bar(width = 1, stat = "identity")
+genderpie <- genderbar + coord_polar("y", start=0) +
+  geom_text(aes(y = `Manistee.County..MI`/3 + c(0, cumsum(`Manistee.County..MI`)[-length(`Manistee.County..MI`)]), 
+            label = percent(`Manistee.County..MI`/sum(`Manistee.County..MI`), accuracy=1)), size=5) + 
+  ggtitle(label = "Sex") +
+  scale_fill_discrete(name = "", labels = c("Female", "Male")) +
+  blank_theme
+genderpie 
+
+```
+
+```{R Age Distribution, warning = FALSE, message = FALSE}
+# Data wrangling:  (Census has men + women listed separately. Get Totals.)
+age_breakdown_manistee <- sex_by_age_manistee %>% separate(label, into = c(NA, NA, "Gender", "Age"), sep = "\\!!", remove = TRUE)
+age_breakdown_manistee <- age_breakdown_manistee[, c("Manistee.County..MI", "Gender", "Age")]
+age_breakdown_manistee <- age_breakdown_manistee %>% group_by(`Age`) %>% summarize(Total = sum(`Manistee.County..MI`))
+age_breakdown_manistee <- age_breakdown_manistee %>% filter(Age != "NA")
+
+# Too many categories to plot well. Combine Further
+age_breakdown_manistee <- age_breakdown_manistee %>% mutate(NewCat = case_when(
+              Age == "Under 5 years" | Age == "5 to 9 years" ~ "0 to 9",
+              Age == "10 to 14 years" | Age == "15 to 17 years" | Age == "18 and 19 years" ~ "10 to 19",
+              Age == "20 years" | Age == "21 years" | Age == "22 to 24 years" | Age == "25 to 29 years" ~ "20 to 29",
+              Age == "30 to 34 years" | Age == "35 to 39 years" ~ "30 - 39",
+              Age == "40 to 44 years" | Age == "45 to 49 years" ~ "40 - 49",
+              Age == "50 to 54 years" | Age == "55 to 59 years" ~ "50 - 59",
+              Age == "60 and 61 years" | Age == "62 to 64 years" | Age == "65 and 66 years" | Age == "67 to 69 years" ~ "60 to 69",
+              Age == "70 to 74 years" | Age == "75 to 79 years" ~ "70 - 79",
+              Age == "80 to 84 years" | Age == "85 years and over" ~ "80+",
+              TRUE ~ "else" ))
+age_breakdown_manistee <- age_breakdown_manistee %>% group_by(`NewCat`) %>% summarize(Total = sum(Total))
+age_breakdown_manistee <- age_breakdown_manistee %>% mutate(Per = percent(Total/sum(Total), accuracy = 1))
+#write_csv(age_breakdown_manistee, "age_breakdown_manistee")
+
+#plot
+agebar <- ggplot(age_breakdown_manistee, aes(x= `NewCat`, y=`Per`)) + 
+  geom_bar(width = .8, stat = "identity") + 
+  labs(title="Population by Age Range for Manistee County") + 
+  xlab("Age Range") + ylab("Percent of Population")
+agebar
+```
+
+```{R Race Distribution, warning = FALSE, message = FALSE}
+# filter data 
+race_data_manistee <- race_data[, c("Manistee.County..MI", "label", "name")]
+race_data_manistee <- race_data_manistee %>% separate(col = label, into = c(NA, NA, "Hispanic", "Race"), sep="!!", remove = TRUE)
+race_data_manistee <- race_data_manistee %>% filter(`Hispanic` != "NA")
+hispanic_data <- race_data_manistee %>% filter(name == "B03002012")
+race_data_manistee <- race_data_manistee %>% filter(Hispanic != "Hispanic or Latino")
+race_data_manistee <- rbind(race_data_manistee, hispanic_data) 
+
+# Add better Race names for ease of graphing 
+race_data_manistee <- race_data_manistee %>% mutate(CompRace = case_when(
+              name == "B03002002" ~ "Not Hispanic Total",
+              name == "B03002003" ~ "White",
+              name == "B03002004" ~ "Black",
+              name == "B03002005" ~ "American Indian",
+              name == "B03002006" ~ "Asian",
+              name == "B03002007" ~ "Pacific Islander",
+              name == "B03002008" ~ "Other",
+              name == "B03002009" | name == "B03002010" | name == "B03002011" ~ "Two or More",
+              name == "B03002012" ~ "Hispanic or Latino", 
+              TRUE ~ "Else"))
+race_data_manistee <- race_data_manistee %>% group_by(CompRace) %>% summarize(Total = sum(`Manistee.County..MI`))
+race_data_manistee <- filter(race_data_manistee, CompRace != "Not Hispanic Total")
+race_data_manistee <- race_data_manistee %>% mutate(Per = Total/sum(Total))
+
+#plot 
+# Turn race into an ordered factor 
+race_data_manistee$CompRace <- factor(race_data_manistee$CompRace, levels = race_data_manistee$CompRace[order(race_data_manistee$Per)])
+#write_csv(race_data_manistee, "race_data_manistee")
+
+racebar <- ggplot(race_data_manistee, aes(x= `CompRace`, y=as.numeric(`Per` * 100))) + 
+  geom_bar(width = .8, stat = "identity") + 
+  scale_y_continuous(limits = c(0,90), expand = c(0, 0)) +
+  labs(title="Race & Ethnicity for Manistee County") + 
+  xlab("Race") + ylab("Percent of Population")
+racebar
+```

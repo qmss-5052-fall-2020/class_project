@@ -1,0 +1,214 @@
+---
+title: "Walkability"
+author: "Gretchen Streett"
+date: "10/27/2020"
+output: html_document
+---
+
+```{r}
+library(leaflet)
+library(rgdal)
+library(tidyverse)
+library(dplyr)
+library(RColorBrewer)
+library(stringr)
+library(ggplot2)
+library(plotly)
+
+#get data
+walk <- readOGR(dsn = "Natl_WI_SHP/Natl_WI.shp")
+mwalk <- walk[walk$SFIPS == "26", ]
+#writeOGR(mwalk, ".", "mwalk", driver="ESRI Shapefile")
+mwalk2 <- readOGR(dsn = "mwalk.shp")
+
+statefips <- read.csv("~/Documents/Columbia/Practicum - Aracelis Torres/Data/Walkability/State FIPS.csv")
+countyfips <- read.csv("FIPS and County Names.csv")
+```
+
+```{r}
+# Walkability map (Michigan Specific) 
+## Target End state: blue water, better names, search by zip code/location, round Walkability Index Score, add points/layers for parks/schools/nature
+walkmap <- leaflet(mwalk) %>%
+ setView(lat = 44.2444, lng = -86.3243, zoom = 6) %>%
+ addProviderTiles(providers$Stamen.TonerLite) %>%
+  #add bloc borders
+ addPolygons(stroke = TRUE, smoothFactor = 0.5,
+  weight=1, color='#333333', opacity=1, 
+  #chloropleth shading
+  fillColor = ~colorQuantile("Greens", NatWalkInd)(NatWalkInd), 
+  fillOpacity = 1, 
+  #add pinpoint label
+  label = ~stringr::str_c(CBSA_Name, ' ',
+          formatC(NatWalkInd, big.mark = ',', format='f')),
+  labelOptions = labelOptions(direction = 'auto'),
+  #add hover highlight
+  highlightOptions = highlightOptions(
+          color='#000000', weight = 3,
+          bringToFront = TRUE, sendToBack = TRUE))
+
+walkmap2 <- walkmap %>% 
+  addMiniMap() %>%
+  addLegend(
+  "bottomleft", 
+  pal = colorQuantile("Greens", mwalk$NatWalkInd, n=5),
+  values = ~NatWalkInd,
+  title = htmltools::HTML("Walkability Index"),
+opacity = 1, 
+  labFormat = function(type, cuts, p) {
+n = length(cuts)
+paste0(cuts[-n], " – ", cuts[-1])}
+)
+
+walkmap3 <- walkmap2 %>%
+    addEasyButton(easyButton(
+    icon="fa-globe", 
+    title="Zoom to Entire US Map",
+    onClick=JS("function(btn, map){ map.setZoom(2.5); }"))) 
+walkmap3
+```
+
+```{r}
+# Comparison of walkability: Manistee to State to comparable rural areas (CRA)
+# EQ: Should Manistee county be removed from other categories?, What constitutes "Comparable Rural Area", # Are there areas that we don't expect to be walkable and should thus be excluded? 
+# Target End state: Interactive, compare based on alt. features/demographics
+
+#Subset Manistee county block groups (FIPS code: 026101)
+manwalk <- walk[(walk$GEOID10 >= "261010000000" & walk$GEOID10 <= "261030000000"), ]
+manwalk <- manwalk@data
+manwalk <- manwalk %>% mutate("Population Density" = `TOTPOP10`/`AC_TOT` )
+manwalk <- manwalk %>% mutate("Location" = "Manistee County" )
+
+# Subset block groups with similar Population Density 
+mwalkdata <- mwalk@data
+mwalkdata <- mwalkdata %>% mutate("Population Density" = `TOTPOP10`/`AC_TOT` )
+mwalkdata <- mwalkdata[(mwalkdata$`Population Density` >= .8 & mwalkdata$`Population Density` <= 1.6), ]
+mwalkdata <- mwalkdata %>% mutate("Location" = "Comparable Rural Area" )
+
+# Compare to Michigan as a Whole
+mwalkdatawhole <- mwalk@data
+mwalkdatawhole <- mwalkdatawhole %>% mutate("Population Density" = `TOTPOP10`/`AC_TOT` )
+mwalkdatawhole <- mwalkdatawhole %>% mutate("Location" = "Entire State" )
+
+# Compare Walkability of two groups 
+combined <- rbind(manwalk, mwalkdata, mwalkdatawhole)
+combined <- combined %>% group_by(`Location`) %>%
+            summarize("Walkability" = mean(`NatWalkInd`))
+
+myplot <- ggplot(data = combined, aes(x=`Location`, y=`Walkability`, fill=`Location`)) + 
+  geom_bar(stat="identity", width=0.5) +
+  scale_fill_brewer(palette="Dark2") +
+  scale_x_discrete(limits=c("Manistee County", "Comparable Rural Area", "Entire State")) +
+  geom_text(aes(label= round(`Walkability`, 2)), vjust=1.6, color="white", size=3.5)+
+  labs(title="Walkability by Location")+
+  theme_minimal() + 
+  theme(legend.position="none")
+myplot
+
+
+
+```
+
+```{r}
+# Country Comparison 
+
+# Join State Names to Data 
+allwalk <- walk@data
+allwalk <- separate(allwalk, GEOID10, into = "State Code", sep= 2, remove = FALSE)
+allwalk$`State Code` <- as.numeric(allwalk$`State Code`)
+walkwithstates <- full_join(allwalk, statefips, by = c("State Code" = "FIPS"))
+walkwithstates <- walkwithstates %>% filter(`State Code` <= 56)
+walkwithstates <- walkwithstates %>% drop_na(`State Code`)
+walkwithstates <- walkwithstates %>% drop_na(`State`)
+
+# Summarize for plot
+walkwithstates <- walkwithstates %>% mutate("Population Density" = `TOTPOP10`/`AC_TOT` )
+walkwithstates <- walkwithstates %>% 
+  mutate(
+      CRA = case_when(
+      (`Population Density` >= .8 & `Population Density` <= 1.6) ~ "Comparable Rural Area",
+      TRUE ~ "Not Comparable"))
+walkfullstates<- walkwithstates %>% group_by(`State`) %>% 
+              summarize("Walkability" = mean(`NatWalkInd`))
+walkstates<- walkwithstates %>% group_by(`State`, `CRA`) %>% 
+              summarize("Walkability" = mean(`NatWalkInd`))
+
+# Plot 
+
+#Reorder Walkability in table to make chart pretty
+walkfullstates<- transform(walkfullstates, `State` = reorder(`State`, -Walkability))
+#plot it 
+ plota <- ggplot(walkfullstates, aes(x=State, y=Walkability)) + 
+  geom_bar(stat="identity", width=.8, fill="tomato3") + 
+  coord_flip() +
+  labs(title="Walkability by State",
+       caption="source: EPA") 
+plota
+
+#Reorder Walkability for CRA 
+walkstates <- walkstates %>% filter(CRA == "Comparable Rural Area")
+walkstates<- transform(walkstates, `State` = reorder(`State`, -Walkability))
+#plot it 
+plota.2 <- ggplot(walkstates, aes(x=State, y=Walkability)) + 
+  geom_bar(stat="identity", width=.8, fill="tomato3") + 
+  coord_flip() +
+  labs(title="Comparable Rural Area Walkability by State",
+       caption="source: EPA") 
+plota.2
+
+# plot Walkability by County
+# just Michigan 
+walkmi <- walkwithstates %>% filter(`State Code` == 26)
+walkmi$countyfips <- paste(walkmi$`State Code`, walkmi$CFIPS, sep = "")
+countyfips$X1001 <- as.character(countyfips$X1001)
+walkmi <- left_join(walkmi, countyfips, by = c("countyfips" = "X1001"))
+walkmi <- walkmi %>% group_by(Autauga) %>% 
+              summarize("Walkability" = mean(`NatWalkInd`))
+colnames(walkmi) <- c("County", "Walkability")
+#write_csv(walkmi, "walkmi.csv")
+
+#Plot it 
+#Reorder Walkability in table to make chart pretty
+walkmi <- transform(walkmi, `County` = reorder(`County`, -Walkability))
+#plot it 
+ plotc <- ggplot(walkmi, aes(x=County, y=Walkability)) + 
+  geom_bar(stat="identity", width=.8, fill="tomato3") + 
+  coord_flip() +
+  labs(title="Walkability by County",
+       caption="source: EPA") + 
+  theme(axis.text.y=element_text(size= 5))
+ggplotly(plotc)
+
+
+# lollipop Test: is it better? 
+# plotb <- ggplot(walkfullstates, aes(x=State, y=Walkability)) + 
+#   geom_point(size=3) + 
+#   coord_flip() +
+#   geom_segment(aes(x=State, 
+#                    xend=State, 
+#                    y=0, 
+#                    yend=Walkability)) +
+#   labs(title="Ordered Bar Chart", 
+#        subtitle="Walkability by State", 
+#        caption="source: EPA") +
+#   theme_bw()
+# plotb
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
