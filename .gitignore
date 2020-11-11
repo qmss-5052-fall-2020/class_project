@@ -1,4 +1,4 @@
-# Mac Files 
+
 .DS_Store
 .DS_store
 
@@ -40,4 +40,4 @@ vignettes/*.pdf
 *.knit.md
 
 # R Environment Variables
-.Renviron
+
