@@ -1,0 +1,43 @@
+---
+title: "Simplified Maps"
+author: "Gretchen Streett"
+date: "11/12/2020"
+output: html_document
+---
+
+``` {r}
+library(tidyverse)
+library(tmap)
+library(ggplot2)
+library(sf)
+library(ggthemes)
+library(viridis)
+
+MIdata <- read.csv("MIbbandwalkdata")
+```
+
+```{R Walkability Map}
+#Function
+walkbycounty <- function(input){
+subsetdata <- MIdata %>% filter(V2 == input)
+ggplot() + geom_polygon(data = subsetdata, aes(x=long, y=lat, group=group, fill=NatWalkInd), color = "black") +
+  scale_fill_gradientn(colours=c("royalblue", "green"), 
+           name="Walkability") + theme_map()
+}
+
+#call function (Takes County Name as Character String, i.e. "Manistee")
+walkbycounty("Emmet")
+```
+
+```{R Broadband Map}
+# Mapping Function:
+bbandbycounty <- function(input){
+subsetdata <- MIdata %>% filter(V2 == input)
+ggplot() + geom_polygon(data = subsetdata, aes(x=long, y=lat, group=group, fill=GroupProvideNum), color = "black") +
+  scale_fill_viridis(option = "A", name="Number of \n Broadband Providers") + theme_map()
+}
+
+#Call Function (Takes County Name as a character string, I.e. "Manistee")
+bbandbycounty("Manistee")
+```
+

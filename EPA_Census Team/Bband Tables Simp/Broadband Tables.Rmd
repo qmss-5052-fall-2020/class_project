@@ -1,0 +1,47 @@
+---
+title: "Broadband Tables"
+author: "Gretchen Streett"
+date: "11/12/2020"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(DT)
+
+#Import Residential Broadband Data 
+MI_bband_res <- read.csv("MI_bband_res.csv")
+
+#Import Commercial Broadband Data
+MI_bband_com <- read.csv("MI_bband_com.csv")
+```
+
+```{r Residential Broadband Table}
+#Residential Table Function
+databycounty <- function(input){
+df_display <- MI_bband_res %>% filter(County == input)
+df_display <- df_display %>% group_by(ProviderName, `Technology.of.Transmission`) %>% summarize("Blks" = n(), "MaxDown" = max(MaxAdDown), "MaxUp" = max(MaxAdUp))
+df_display <- df_display %>% arrange(desc(Blks))
+colnames(df_display) <- c("Provider Name", "Technology", "Blocks", "MaxDown", "MaxUp")
+datatable(df_display)
+}
+
+#Call function (takes County name as character string, i.e. "Manistee")
+databycounty("Manistee")
+```
+
+
+```{r Commercial Broadband Table}
+# Commercial Table Function 
+bizdatabycounty <- function(input){
+df_display <- MI_bband_com %>% filter(County == input)
+df_display <- df_display %>% group_by(ProviderName, `Technology.of.Transmission`) %>% summarize("Blks" = n(), "MaxDown" = max(MaxCIRDown), "MaxUp" = max(MaxCIRUp))
+df_display <- df_display %>% arrange(desc(Blks))
+colnames(df_display) <- c("Provider Name", "Technology", "Blocks", "MaxDown", "MaxUp")
+datatable(df_display)
+}
+
+#Call function
+bizdatabycounty("Benzie")
+```
+
