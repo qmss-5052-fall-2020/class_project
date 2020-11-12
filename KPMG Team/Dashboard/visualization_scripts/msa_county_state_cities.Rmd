@@ -1,0 +1,414 @@
+---
+title: "Metropolitan Areas (Deaths & Case)"
+output: html_notebook
+---
+
+# Data Manipulation  
+  
+```{r}
+# ----------- LOAD PACKAGES ------------- # 
+
+library(tidyverse)
+library(tidycensus) # US census bureau data
+library(zoo) # rolling mean
+
+# plotting 
+library(ggplot2)
+# library(hrbrthemes) 
+# library(geofacet) 
+
+
+# ----------- LOADING DATASETS ----------- # 
+
+# metropolitan state areas delineation from file taken off Census Bureau
+data <- read_csv("data/msa.csv")
+
+#nytimes county-level cases & deaths data from online link 
+covid <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
+
+# census data API, variables can be changed and added here 
+census <- get_acs(geography = "county",
+                   variables = c(population = "B01003_001E"), # total population
+                   output = "wide",
+                   county = "",
+                   year = 2018) # ACS 2018 Survey
+
+# US City & FIPS code boundaries 
+# https://simplemaps.com/data/us-cities license 
+city <- read_csv("data/uscities.csv")
+
+```
+
+
+```{r}
+
+# ---------------------------------------------------------- #
+# -----------  DATA MANIPULATION FOR COUNTY  --------------- # 
+# ---------------------------------------------------------- #
+
+# not much to do
+county_sum <- covid %>%
+  filter(date == max(covid$date)) # latest 
+
+
+# Preview 
+head(county_sum, 50)
+
+
+```
+
+```{r}
+
+# ------------------------------------------------------- #
+# -----------  DATA MANIPULATION FOR MSA --------------- # 
+# ------------------------------------------------------- #
+
+# --- *** --- metropolitan statistical areas  --- *** --- 
+# only 31 MSA in this list
+# comprised of counties 
+# is a U.S. geographic area defined by the Office of Management and Budget (OMB) that consists of one or more counties (or equivalents) anchored by an urban center of at least 10,000 people plus adjacent counties that are socioeconomically tied to the urban center by commuting.
+# https://en.wikipedia.org/wiki/List_of_metropolitan_statistical_areas
+
+
+# select only msa-related information 
+data_msa <- data %>% 
+  mutate(fips = paste(`FIPS State Code`, `FIPS County Code`, sep = "")) %>%
+  mutate(fips_state = `FIPS State Code`) %>%
+  mutate(state = `State Name`) %>%
+  mutate(fips_county = `FIPS County Code`) %>%
+  rename(msa = `Metropolitan Division Code`) %>%
+  rename(msa_title = `Metropolitan Division Title`) %>% 
+  select(msa, msa_title, fips, state, fips_state, fips_county)
+
+# join msa data and census data by GEOID/FIPS, get population (and other demographic) info.
+census_msa_merge <- census %>% 
+  rename(fips = GEOID) %>% 
+  left_join(data_msa, by = "fips") %>% 
+  group_by(msa) %>%
+  mutate(msa_population = sum(population))
+
+
+# -------- FILTER OR NOT? ----------- # 
+# only top 12 msa and census data (run this)
+
+# list of top msas by population, if we want
+top_msa_popn <- census_msa_merge %>%
+  select(msa, msa_title, msa_population) %>%
+  arrange(desc(msa_population)) %>%
+  distinct() %>%
+  na.omit() %>%
+  data.frame() %>%
+  slice(1:12)
+
+top_census_msa <- census_msa_merge %>%
+  semi_join(top_msa_popn, by="msa")
+
+# --------------------------------------# 
+# without filtering (run this)
+census_msa <- census_msa_merge
+
+
+# ------------------------------------ #
+
+# only need county to merge both datasets, will keep just metro areas (csa)
+msa_covid_merge <- census_msa %>% 
+  left_join(covid, by = "fips") %>%  # join nytimes county-covid df with population and msa ares
+  select(msa, msa_title, msa_population, date, cases, deaths) %>% 
+  # set date range
+  filter(date >= lubridate::as_date("2020-01-24") &
+           date <= lubridate::as_date(Sys.Date() - 8)) # 8 days prior, so that the 7 day mean wouldn't get messed up
+
+# get 7-day mean of cases with zoo::rolling mean and dplyr::lag function 
+msa_covid_cases <- data.frame(msa_covid_merge) %>% 
+  group_by(msa, date) %>% 
+  dplyr::summarise(cases_sum = sum(cases, na.rm = TRUE)) %>% 
+  mutate(new_cases = cases_sum - dplyr::lag(x = cases_sum, n = 1, order_by = date)) %>% 
+  # rollmean function from zoo package to help calculate rolling mean, k = no. of days
+  mutate(new_cases_mean = zoo::rollmean(new_cases, k = 7, fill = NA)) 
+
+# same as above, but for deaths
+msa_covid_deaths <- data.frame(msa_covid_merge) %>% 
+  group_by(msa, date) %>% 
+  dplyr::summarise(deaths_sum = sum(deaths, na.rm = TRUE)) %>% 
+  mutate(new_deaths = deaths_sum - dplyr::lag(x = deaths_sum, n = 1, order_by = date)) %>%
+  # rollmean function from zoo package to help calculate rolling mean, k = no. of days
+  mutate(new_deaths_mean = zoo::rollmean(new_deaths, k = 7, fill = NA))
+  
+# join deaths and cases numbers together (not sure if I can do it in one?)
+# contains
+msa_covid <- msa_covid_merge %>% 
+  left_join(msa_covid_cases, by = c("msa", "date")) %>% 
+  left_join(msa_covid_deaths, by = c("msa", "date")) %>% 
+  arrange(desc(msa_population)) # arrange by msa with highest population 
+
+# final count of msa cases, in order to get ranking
+msa_covid_sum <- msa_covid %>% 
+  filter(date == max(msa_covid$date)) %>% 
+  select(msa, msa_title, msa_population, date, cases_sum, deaths_sum) %>% 
+  distinct() %>%
+  drop_na(msa)
+
+# ----------------- MOST USEFUL DATASETS ------------------------- # 
+
+# time series data of all new cases per day (7-day rolling average) during time period specified
+# names: names(msa_covid)
+head(msa_covid, 50)
+
+# Rank of MSAs according to total cases
+head(msa_covid_sum, 50)
+
+# ----------------------------------------------------------------- #
+```
+
+
+
+```{r}
+
+# ------------------------------------------------------------------- #
+# -----------  DATA MANIPULATION TO GET DATA BY STATE --------------- # 
+# ------------------------------------------------------------------- #
+
+# similarly, calculate rolling daily 7-day average separately for cases
+covid_state_cases <- covid %>% # nyt dataset 
+  group_by(state, date) %>%
+  dplyr::summarise(cases_sum = sum(cases, na.rm = TRUE)) %>% 
+  mutate(new_cases_state = cases_sum - dplyr::lag(x = cases_sum, n = 1, order_by = date)) %>%
+  mutate(new_cases_state_mean = rollmean(new_cases_state, k = 7, fill = NA))
+
+# rolling daily 7-day average for deaths
+covid_state_deaths <- covid %>% 
+  group_by(state, date) %>%
+  dplyr::summarise(deaths_sum = sum(deaths, na.rm = TRUE)) %>% 
+  mutate(new_deaths_state = deaths_sum - dplyr::lag(x = deaths_sum, n = 1, order_by = date)) %>%
+  mutate(new_deaths_state_mean = rollmean(new_deaths_state, k = 7, fill = NA))
+
+# combined total figures
+state_covid <- covid_state_cases %>% 
+  left_join(covid_state_deaths, by = c("state", "date")) %>%
+  filter(date >= lubridate::as_date("2020-01-24") & 
+         date <= lubridate::as_date(Sys.Date() - 8))
+
+# preview
+head(state_covid, 10)
+
+```
+
+
+```{r}
+
+# ------------------------------------------- #
+# ----------- GETTING CITIES ---------------- # 
+# ------------------------------------------- #
+
+# cities are actually smaller than counties, e.g. New York City is part of New York County
+# some are incorporated, and some would have mayors 
+# this is useful data also to get labels and plot points
+
+head(city)
+```
+  
+    
+# Visualizations 
+
+## Covid Line Graph (7-day average) per State
+
+```{r}
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
+# *************** FUNCTION: PLOT DAILY COVID ONE STATE GRAPH ********************** # 
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
+
+# plot line graph of daily cases for state and metropolitan area 
+
+# choose state name
+stateData <- function(state_name) {
+  state_covid %>% 
+    filter(state == state_name)
+}
+
+# choose metropolitan state area ID 
+# find them here: head(msa_covid_sum, 10)
+metroData <- function(msa_id) {
+  msa_covid %>% 
+    filter(msa == msa_id)
+}
+
+# line graph
+covidCasesPlot <- function(state_data, state_name, metro_data) {
+  
+  ggplot() + 
+    geom_line(aes(x = state_data$date, y = state_data$new_cases_state_mean, color = "State"), size = 1.2) + 
+    geom_line(aes(x = metro_data$date, y = metro_data$new_cases_mean, color = "Metropolitan Area"), size = 1.2) + 
+    labs(x = "\nTime Period", 
+       y = "7-day average of Cases and Deaths\n",
+       title = paste("COVID-19 Cases in", state_name, "and Metropolitan Area\n")) + 
+    scale_color_manual(name = "Colors", 
+                       values = c("State" = "coral2", "Metropolitan Area" = "cadetblue")) +
+    theme_minimal() 
+    
+}
+
+covidDeathsPlot <- function(state_data, state_name, metro_data) {
+  
+  ggplot() + 
+    geom_line(aes(x = state_data$date, y = state_data$new_deaths_state_mean, color = "State"), size = 1.2) + 
+    geom_line(aes(x = metro_data$date, y = metro_data$new_deaths_mean, color = "Metropolitan Area"), size = 1.2) + 
+    labs(x = "\nTime Period", 
+       y = "7-day average of Cases and Deaths\n",
+       title = paste("COVID-19 Deaths in", state_name, "and Metropolitan Area\n")) + 
+    scale_color_manual(name = "Colors", 
+                       values = c("State" = "coral4", "Metropolitan Area" = "darkcyan")) +
+    theme_minimal() 
+    
+}
+
+```
+
+  
+### Examples   
+  
+```{r}
+
+# ---- To Find MSA codes ---- #
+
+# head(msa_covid_sum, 10)
+
+
+
+# ----------------- EG TO MAKE A DAILY CASES/ DEATHS PLOT FOR ONE STATE ------------------- # 
+
+# Miami & Florida 
+fl_covid <- stateData("Florida")
+miami_covid <- metroData(33124) # from msa table
+
+a <- covidCasesPlot(fl_covid, "Florida State", miami_covid) # cases
+b <- covidDeathsPlot(fl_covid, "Florida State", miami_covid) # deaths
+
+
+# NYC & New York cases
+ny_covid <- stateData("New York")
+nyc_covid <- metroData(35614)
+
+c <- covidCasesPlot(ny_covid, "New York State", nyc_covid) # cases
+d <- covidDeathsPlot(ny_covid, "New York State", nyc_covid) # deaths
+
+# Dallas-Fort Worth-Arlington (19100) & Texas
+tx_covid <- stateData("Texas")
+dal_covid <- metroData(19124)
+
+e <- covidCasesPlot(tx_covid, "Texas State", dal_covid) # cases
+f <- covidDeathsPlot(tx_covid, "Texas State", dal_covid) # deaths
+
+
+
+```
+
+
+
+## Geo Mapping Visualizations  
+  
+### County Cases   
+  
+```{r}
+
+
+# Plot State Map with Metro Areas 
+
+library(sf)
+
+library(usmap) # to get US Map Data
+
+library(jsonlite) # from FIPS -> Geo (lat, long)
+
+library(cowplot)
+library(gridExtra) # for grid plot
+
+
+# get lat long data from US Census 
+# https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
+county_lines <- st_read("county_shape/cb_2018_us_county_500k.shp")
+
+# add FIPS as a variable from State Fips and County Fips
+county_lines <- county_lines %>% 
+  mutate(fips = paste(STATEFP, COUNTYFP, sep = ""))
+
+# add lat long attributes to county dataset          
+county_geo <- merge(county_lines, county_sum, by = "fips")
+county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
+
+# remove non-mainland US parts 
+outside_mainland <- c("02", "15", "72", "2", "3")
+islands <- c("Virgin Islands", "Northern Mariana Islands")
+
+county_map_US <- county_map %>% 
+  filter(!STATEFP %in% outside_mainland) %>% 
+  filter(!state %in% islands) # remove alaska and hawaii
+
+ggplot(data = county_map_US) +
+  geom_sf(aes(fill = cases)) + 
+  scale_fill_viridis_c(option = "magma", direction = 1)
+
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
+# *************** FUNCTION: PLOT DAILY COVID ONE STATE GRAPH ********************** # 
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
+
+# county state map 
+county_state_map <- function(state_name) {
+  
+  fips_code <- fips(state = state_name) 
+  
+  county_map_state <- county_map %>% 
+  filter(STATEFP == fips_code) 
+  
+  ggplot(data = county_map_state) +
+    geom_sf(aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = paste(state_name))
+    
+}
+
+# e.g. 
+TX <- county_state_map("Texas")
+CA <- county_state_map("California")
+FL <- county_state_map("Florida")
+NY <- county_state_map("New York")
+IL <- county_state_map("Illinois")
+GA <- county_state_map("Georgia")
+
+# TO DO: 
+# Facet it 
+
+plot_grid(TX, CA, FL, NY, IL, GA, ncol = 2)
+
+
+ggsave("county-map-cases.pdf")
+
+```
+### Metropolitan Cases  
+  
+```{r}
+
+# in progress 
+
+# limit to state 
+# view by state, won't be able to plot all 
+# check out why there aren't all 31 MSAs
+
+msa_map <- county_map_US %>% 
+  inner_join(top_census_msa, by = "fips")
+
+
+View(msa_map)
+
+names(top_census_msa)
+
+dim(top_census_msa)
+
+
+  ggplot(data = msa_map) +
+    geom_sf(aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) 
+
+```
+
