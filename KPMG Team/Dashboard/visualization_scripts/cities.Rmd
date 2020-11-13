@@ -1,0 +1,175 @@
+---
+title: "Cities (Deaths & Case)"
+output: html_notebook
+author: Louisa Ong (QMSS Team)
+---
+
+```{r}
+# ----------- LOAD PACKAGES ------------- # 
+
+library(tidyverse)
+library(tidycensus) # US census bureau data
+library(zoo) # rolling mean
+
+# plotting 
+library(ggplot2)
+# library(hrbrthemes) 
+# library(geofacet) 
+
+
+# ----------- LOADING DATASETS ----------- # 
+
+# nytimes county-level cases & deaths data from online link 
+# a few less steps of data manipulation required, but essentially the same from JHU.
+nyt <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
+
+# don't need it, unless we want more variables
+# census data API, variables can be changed here 
+# census <- get_acs(geography = "county",
+#                    variables = c(population = "B01003_001E"), # total population), # black veterans 
+#                    output = "wide",
+#                    county = "",
+#                    year = 2018) 
+
+# US City & FIPS code boundaries 
+# https://simplemaps.com/data/us-cities license 
+city_data <- read_csv("data/uscities.csv")
+
+```
+
+```{r}
+
+# ------------------------------------------------------- # 
+# county covid sum cases & deaths 
+county_sum <- nyt %>%
+  filter(date == max(nyt$date))
+
+
+# ---------------------------------------------- #
+# -----------  DATA MANIPULATION --------------- # 
+# ---------------------------------------------- #
+
+# CITY DATASET 
+# cities are actually smaller than counties, e.g. New York City is part of New York County
+
+# 
+# city_data %>% 
+#   data.frame() %>% 
+#   arrange(desc(population)) %>% 
+#   slice(1:300)
+# 
+# View(city_data_2)
+# 
+# View(city_data)
+#   
+# 
+# city_data_2 <- city_data %>% 
+#   data.frame() %>%
+#   mutate(fips = county_fips) %>% 
+#   # mutate(state = state_name) %>% 
+#   # mutate(state_code = state_id) %>% 
+#   # mutate(county = county_name) %>% 
+#   # mutate(county_popn = population) %>%
+#   group_by(state_name, city) %>% 
+#   mutate(city_population = sum(population)) %>% 
+#   select(city, state_name, state_id, city_population, fips, county_name, population)
+
+# 
+# city_state <- city_data_renamed %>% 
+#   select(city, state_id, state_name) %>% 
+#   distinct()
+# 
+# top300 <- city_data_renamed %>%
+#   data.frame() %>%
+#   select(city, city_population) %>%
+#   arrange(desc(city_population)) %>% # %>% 
+#   distinct() %>%
+#   slice(1:300)
+# 
+# city_state_300 <- top300 %>%
+#   left_join(data.frame(city_data_renamed), by = c("city", "city_population"))
+# 
+# View(city_state_300)
+# 
+# city_data_renamed
+# 
+# city_df <- top300
+# View(top300)
+# 
+# 
+# city_data_2 %>% 
+#   arrange(desc(city_population))
+
+View(city_data_2)
+```
+
+
+
+```{r}
+
+# CITY & COVID MERGE 
+# only need county to merge both datasets, will keep just city areas 
+city_covid_merge <- city_df %>% 
+  left_join(nyt, by = "fips") %>% 
+  # select(city, state_id, state_name, fips, county_name, date, cases, deaths, population, city_population, incorporated, density, lat, lng) %>%
+  # select(city, state_id, state_name, fips, county_name, date, cases, deaths, population, city_population, incorporated, density, lat, lng) %>%
+    select(city, state_id, state_name, county_name, date, cases, deaths, population, city_population, incorporated, density, lat, lng) %>%
+  filter(date >= lubridate::as_date("2020-01-24") & 
+           date <= lubridate::as_date(Sys.Date() - 8))
+
+# get 7-day mean of cases with zoo::rolling mean and dplyr::lag function 
+city_covid_cases <- data.frame(city_covid_merge) %>% 
+  group_by(city, city_population, date) %>% 
+  summarise(cases_sum = sum(cases, na.rm = TRUE)) %>%
+  mutate(new_cases = cases_sum - dplyr::lag(x = cases_sum, n = 1, order_by = date)) %>%
+  mutate(new_cases_mean = rollmean(new_cases, k = 7, fill = NA)) 
+
+# same as above, but for deaths
+city_covid_deaths <- data.frame(city_covid_merge) %>% 
+  group_by(city, city_population, date) %>% 
+  summarise(deaths_sum = sum(deaths, na.rm = TRUE)) %>% 
+  mutate(new_deaths = deaths_sum - dplyr::lag(x = deaths_sum, n = 1, order_by = date)) %>%
+  mutate(new_deaths_mean = rollmean(new_deaths, k = 7, fill = NA))
+  
+# join deaths and cases numbers together (not sure if I can do it in one?)
+city_covid <- city_covid_merge %>% 
+  left_join(city_covid_cases, by = c("city", "date")) %>% 
+  left_join(city_covid_deaths, by = c("city", "date")) %>% 
+  select(city, state_id, state_name, city_population, 
+       date, cases, new_cases, new_cases_mean, cases_sum,
+       deaths, new_deaths, new_deaths_mean, deaths_sum) %>%
+  arrange(desc(city_population))
+
+
+city_covid_sum <- city_covid %>% 
+  filter(date == max(city_covid$date)) %>% 
+  select(city, state_id, state_name, city_population, 
+       date, cases, new_cases, new_cases_mean, cases_sum, 
+       deaths, new_deaths, new_deaths_mean, deaths_sum)
+
+city_only <- data_city %>% 
+  select(city, state_id, state_name, city_population) %>% 
+  distinct()
+
+city_covid_2 <- city_covid_cases %>%
+  left_join(city_only, by = c("city", "city_population"))
+
+View(city_covid_2)
+
+View(data_city)
+View(city_covid_merge)
+View(city_covid_deaths)
+
+names(data_city)
+names(city_covid)
+
+View(city_only)
+
+View(city)
+```
+
+
+```{r}
+
+```
+
