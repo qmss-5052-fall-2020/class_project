@@ -229,7 +229,7 @@ msa_covid_sum_merge <- msa_covid_sum %>%
   ungroup() %>%
   select(msa_state, date, cases_sum, deaths_sum)
 
-state_covid_sum_merge <- state_covid_sum %>% 
+state_covid_sum_merge <- state_sum %>% 
   rename(msa_state = "state") %>% 
   select(msa_state, date, cases_sum, deaths_sum)
 
@@ -357,8 +357,6 @@ f <- covidDeathsPlot(tx_covid, "Texas State", dal_covid) # deaths
 ### County Cases   
   
 ```{r}
-
-
 # Plot State Map with Metro Areas 
 
 library(sf)
@@ -430,12 +428,22 @@ ggplot(data = msa_map_US) +
   geom_sf(aes(fill = cases)) + 
   scale_fill_viridis_c(option = "magma", direction = 1)
 
+ggplot() +
+  geom_sf(data = state_map_US, aes(fill = cases)) + 
+  geom_sf(data = msa_map_US, aes(fill = cases)) + 
+  scale_fill_viridis_c(option = "magma", direction = -1) + 
+  theme_void()
+
 ggplot(data = state_map_US) +
   geom_sf(aes(fill = cases)) + 
   scale_fill_viridis_c(option = "magma", direction = -1) + 
   theme_void()
 
+ggsave("state-msa-us.png", width = 8, height = 5, dpi = 300)
+```
 
+
+```{r}
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
 # *************** FUNCTION: PLOT DAILY COVID ONE STATE GRAPH ********************** # 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
@@ -451,7 +459,8 @@ county_state_map <- function(state_name) {
   ggplot(data = county_map_state) +
     geom_sf(aes(fill = cases)) + 
     scale_fill_viridis_c(option = "magma", direction = -1) + 
-    labs(title = paste(state_name))
+    labs(title = paste(state_name)) +
+    theme_void()
     
 }
 
@@ -459,18 +468,22 @@ county_state_map <- function(state_name) {
 TX <- county_state_map("Texas")
 CA <- county_state_map("California")
 FL <- county_state_map("Florida")
-NY <- county_state_map("New York")
+MA <- county_state_map("Massachusetts")
+# NY <- county_state_map("New York")
+NJ <- county_state_map("New Jersey")
 IL <- county_state_map("Illinois")
-GA <- county_state_map("Georgia")
+# GA <- county_state_map("Georgia")
 
 # TO DO: 
 
  fips_code <- fips(state = "New York") 
 # Facet it 
 
-plot_grid(TX, CA, FL, NY, IL, GA, ncol = 2)
+plot_grid(TX, CA, FL, IL, MA, NJ, ncol = 3)
+```
 
 
+```{r}
 # msa state map 
 msa_state_map <- function(msa) {
   
@@ -610,23 +623,21 @@ msa_state_map_US <- function(state_name) {
     geom_sf(data = state_map, aes(fill = region_cases)) +
     geom_sf(data = msa_map_state, aes(fill = cases)) + 
     scale_fill_viridis_c(option = "magma", direction = -1) + 
-    labs(title = state_map$state,
-         subtitle = "Metropolitan Statistical Areas") + 
+    labs(title = state_map$state) +
+         # subtitle = "Metropolitan Statistical Areas") + 
     theme_void()
   
   
 } 
 
-35614 # nyc is missing
+# 35614 # nyc is missing
 
-df_ny <- msa_state_map_US("New York")
-
-View(df_ny$msa_map_state)
-
-msa_map %>% 
-  filter(state == "New York")
-
-plot_grid(TX, CA, FL, NY, IL, GA, ncol = 2)
+# df_ny <- msa_state_map_US("New York")
+# 
+# View(df_ny$msa_map_state)
+# 
+# msa_map %>% 
+#   filter(state == "New York")
 
 IL_msa <- msa_state_map_US("Illinois")
 CA_msa <- msa_state_map_US("California")
@@ -635,10 +646,10 @@ NJ_msa <- msa_state_map_US("New Jersey")
 MA_msa <- msa_state_map_US("Massachusetts")
 FL_msa <- msa_state_map_US("Florida")
 
-plot_grid(TX_msa, CA_msa, FL_msa, IL_msa, MA_msa, NJ_msa, ncol = 2)
+plot_grid(TX_msa, CA_msa, FL_msa, IL_msa, MA_msa, NJ_msa, ncol = 3)
 
 
-# ggsave("metro-state.png")
+# ggsave("county-state.png", width = 8, height = 5, dpi = 300)
 ```
 ### Metropolitan Cases  
   
