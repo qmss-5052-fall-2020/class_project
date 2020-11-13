@@ -1,0 +1,53 @@
+GEOID,NAME,variable,estimate
+01,Alabama,population,4864680
+02,Alaska,population,738516
+04,Arizona,population,6946685
+05,Arkansas,population,2990671
+06,California,population,39148760
+08,Colorado,population,5531141
+09,Connecticut,population,3581504
+10,Delaware,population,949495
+11,District of Columbia,population,684498
+12,Florida,population,20598139
+13,Georgia,population,10297484
+15,Hawaii,population,1422029
+16,Idaho,population,1687809
+17,Illinois,population,12821497
+18,Indiana,population,6637426
+19,Iowa,population,3132499
+20,Kansas,population,2908776
+21,Kentucky,population,4440204
+22,Louisiana,population,4663616
+23,Maine,population,1332813
+24,Maryland,population,6003435
+25,Massachusetts,population,6830193
+26,Michigan,population,9957488
+27,Minnesota,population,5527358
+28,Mississippi,population,2988762
+29,Missouri,population,6090062
+30,Montana,population,1041732
+31,Nebraska,population,1904760
+32,Nevada,population,2922849
+33,New Hampshire,population,1343622
+34,New Jersey,population,8881845
+35,New Mexico,population,2092434
+36,New York,population,19618453
+37,North Carolina,population,10155624
+38,North Dakota,population,752201
+39,Ohio,population,11641879
+40,Oklahoma,population,3918137
+41,Oregon,population,4081943
+42,Pennsylvania,population,12791181
+44,Rhode Island,population,1056611
+45,South Carolina,population,4955925
+46,South Dakota,population,864289
+47,Tennessee,population,6651089
+48,Texas,population,27885195
+49,Utah,population,3045350
+50,Vermont,population,624977
+51,Virginia,population,8413774
+53,Washington,population,7294336
+54,West Virginia,population,1829054
+55,Wisconsin,population,5778394
+56,Wyoming,population,581836
+72,Puerto Rico,population,3386941
