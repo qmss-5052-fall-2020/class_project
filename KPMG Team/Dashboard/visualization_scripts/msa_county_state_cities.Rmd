@@ -14,14 +14,18 @@ library(zoo) # rolling mean
 
 # plotting 
 library(ggplot2)
+library(ggthemes)
+library(extrafonts)
 # library(hrbrthemes) 
 # library(geofacet) 
 
 
 # ----------- LOADING DATASETS ----------- # 
 
+# set working directory to source file location
+
 # metropolitan state areas delineation from file taken off Census Bureau
-data <- read_csv("data/msa.csv")
+msa <- read_csv("data/msa.csv")
 
 #nytimes county-level cases & deaths data from online link 
 covid <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
@@ -71,7 +75,7 @@ head(county_sum, 50)
 
 
 # select only msa-related information 
-data_msa <- data %>% 
+data_msa <- msa %>% 
   mutate(fips = paste(`FIPS State Code`, `FIPS County Code`, sep = "")) %>%
   mutate(fips_state = `FIPS State Code`) %>%
   mutate(state = `State Name`) %>%
@@ -107,12 +111,22 @@ top_census_msa <- census_msa_merge %>%
 # without filtering (run this)
 census_msa <- census_msa_merge
 
-
 # ------------------------------------ #
 
 # only need county to merge both datasets, will keep just metro areas (csa)
-msa_covid_merge <- census_msa %>% 
-  left_join(covid, by = "fips") %>%  # join nytimes county-covid df with population and msa ares
+msa_county_covid_merge <- census_msa %>% 
+  left_join(covid, by = c("fips", "state")) %>%
+  select(!B01003_001M) %>%
+  drop_na(msa)
+
+# ###########
+# sum of county, showing msa as well 
+msa_county_sum <- msa_county_covid_merge %>%
+  filter(date == max(date))
+# ###########
+
+# join nytimes county-covid df with population and msa areas (remove county)
+msa_covid_merge <- msa_county_covid_merge %>% 
   select(msa, msa_title, msa_population, date, cases, deaths) %>% 
   # set date range
   filter(date >= lubridate::as_date("2020-01-24") &
@@ -157,6 +171,8 @@ head(msa_covid, 50)
 # Rank of MSAs according to total cases
 head(msa_covid_sum, 50)
 
+head(msa_county_sum)
+
 # ----------------------------------------------------------------- #
 ```
 
@@ -191,7 +207,39 @@ state_covid <- covid_state_cases %>%
 # preview
 head(state_covid, 10)
 
+
+# final count of msa cases, in order to get ranking
+state_sum <- state_covid %>% 
+  filter(date == max(state_covid$date)) %>% 
+  select(state, date, cases_sum, deaths_sum) %>% 
+  distinct() 
+
+
 ```
+
+```{r}
+
+# --------------------------------------------------------- #
+# ----------- GETTING STATE & MSA TOGETHER ---------------- # 
+# --------------------------------------------------------- #
+
+# making both datasets bindable 
+msa_covid_sum_merge <- msa_covid_sum %>% 
+  rename(msa_state = "msa_title") %>% 
+  ungroup() %>%
+  select(msa_state, date, cases_sum, deaths_sum)
+
+state_covid_sum_merge <- state_covid_sum %>% 
+  rename(msa_state = "state") %>% 
+  select(msa_state, date, cases_sum, deaths_sum)
+
+# binding row  
+msa_state_covid_sum <- msa_covid_sum_merge %>%
+  bind_rows(state_covid_sum_merge)
+  
+
+```
+
 
 
 ```{r}
@@ -300,7 +348,6 @@ e <- covidCasesPlot(tx_covid, "Texas State", dal_covid) # cases
 f <- covidDeathsPlot(tx_covid, "Texas State", dal_covid) # deaths
 
 
-
 ```
 
 
@@ -326,27 +373,67 @@ library(gridExtra) # for grid plot
 
 # get lat long data from US Census 
 # https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
-county_lines <- st_read("county_shape/cb_2018_us_county_500k.shp")
+county_lines <- st_read("data/county_shape/cb_2018_us_county_500k.shp")
+state_lines <- st_read("data/state_shape/cb_2018_us_state_500k.shp")
 
+names(state_sum)
+head(state_lines)
+
+
+# merge county 
 # add FIPS as a variable from State Fips and County Fips
 county_lines <- county_lines %>% 
   mutate(fips = paste(STATEFP, COUNTYFP, sep = ""))
-
 # add lat long attributes to county dataset          
 county_geo <- merge(county_lines, county_sum, by = "fips")
 county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
 
+# merge MSA
+msa_geo <- merge(county_lines, msa_county_sum, by = "fips")
+msa_map <- msa_geo %>% st_transform('+proj=longlat +datum=WGS84') 
+
+# merge states and state lines
+state_lines <- state_lines %>% 
+  rename(state = NAME)
+state_geo <- merge(state_lines, state_sum, by = "state")
+state_map <- state_geo %>% st_transform('+proj=longlat +datum=WGS84') 
+
+
 # remove non-mainland US parts 
-outside_mainland <- c("02", "15", "72", "2", "3")
-islands <- c("Virgin Islands", "Northern Mariana Islands")
+# outside_mainland <- c("02", "15", "72", "2", "3")
+outside_mainland <- c("Alaska", 
+                      "Hawaii", 
+                      "Puerto Rico", 
+                      "Virgin Islands", 
+                      "Northern Mariana Islands",
+                      "Guam")
+
 
 county_map_US <- county_map %>% 
-  filter(!STATEFP %in% outside_mainland) %>% 
-  filter(!state %in% islands) # remove alaska and hawaii
+  filter(!state %in% outside_mainland)
+
+msa_map_US <- msa_map %>% 
+  filter(!state %in% outside_mainland)
+
+state_map_US <- state_map %>% 
+  filter(!state %in% outside_mainland) %>% 
+  rename(cases = cases_sum) %>% 
+  rename(deaths = deaths_sum)
+
+names(state_map_US)
 
 ggplot(data = county_map_US) +
   geom_sf(aes(fill = cases)) + 
   scale_fill_viridis_c(option = "magma", direction = 1)
+
+ggplot(data = msa_map_US) +
+  geom_sf(aes(fill = cases)) + 
+  scale_fill_viridis_c(option = "magma", direction = 1)
+
+ggplot(data = state_map_US) +
+  geom_sf(aes(fill = cases)) + 
+  scale_fill_viridis_c(option = "magma", direction = -1) + 
+  theme_void()
 
 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/ #
@@ -357,7 +444,7 @@ ggplot(data = county_map_US) +
 county_state_map <- function(state_name) {
   
   fips_code <- fips(state = state_name) 
-  
+
   county_map_state <- county_map %>% 
   filter(STATEFP == fips_code) 
   
@@ -377,13 +464,181 @@ IL <- county_state_map("Illinois")
 GA <- county_state_map("Georgia")
 
 # TO DO: 
+
+ fips_code <- fips(state = "New York") 
 # Facet it 
 
 plot_grid(TX, CA, FL, NY, IL, GA, ncol = 2)
 
 
-ggsave("county-map-cases.pdf")
+# msa state map 
+msa_state_map <- function(msa) {
+  
+  msa_map_state <- msa_map %>% 
+  filter(msa == msa) 
+  
+  ggplot(data = msa_map_state) +
+    geom_sf(aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = msa_map_state$NAME)
+    
+}
 
+
+msa_state_map(40484)
+
+head(msa_county_sum)
+
+
+msa_map_NWNJ <- msa_map %>% 
+  filter(msa == 35084)
+
+31084
+
+msa_map_LA <- msa_map %>% 
+  filter(msa == 41884)
+
+msa_map_SF <- msa_map %>% 
+  filter(msa == 31084)
+
+msa_map_OC <- msa_map %>% 
+  filter(msa == 11244)
+
+msa_map_OAK <- msa_map %>% 
+  filter(msa == 36084)
+
+msa_map_RA <- msa_map %>% 
+  filter(msa == 42034)
+
+state_map_CA <- state_map_US %>% 
+  filter(state == "California") 
+
+state_map_CA_region <- state_map_CA
+
+# state_map_CA <- state_map_CA %>% 
+#   mutate(region_cases = cases - msa_map_LA$cases
+#          
+state_map_CA_region$cases <- state_map_CA$cases -
+  sum(msa_map_LA$cases) - 
+  msa_map_SF$cases - 
+  msa_map_OC$cases - 
+  sum(msa_map_OAK$cases) - 
+  msa_map_RA$cases
+
+ggplot() +
+    geom_sf(data = state_map_CA_region, aes(fill = cases)) + 
+    geom_sf(data = msa_map_LA, aes(fill = cases)) + 
+    geom_sf(data = msa_map_SF, aes(fill = cases)) + 
+    geom_sf(data = msa_map_OC, aes(fill = cases)) + 
+    geom_sf(data = msa_map_OAK, aes(fill = cases)) + 
+    geom_sf(data = msa_map_RA, aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = state_map_CA$state,
+         subtitle = "Metropolitan Statistical Areas") + 
+    theme_void()
+
+ggplot() +
+    geom_sf(data = state_map_CA, aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(subtitle = state_map_CA$state) + 
+    theme_void()
+
+names(msa_map_NWNJ)
+
+### TEXAS ### 
+
+state_map_TX <- state_map_US %>% 
+  filter(state == "Texas") 
+
+texas_msa <- msa_county_sum %>% 
+  select("state", "msa_title", "msa") %>%
+  filter(state == "Texas") %>%
+  distinct() 
+
+texas_msa_code <- pull(texas_msa, msa) # get msa codes into a vector
+
+msa_map_TX <- msa_map %>% 
+  filter(msa %in% texas_msa_code)
+
+state_map_TX$region_cases <- state_map_TX$cases - sum(msa_map_TX$cases)
+
+ggplot() +
+    geom_sf(data = state_map_TX, aes(fill = region_cases)) +
+    geom_sf(data = msa_map_TX, aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = state_map_TX$state,
+         subtitle = "Metropolitan Statistical Areas") + 
+    theme_void()
+
+head(msa_map_TX)
+
+
+### FUNCTION ### 
+
+msa_state_map_US <- function(state_name) {
+  
+  # e.g. filter to get state's map
+  state_map <- state_map_US %>% 
+    filter(state == state_name) 
+  
+  state_msa <- msa_county_sum %>% 
+    select("state", "msa_title", "msa") %>%
+    filter(state == state_name) %>%
+    distinct() 
+  
+  # get msas from the state 
+  state_msa_code <- pull(state_msa, msa) # get msa codes into a vector
+  
+  msa_map_state <- msa_map %>% 
+    filter(msa %in% state_msa_code)
+  
+  # get regional numbers
+  state_map$region_cases <- state_map$cases - sum(msa_map_state$cases)
+  
+  #   # get two-letter e.g. NY
+  state_code <- state_map$STUSPS
+  
+  # df <- list()
+  # 
+  # df$state_map <- state_map 
+  # df$msa_map_state <- msa_map_state
+
+#   return(df)
+# }  
+  # plot
+  ggplot() +
+    geom_sf(data = state_map, aes(fill = region_cases)) +
+    geom_sf(data = msa_map_state, aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = state_map$state,
+         subtitle = "Metropolitan Statistical Areas") + 
+    theme_void()
+  
+  
+} 
+
+35614 # nyc is missing
+
+df_ny <- msa_state_map_US("New York")
+
+View(df_ny$msa_map_state)
+
+msa_map %>% 
+  filter(state == "New York")
+
+plot_grid(TX, CA, FL, NY, IL, GA, ncol = 2)
+
+IL_msa <- msa_state_map_US("Illinois")
+CA_msa <- msa_state_map_US("California")
+TX_msa <- msa_state_map_US("Texas")
+NJ_msa <- msa_state_map_US("New Jersey")
+MA_msa <- msa_state_map_US("Massachusetts")
+FL_msa <- msa_state_map_US("Florida")
+
+plot_grid(TX_msa, CA_msa, FL_msa, IL_msa, MA_msa, NJ_msa, ncol = 2)
+
+
+# ggsave("metro-state.png")
 ```
 ### Metropolitan Cases  
   
