@@ -15,9 +15,16 @@ library(zoo) # rolling mean
 # plotting 
 library(ggplot2)
 library(ggthemes)
-library(extrafonts)
-# library(hrbrthemes) 
-# library(geofacet) 
+library(showtext)
+
+showtext_auto()
+
+font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Raleway-Regular.ttf")
+
+
+```
+
+```{r cache = TRUE}
 
 
 # ----------- LOADING DATASETS ----------- # 
@@ -50,15 +57,51 @@ city <- read_csv("data/uscities.csv")
 # -----------  DATA MANIPULATION FOR COUNTY  --------------- # 
 # ---------------------------------------------------------- #
 
-# not much to do
-county_sum <- covid %>%
+
+county_sum_total <- covid %>%
   filter(date == max(covid$date)) # latest 
 
+# wave 2 
+county_sum_wave_2_start <- covid %>%
+  filter(date == "2020-06-15") # %>% # latest 
 
-# Preview 
-head(county_sum, 50)
+county_sum_w2 <- county_sum_total %>% 
+  inner_join(county_sum_wave_2_start, by = c("fips", "county")) %>% 
+  mutate(cases = cases.x - cases.y) %>%
+  mutate(deaths = deaths.x - deaths.y) %>% 
+  rename(start_date = date.y) %>% 
+  rename(end_date = date.x) %>%
+  select(fips, county, population, start_date, end_date, cases, deaths)
 
 
+
+
+# DATA WITH POPULATION
+county_census <-census %>% 
+  rename(fips = GEOID) %>% 
+  left_join(covid, by = "fips")
+
+
+county_census_total <- county_census %>% 
+  filter(date == "2020-11-14")
+# idk why max isn't working
+
+# WAVE 2 
+county_census_sum_w2_start <- county_census %>%
+  filter(date == "2020-06-15") 
+
+county_census_sum_w2 <- county_census_total %>% 
+  inner_join(county_census_sum_w2_start, by = c("fips", "county", "population", "state")) %>% 
+  mutate(cases = cases.x - cases.y) %>%
+  mutate(deaths = deaths.x - deaths.y) %>% 
+  rename(start_date = date.y) %>% 
+  rename(end_date = date.x) %>%
+  select(fips, county, population, start_date, end_date, cases, deaths)
+
+county_census_sum_w2
+
+View(county_census_sum_w2)
+dim(county_census_sum_w2)
 ```
 
 ```{r}
@@ -386,6 +429,14 @@ county_lines <- county_lines %>%
 county_geo <- merge(county_lines, county_sum, by = "fips")
 county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
 
+county_geo_w2 <- merge(county_lines, county_sum_w2, by = "fips")
+county_map_w2 <- county_geo_w2 %>% st_transform('+proj=longlat +datum=WGS84') 
+
+# census county, wave 2
+county_census_geo_w2 <- merge(county_lines, county_census_sum_w2, by = "fips") 
+county_census_map_w2 <- county_census_geo_w2 %>% st_transform('+proj=longlat +datum=WGS84') 
+
+
 # merge MSA
 msa_geo <- merge(county_lines, msa_county_sum, by = "fips")
 msa_map <- msa_geo %>% st_transform('+proj=longlat +datum=WGS84') 
@@ -410,6 +461,14 @@ outside_mainland <- c("Alaska",
 county_map_US <- county_map %>% 
   filter(!state %in% outside_mainland)
 
+county_map_US_w2 <- county_map_w2 %>% 
+  filter(!state %in% outside_mainland)
+
+county_census_map_US_w2 <- county_census_map_w2 %>% 
+  filter(!state %in% outside_mainland)
+
+# --- 
+
 msa_map_US <- msa_map %>% 
   filter(!state %in% outside_mainland)
 
@@ -419,6 +478,9 @@ state_map_US <- state_map %>%
   rename(deaths = deaths_sum)
 
 names(state_map_US)
+
+# --- 
+# PLOTS 
 
 ggplot(data = county_map_US) +
   geom_sf(aes(fill = cases)) + 
@@ -439,7 +501,8 @@ ggplot(data = state_map_US) +
   scale_fill_viridis_c(option = "magma", direction = -1) + 
   theme_void()
 
-ggsave("state-msa-us.png", width = 8, height = 5, dpi = 300)
+# save to image function - last plot 
+# ggsave("state-msa-us.png", width = 8, height = 5, dpi = 300)
 ```
 
 
@@ -459,27 +522,165 @@ county_state_map <- function(state_name) {
   ggplot(data = county_map_state) +
     geom_sf(aes(fill = cases)) + 
     scale_fill_viridis_c(option = "magma", direction = -1) + 
-    labs(title = paste(state_name)) +
+    labs(title = paste(state_name),
+         subtitle = "Total Cases") +
+    theme_void() 
+    
+}
+
+
+# census 
+
+county_pax_cases_w2 <- function(state_name) {
+  
+  fips_code <- fips(state = state_name) 
+
+  county_census_map_state <- county_census_map_US_w2 %>% 
+    filter(STATEFP == fips_code) %>%
+    filter(cases >= 0)
+  
+  ggplot(data = county_census_map_state) +
+    geom_sf(aes(fill = cases/population)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = paste(state_name),
+         subtitle = "Cases per Capita after Second Wave") +
+    theme_void() + 
+    theme(text = element_text(family = "raleway", size = 25))
+  
+}
+
+county_pax_deaths_w2 <- function(state_name) {
+  
+  fips_code <- fips(state = state_name) 
+
+  county_census_map_state <- county_census_map_US_w2 %>% 
+    filter(STATEFP == fips_code) %>% 
+    filter(deaths >= 0)
+  
+  ggplot(data = county_census_map_state) +
+      geom_sf(aes(fill = deaths/population)) + 
+      scale_fill_viridis_c(option = "viridis", direction = -1) + 
+      labs(title = paste(state_name),
+           subtitle = "Deaths per Capita after Second Wave") +
+      theme_void() + 
+      theme(text = element_text(family = "raleway", size = 25))
+  
+}
+
+
+county_state_map_w2 <- function(state_name) {
+  
+  fips_code <- fips(state = state_name) 
+
+  county_map_state <- county_map_w2 %>% 
+  filter(STATEFP == fips_code) 
+  
+  ggplot(data = county_map_state) +
+    geom_sf(aes(fill = cases)) + 
+    scale_fill_viridis_c(option = "magma", direction = -1) + 
+    labs(title = paste(state_name),
+         subtitle = "After Second Wave") +
     theme_void()
     
 }
+
 
 # e.g. 
 TX <- county_state_map("Texas")
 CA <- county_state_map("California")
 FL <- county_state_map("Florida")
 MA <- county_state_map("Massachusetts")
-# NY <- county_state_map("New York")
+NY <- county_state_map("New York")
 NJ <- county_state_map("New Jersey")
 IL <- county_state_map("Illinois")
-# GA <- county_state_map("Georgia")
+GA <- county_state_map("Georgia")
+
+# cases after second wave 
+# e.g. 
+TX_w2 <- county_state_map_w2("Texas")
+CA_w2 <- county_state_map_w2("California")
+FL_w2 <- county_state_map_w2("Florida")
+MA_w2 <- county_state_map_w2("Massachusetts")
+NY_w2 <- county_state_map_w2("New York")
+
+NJ_w2 <- county_state_map_w2("New Jersey")
+IL_w2 <- county_state_map_w2("Illinois")
+GA_w2 <- county_state_map_w2("Georgia")
+
+
+county_pax_w2
+
+CA_pax_w2_cases <- county_pax_cases_w2("California")
+CA_pax_w2_deaths <- county_pax_deaths_w2("California")
+
+CA_3 <- county_pax_cases_w2("California")
+CA_4 <- county_pax_deaths_w2("California")
+
+NY_3 <- county_pax_cases_w2("New York")
+NY_4 <- county_pax_deaths_w2("New York")
+
+IL_3 <- county_pax_cases_w2("Illinois")
+IL_4 <- county_pax_deaths_w2("Illinois")
+
+FL_3 <- county_pax_cases_w2("Florida")
+FL_4 <- county_pax_deaths_w2("Florida")
+
+WI_3 <- county_pax_cases_w2("Wisconsin")
+WI_4 <- county_pax_deaths_w2("Wisconsin")
+
+ND_3 <- county_pax_cases_w2("North Dakota")
+ND_4 <- county_pax_deaths_w2("North Dakota")
+
+SD_3 <- county_pax_cases_w2("South Dakota")
+SD_4 <- county_pax_deaths_w2("South Dakota")
+
+
+GA_3 <- county_pax_cases_w2("Georgia")
+GA_4 <- county_pax_deaths_w2("Georgia")
+
+
 
 # TO DO: 
 
  fips_code <- fips(state = "New York") 
 # Facet it 
 
-plot_grid(TX, CA, FL, IL, MA, NJ, ncol = 3)
+plot_grid(TX, TX_w2, 
+          CA, CA_w2, 
+          FL, FL_w2, 
+          IL, IL_w2, 
+          MA, MA_w2, 
+          NJ, NJ_w2, 
+          NY, NY_w2, 
+          ncol = 2)
+
+plot_grid(FL_3, FL_4, 
+          IL_3, IL_4, 
+          ncol = 2)
+
+plot_grid(NY_3, NY_4, 
+          CA_3, CA_4,
+          WI_3, WI_4,
+          GA_3, GA_4,
+          ncol = 2)
+
+
+
+# ggsave("CA-comparison.png", plot_grid(CA, CA_msa), width = 8, height = 5, dpi = 300)
+# ggsave("IL-comparison.png", plot_grid(IL, IL_msa), width = 8, height = 5, dpi = 300)
+# ggsave("MA-comparison.png", plot_grid(MA, MA_msa), width = 8, height = 5, dpi = 300)
+# 
+# ggsave("CA-county-state.png", CA, width = 5, height = 6, dpi = 300)
+# ggsave("IL-county-state.png", IL, width = 5, height = 6, dpi = 300)
+# ggsave("MA-county-state.png", MA, width = 5, height = 6, dpi = 300)
+
+# ggsave("county-state-waves.png", width = 8, height = 25, dpi = 300)
+
+# ggsave("county-pax-w2_NY_CA_WI_GA.png", width = 14, height = 25, dpi = 300)
+# 
+# ggsave("county-pax-w2_FL_IL.png", width = 10, height = 8, dpi = 300)
+
+
 ```
 
 
@@ -648,8 +849,10 @@ FL_msa <- msa_state_map_US("Florida")
 
 plot_grid(TX_msa, CA_msa, FL_msa, IL_msa, MA_msa, NJ_msa, ncol = 3)
 
-
-# ggsave("county-state.png", width = 8, height = 5, dpi = 300)
+# ggsave("CA-metro-state.png", CA_msa, width = 5, height = 6, dpi = 300)
+# ggsave("IL-metro-state.png", IL_msa, width = 5, height = 6, dpi = 300)
+# ggsave("MA-metro-state.png", MA_msa, width = 5, height = 6, dpi = 300)
+# ggsave("metro-state.png", width = 8, height = 5, dpi = 300)
 ```
 ### Metropolitan Cases  
   
