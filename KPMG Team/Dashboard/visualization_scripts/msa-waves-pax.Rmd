@@ -107,29 +107,81 @@ state_covid_only <- state_msa_fips_join %>%
   anti_join(msa_covid_only) %>% 
   select(-fips, -mix_index_population, -FIPS_population, -FIPS_combined, -`Central/Outlying County`, -state, -county, -csa, -`Metropolitan Division Title`)
 
-names(msa_region)
 
-region_fips_join <- msa_region %>% 
-  full_join(region_fips, by = "agg_index") %>%
-  drop_na(fips)
 
-View(msa_covid_only)
+# problematic with states without fips 
+# region_fips_join <- msa_region %>% 
+#   full_join(region_fips, by = "agg_index") %>%
+#   drop_na(fips)
 
-View(region_fips_join)
-View(covid)
 
-final_daily <- msa_fips_join %>% # or final total 
-  bind_rows(region_fips_join) %>% 
-  select(index, Date, state, agg_index, fips, csa, county, population, 
-         Confirmed, Deaths, new_confirmed, new_deaths, 
-         new_confirmed_7, new_deaths_7, new_confirmed_14, new_deaths_14,
-         per_100k_new_confirmed_7, per_100k_new_deaths_7)
-         
-names(final_daily)
+# final_daily <- msa_fips_join %>% # or final total 
+#   bind_rows(region_fips_join) %>% 
+#   select(index, Date, state, agg_index, fips, csa, county, population, 
+#          Confirmed, Deaths, new_confirmed, new_deaths, 
+#          new_confirmed_7, new_deaths_7, new_confirmed_14, new_deaths_14,
+#          per_100k_new_confirmed_7, per_100k_new_deaths_7)
+#          
+# names(final_daily)
 # write.csv(final_daily, "data/final-50-county-daily.csv")
 
 ```
   
+
+# Getting Wave Count 
+
+```{r}
+
+wave_2 <- as.Date("2020-06-15") # start of wave 2
+wave_3 <- as.Date("2020-10-15") # start of wave 3
+
+state_covid_only <- state_covid_only %>% 
+  rename("NAME" = "agg_index") %>%
+  filter(! NAME %in% c("Alaska", "Hawaii", "Rhode Island", "District of Columbia"))
+
+
+state_total <- state_covid_only %>% 
+  filter(Date == max(as.Date(state_covid_only$Date), na.rm = TRUE)) %>% # need to remove NA
+  mutate(Date_Total = Date)
+
+state_w2_start <- state_covid_only %>% 
+  filter(Date == max(wave_2)) %>%
+  mutate(Date_W2 = Date)
+
+state_w3_start <- state_covid_only %>% 
+  filter(Date == max(wave_3)) %>% 
+  mutate(Date_W3 = Date)
+
+state_all <- state_total %>% 
+  # joining wave 2 and beyond numbers
+  left_join(state_w2_start, by = "NAME") %>% 
+  rename(Confirmed_total = Confirmed.x) %>%
+  rename(Deaths_total = Deaths.x) %>%
+  # wave 1 only %>% 
+  mutate(Confirmed_W1 = Confirmed.y) %>% 
+  mutate(Deaths_W1 = Deaths.y) %>%
+  # wave 2 and beyond column 
+  mutate(Confirmed_W2_plus = Confirmed_total - Confirmed.y) %>% 
+  mutate(Deaths_W2_plus = Deaths_total - Deaths.y) %>% 
+  # joining wave 3 numbers 
+  left_join(state_w3_start, by = "NAME") %>%
+  # only wave 2 
+  mutate(Deaths_W2_only = Deaths - Deaths_W2_plus) %>% 
+  mutate(Confirmed_W2_only = Confirmed - Confirmed_W2_plus) %>% 
+  # wave 3 and beyond
+  mutate(Deaths_W3 = Deaths_total - Deaths) %>% 
+  mutate(Confirmed_W3 = Confirmed_total - Confirmed) %>%
+  # tidy up, selecting only relevant variables
+  select(index, NAME, population, 
+         Date_Total, Confirmed_total, Deaths_total, 
+         Confirmed_W1, Deaths_W1,
+         Date_W2, Confirmed_W2_plus, Confirmed_W2_only, Deaths_W2_plus, Deaths_W2_only, 
+         Date_W3, Confirmed_W3, Deaths_W3)
+  
+ 
+View(state_all)
+```
+
     
 # Adding spatial attributes  
   
@@ -142,7 +194,7 @@ library(jsonlite) # from FIPS -> Geo (lat, long)
 library(gridExtra) # for grid plot
 
 county_lines <- st_read("data/county_shape/cb_2018_us_county_500k.shp")
-
+state_lines <- st_read("data/state_shape/cb_2018_us_state_500k.shp")
 
 # merge county 
 # add FIPS as a variable from State Fips and County Fips
@@ -150,54 +202,16 @@ county_lines <- county_lines %>%
   mutate(fips = paste(STATEFP, COUNTYFP, sep = ""))
 
 # add lat long attributes to county dataset          
-county_geo <- merge(county_lines, final_daily, by = "fips")
+county_geo <- merge(county_lines, msa_covid_only, by = "fips")
 county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
 
-map_daily <- county_map # daily covid map
-  
-```
 
-  
-# Wave/Dates Filter  
-### For total cases   
+# merge state 
+# add lat long attributes to state dataset 
 
-```{r}
-# library(spdplyr) # spatial version of dplyr 
+state_geo <- merge(state_lines, state_all, by = "NAME")
+state_map <- state_geo %>% st_transform('+proj=longlat +datum=WGS84')
 
-# Dates of Waves 
-
-wave_2 <- as.Date("2020-06-15") # start of wave 2
-wave_3 <- as.Date("2020-10-15") # start of wave 3
-
-# all cases map 
-map_total <- county_map %>% 
-  filter(Date == max(as.Date(county_map$Date), na.rm = TRUE)) %>% # need to remove NA
-  rename(state_fips = STATEFP) %>%
-  select(-new_confirmed, -new_deaths, -new_confirmed_7, -new_deaths_7, -new_confirmed_14, -new_deaths_14, -per_100k_new_confirmed_7, -per_100k_new_deaths_7, -COUNTYNS, -AFFGEOID, -GEOID, -county) 
-
-# wave 2 start date 
-map_w2_start <- map_daily %>%
-  filter(Date == "2020-06-15") %>% 
-  rename(state_fips = STATEFP) %>%
-  select(-new_confirmed, -new_deaths, -new_confirmed_7, -new_deaths_7, -new_confirmed_14, -new_deaths_14, -per_100k_new_confirmed_7, -per_100k_new_deaths_7, -COUNTYNS, -AFFGEOID, -GEOID, -county)
-
-# wave 2 map 
-map_w2 <- map_total %>% 
-  st_join(map_w2_start, by = "fips") %>% 
-  mutate(Confirmed = Confirmed.x - Confirmed.y) %>% 
-  mutate(Deaths = Deaths.x - Deaths.y) %>% 
-  rename(start_date = Date.y) %>% 
-  rename(end_date = Date.x) %>% 
-  rename(fips = fips.x) %>% 
-  rename(county = NAME.x) %>% 
-  rename(population = population.x) %>% 
-  rename(csa = csa.x) %>% 
-  rename(agg_index = agg_index.x) %>% 
-  rename(state = state.x) %>%
-  rename(index = index.x) %>%
-  rename(county_fips = COUNTYFP.x) %>%
-  rename(state_fips = state_fips.x) %>%
-  select(fips, index, agg_index, state, county, csa, population, Confirmed, Deaths, start_date, end_date, state_fips, county_fips, geometry, LSAD.x, ALAND.x, AWATER.x)
 
 
 ```
@@ -206,50 +220,59 @@ map_w2 <- map_total %>%
 # Visualizations (finally)  
   
 ```{r}
+
+options(scipen = 999)
+
 library(usmap) # to get US Map Data
+library(cowplot) # for grid plot
 
 names(map_w2)
 fips("New York")
 #state_name, 
 
-# county state map 
-mapping <- function(map_type, pax) {
-  # 
-  # fips_code <- fips(state = state_name) 
-  # 
-  # map <- map_type %>% 
-  #   filter(state_fips == fips_code) %>% 
-  #   filter(Deaths >= 0)
-  # 
-  
-  map <- map_type 
-  
-  ggplot(data = map) +
-    geom_sf(aes(fill = Deaths, color = Deaths)) + 
-    scale_fill_viridis_c(option = "viridis", direction = -1) + 
-    labs(title = "something", #paste(state),
-         subtitle = "Total Deaths") +
-    theme_void() + 
-    theme(text = element_text(family = "raleway"))  
-  
-  # if (pax = FALSE) {
-  #   
-  #   map <- 
-  #   
-  # } else if (pax = TRUE) {
-  #   
-  #   
-  #   
-    
-}
+g_total <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_total/population), size = 0.3) +  # color = NA 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
+  labs(title = "Total Deaths\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 50))
 
-dim(map_w2)
+g_w1 <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_W1/population), size = 0.3) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
+  labs(title = "Wave 1 Deaths Only\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 50))
 
-length(map_total$Deaths)
-length(map_w2$Deaths)
+g_w2 <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_W2_only/population), size = 0.3) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
+  labs(title = "Wave 2 Deaths Only\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 50))
 
-mapping(map_w2)
 
+g_w3 <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_W3/population), size = 0.3) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
+  labs(title = "Wave 3 Deaths Onwards\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 50))
+
+
+p <- plot_grid(g_total, g_w2, g_w3, ncol = 3)
+
+title <- ggdraw() + 
+  draw_label("Total Deaths per Capita in U.S. by State per Wave", fontface='bold') + 
+  theme(text = element_text(family = "raleway"))
+
+plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1))
+
+# ggsave("viz/state-waves.png", width = 8, height = 3, dpi = 300)
+ggsave("viz/state-waves-total.png", g_total, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-waves-W1.png", g_w1, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-waves-W2.png", g_w2, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-waves-W3.png", g_w3, width = 8, height = 5, dpi = 300)
 
 ```
 
