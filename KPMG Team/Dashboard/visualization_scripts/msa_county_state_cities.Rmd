@@ -71,7 +71,7 @@ county_sum_w2 <- county_sum_total %>%
   mutate(deaths = deaths.x - deaths.y) %>% 
   rename(start_date = date.y) %>% 
   rename(end_date = date.x) %>%
-  select(fips, county, population, start_date, end_date, cases, deaths)
+  select(fips, county, all_of(population), start_date, end_date, cases, deaths)
 
 
 
@@ -127,6 +127,8 @@ data_msa <- msa %>%
   rename(msa_title = `Metropolitan Division Title`) %>% 
   select(msa, msa_title, fips, state, fips_state, fips_county)
 
+data_msa$fips
+
 # join msa data and census data by GEOID/FIPS, get population (and other demographic) info.
 census_msa_merge <- census %>% 
   rename(fips = GEOID) %>% 
@@ -134,6 +136,7 @@ census_msa_merge <- census %>%
   group_by(msa) %>%
   mutate(msa_population = sum(population))
 
+census_msa_merge$fips
 
 # -------- FILTER OR NOT? ----------- # 
 # only top 12 msa and census data (run this)
@@ -408,7 +411,7 @@ library(usmap) # to get US Map Data
 
 library(jsonlite) # from FIPS -> Geo (lat, long)
 
-library(cowplot)
+# library(cowplot)
 library(gridExtra) # for grid plot
 
 
