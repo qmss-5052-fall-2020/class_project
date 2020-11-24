@@ -1,0 +1,255 @@
+---
+title: "Visualizations: Metropolitan Areas per Capita, Wave I, II, III (Deaths)"
+output: html_notebook 
+---
+
+# CONTENTS OF THIS SCRIPT   
+  
+### Loading Packages 
+### Datasets 
+### Merging County data to Top 50 populated MSA & Region Dataset (for spatial attributes)
+### Adding Spatial Attributes 
+### Filtering by waves
+### Visualization in Maps
+
+
+```{r message = FALSE}
+# ----------- LOAD PACKAGES ------------- # 
+
+library(tidyverse)
+library(tidycensus)
+
+# plotting 
+library(ggplot2)
+library(ggthemes)
+library(showtext)
+
+showtext_auto()
+
+font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Raleway-Regular.ttf")
+
+
+```
+
+
+```{r cache = TRUE}  
+
+# ----------- LOADING DATASETS ----------- # 
+
+# MSA Things
+# from Sydney
+msa_index <- read_csv("data/msa/msa_mix_index.csv") # csa and msa with population 
+covid <- read_csv("data/msa/us_daily_msa_split_2020-11-16.csv") # split 
+
+# metropolitan state areas delineation from file taken off Census Bureau
+msa <- read_csv("data/msa.csv") # using this bc FIPS code needs to be 5 digits
+
+
+# -------------- MSA_INDEX dataset check
+# top 50 most populated csa and msas
+# msa_index %>% 
+#   select("mix_index") %>% 
+#   distinct() %>% 
+#   count()
+
+# -------------- MSA_SPLIT dataset check
+# Regional minus State count 
+# CSA/MSA count 
+
+# View(msa)
+```
+
+# Adding County Data (to match with spatial lines)
+
+```{r}
+
+# need to merge county back in to get the lines 
+
+# # rename to get 5-digit fips, select only needed variables, remove NAs
+msa_w_fips <- msa %>%
+  mutate(fips = paste(`FIPS State Code`, `FIPS County Code`, sep = "")) %>% #
+  select(fips, `CSA Title`, `County/County Equivalent`, `State Name`) 
+
+# # left join index of 50 with fips codes
+# msa_index_fips <- msa_index %>% 
+#   left_join(msa_w_fips, by = c("CSA Title", "County/County Equivalent", "State Name")) %>% 
+#   rename(county = `County/County Equivalent`) %>% 
+#   rename(csa = `CSA Title`) %>%
+#   rename(state = `State Name`) %>%
+#   rename(agg_index = mix_index)
+
+msa_index_2 <- msa_index %>% 
+  rename(county = `County/County Equivalent`) %>% 
+  rename(csa = `CSA Title`) %>%
+  rename(state = `State Name`) %>%
+  rename(agg_index = mix_index) %>% 
+  rename(fips = FIPS_combined) %>% 
+  names()
+  
+# anti join to get the counties not in msa_index 
+region_fips <- msa_w_fips %>% 
+  anti_join(msa_index, by = "CSA Title") %>% 
+  rename(county = `County/County Equivalent`) %>%
+  mutate(agg_index = `State Name`) %>%
+  rename(state = `State Name`) %>%
+  rename(csa = `CSA Title`) 
+
+# joining fips info with covid dataset (has states + selected msas)
+state_msa_fips_join <- covid %>% 
+  full_join(msa_index_fips, by = "agg_index")# %>% 
+
+# keeping only msas and counties, since they have fips
+msa_covid_only <- state_msa_fips_join %>%
+  drop_na(fips)
+
+# keeping only states, don't have counties
+state_covid_only <- state_msa_fips_join %>% 
+  anti_join(msa_covid_only) %>% 
+  select(-fips, -mix_index_population, -FIPS_population, -FIPS_combined, -`Central/Outlying County`, -state, -county, -csa, -`Metropolitan Division Title`)
+
+names(msa_region)
+
+region_fips_join <- msa_region %>% 
+  full_join(region_fips, by = "agg_index") %>%
+  drop_na(fips)
+
+View(msa_covid_only)
+
+View(region_fips_join)
+View(covid)
+
+final_daily <- msa_fips_join %>% # or final total 
+  bind_rows(region_fips_join) %>% 
+  select(index, Date, state, agg_index, fips, csa, county, population, 
+         Confirmed, Deaths, new_confirmed, new_deaths, 
+         new_confirmed_7, new_deaths_7, new_confirmed_14, new_deaths_14,
+         per_100k_new_confirmed_7, per_100k_new_deaths_7)
+         
+names(final_daily)
+# write.csv(final_daily, "data/final-50-county-daily.csv")
+
+```
+  
+    
+# Adding spatial attributes  
+  
+```{r cache = TRUE}
+
+# Adding spatial attributes
+
+library(sf)
+library(jsonlite) # from FIPS -> Geo (lat, long)
+library(gridExtra) # for grid plot
+
+county_lines <- st_read("data/county_shape/cb_2018_us_county_500k.shp")
+
+
+# merge county 
+# add FIPS as a variable from State Fips and County Fips
+county_lines <- county_lines %>% 
+  mutate(fips = paste(STATEFP, COUNTYFP, sep = ""))
+
+# add lat long attributes to county dataset          
+county_geo <- merge(county_lines, final_daily, by = "fips")
+county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
+
+map_daily <- county_map # daily covid map
+  
+```
+
+  
+# Wave/Dates Filter  
+### For total cases   
+
+```{r}
+# library(spdplyr) # spatial version of dplyr 
+
+# Dates of Waves 
+
+wave_2 <- as.Date("2020-06-15") # start of wave 2
+wave_3 <- as.Date("2020-10-15") # start of wave 3
+
+# all cases map 
+map_total <- county_map %>% 
+  filter(Date == max(as.Date(county_map$Date), na.rm = TRUE)) %>% # need to remove NA
+  rename(state_fips = STATEFP) %>%
+  select(-new_confirmed, -new_deaths, -new_confirmed_7, -new_deaths_7, -new_confirmed_14, -new_deaths_14, -per_100k_new_confirmed_7, -per_100k_new_deaths_7, -COUNTYNS, -AFFGEOID, -GEOID, -county) 
+
+# wave 2 start date 
+map_w2_start <- map_daily %>%
+  filter(Date == "2020-06-15") %>% 
+  rename(state_fips = STATEFP) %>%
+  select(-new_confirmed, -new_deaths, -new_confirmed_7, -new_deaths_7, -new_confirmed_14, -new_deaths_14, -per_100k_new_confirmed_7, -per_100k_new_deaths_7, -COUNTYNS, -AFFGEOID, -GEOID, -county)
+
+# wave 2 map 
+map_w2 <- map_total %>% 
+  st_join(map_w2_start, by = "fips") %>% 
+  mutate(Confirmed = Confirmed.x - Confirmed.y) %>% 
+  mutate(Deaths = Deaths.x - Deaths.y) %>% 
+  rename(start_date = Date.y) %>% 
+  rename(end_date = Date.x) %>% 
+  rename(fips = fips.x) %>% 
+  rename(county = NAME.x) %>% 
+  rename(population = population.x) %>% 
+  rename(csa = csa.x) %>% 
+  rename(agg_index = agg_index.x) %>% 
+  rename(state = state.x) %>%
+  rename(index = index.x) %>%
+  rename(county_fips = COUNTYFP.x) %>%
+  rename(state_fips = state_fips.x) %>%
+  select(fips, index, agg_index, state, county, csa, population, Confirmed, Deaths, start_date, end_date, state_fips, county_fips, geometry, LSAD.x, ALAND.x, AWATER.x)
+
+
+```
+
+
+# Visualizations (finally)  
+  
+```{r}
+library(usmap) # to get US Map Data
+
+names(map_w2)
+fips("New York")
+#state_name, 
+
+# county state map 
+mapping <- function(map_type, pax) {
+  # 
+  # fips_code <- fips(state = state_name) 
+  # 
+  # map <- map_type %>% 
+  #   filter(state_fips == fips_code) %>% 
+  #   filter(Deaths >= 0)
+  # 
+  
+  map <- map_type 
+  
+  ggplot(data = map) +
+    geom_sf(aes(fill = Deaths, color = Deaths)) + 
+    scale_fill_viridis_c(option = "viridis", direction = -1) + 
+    labs(title = "something", #paste(state),
+         subtitle = "Total Deaths") +
+    theme_void() + 
+    theme(text = element_text(family = "raleway"))  
+  
+  # if (pax = FALSE) {
+  #   
+  #   map <- 
+  #   
+  # } else if (pax = TRUE) {
+  #   
+  #   
+  #   
+    
+}
+
+dim(map_w2)
+
+length(map_total$Deaths)
+length(map_w2$Deaths)
+
+mapping(map_w2)
+
+
+```
+

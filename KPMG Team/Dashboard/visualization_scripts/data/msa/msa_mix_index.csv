@@ -1,0 +1,519 @@
+Metropolitan Division Title,CSA Title,County/County Equivalent,State Name,Central/Outlying County,FIPS_combined,FIPS_population,mix_index,mix_index_population
+,"Cleveland-Akron-Canton, OH",Portage County,Ohio,Central,39133,162644,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Summit County,Ohio,Central,39153,541810,"Cleveland-Akron-Canton, OH",3607736.0
+,"Portland-Vancouver-Salem, OR-WA",Linn County,Oregon,Central,41043,122870,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Charlotte-Concord, NC-SC",Stanly County,North Carolina,Central,37167,61114,"Charlotte-Concord, NC-SC",2656704.0
+,"San Juan-Bayamón, PR",Arecibo Municipio,Puerto Rico,Central,72013,87242,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Camuy Municipio,Puerto Rico,Central,72027,32222,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Hatillo Municipio,Puerto Rico,Central,72065,40390,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Quebradillas Municipio,Puerto Rico,Central,72115,24036,"San Juan-Bayamón, PR",2432066.0
+,"Cleveland-Akron-Canton, OH",Ashtabula County,Ohio,Central,39007,98136,"Cleveland-Akron-Canton, OH",3607736.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Atchison County,Kansas,Central,20005,16363,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Clarke County,Georgia,Central,13059,124602,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Madison County,Georgia,Outlying,13195,28900,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Oconee County,Georgia,Central,13219,37017,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Oglethorpe County,Georgia,Outlying,13221,14784,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Barrow County,Georgia,Outlying,13013,76887,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Bartow County,Georgia,Outlying,13015,103620,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Butts County,Georgia,Outlying,13035,23750,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Carroll County,Georgia,Outlying,13045,116022,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Cherokee County,Georgia,Central,13057,241910,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Clayton County,Georgia,Central,13063,278666,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Cobb County,Georgia,Central,13067,745057,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Coweta County,Georgia,Central,13077,140516,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Dawson County,Georgia,Outlying,13085,23861,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",DeKalb County,Georgia,Central,13089,743187,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Douglas County,Georgia,Central,13097,141840,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Fayette County,Georgia,Central,13113,111369,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Forsyth County,Georgia,Central,13117,219880,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Fulton County,Georgia,Central,13121,1021902,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Gwinnett County,Georgia,Central,13135,902298,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Haralson County,Georgia,Outlying,13143,28956,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Heard County,Georgia,Outlying,13149,11677,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Henry County,Georgia,Central,13151,221307,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Jasper County,Georgia,Outlying,13159,13784,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Lamar County,Georgia,Outlying,13171,18513,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Meriwether County,Georgia,Outlying,13199,21113,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Morgan County,Georgia,Outlying,13211,18235,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Newton County,Georgia,Central,13217,106497,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Paulding County,Georgia,Central,13223,155840,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Pickens County,Georgia,Outlying,13227,30832,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Pike County,Georgia,Outlying,13231,18082,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Rockdale County,Georgia,Central,13247,89011,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Spalding County,Georgia,Central,13255,64719,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Walton County,Georgia,Central,13297,90132,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Anne Arundel County,Maryland,Central,24003,567696,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Baltimore County,Maryland,Central,24005,827625,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Carroll County,Maryland,Outlying,24013,167522,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Harford County,Maryland,Outlying,24025,251025,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Howard County,Maryland,Central,24027,315327,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Queen Anne's County,Maryland,Central,24035,49355,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Baltimore city,Maryland,Central,24510,614700,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Barnstable County,Massachusetts,Central,25001,213690,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Houston-The Woodlands, TX",Matagorda County,Texas,Central,48321,36743,"Houston-The Woodlands, TX",6963733.0
+,"Milwaukee-Racine-Waukesha, WI",Dodge County,Wisconsin,Central,55027,87776,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Columbus-Marion-Zanesville, OH",Logan County,Ohio,Central,39091,45307,"Columbus-Marion-Zanesville, OH",2456974.0
+"Boston, MA","Boston-Worcester-Providence, MA-RI-NH-CT",Norfolk County,Massachusetts,Central,25021,698249,"Boston, MA",2002150.0
+"Boston, MA","Boston-Worcester-Providence, MA-RI-NH-CT",Plymouth County,Massachusetts,Central,25023,512135,"Boston, MA",2002150.0
+"Boston, MA","Boston-Worcester-Providence, MA-RI-NH-CT",Suffolk County,Massachusetts,Central,25025,791766,"Boston, MA",2002150.0
+"Cambridge-Newton-Framingham, MA","Boston-Worcester-Providence, MA-RI-NH-CT",Essex County,Massachusetts,Central,25009,781024,"Cambridge-Newton-Framingham, MA",2376216.0
+"Cambridge-Newton-Framingham, MA","Boston-Worcester-Providence, MA-RI-NH-CT",Middlesex County,Massachusetts,Central,25017,1595192,"Cambridge-Newton-Framingham, MA",2376216.0
+,"Denver-Aurora, CO",Boulder County,Colorado,Central,08013,321030,"Denver-Aurora, CO",3466374.0
+,"Houston-The Woodlands, TX",Washington County,Texas,Central,48477,34796,"Houston-The Woodlands, TX",6963733.0
+,"New York-Newark, NY-NJ-CT-PA",Fairfield County,Connecticut,Central,09001,944348,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Greensboro--Winston-Salem--High Point, NC",Alamance County,North Carolina,Central,37001,160576,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",St. Mary's County,Maryland,Central,24037,111531,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Columbus-Marion-Zanesville, OH",Guernsey County,Ohio,Central,39059,39274,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Cleveland-Akron-Canton, OH",Carroll County,Ohio,Outlying,39019,27578,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Stark County,Ohio,Central,39151,373475,"Cleveland-Akron-Canton, OH",3607736.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Polk County,Georgia,Central,13233,41621,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Marion County,Illinois,Central,17121,38084,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Franklin County,Pennsylvania,Central,42055,153751,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Charlotte-Concord, NC-SC",Anson County,North Carolina,Outlying,37007,25306,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Cabarrus County,North Carolina,Outlying,37025,201448,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Gaston County,North Carolina,Outlying,37071,216585,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Iredell County,North Carolina,Central,37097,172525,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Lincoln County,North Carolina,Outlying,37109,81441,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Mecklenburg County,North Carolina,Central,37119,1054314,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Rowan County,North Carolina,Outlying,37159,139605,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Union County,North Carolina,Central,37179,226694,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Chester County,South Carolina,Outlying,45023,32326,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",Lancaster County,South Carolina,Outlying,45057,89546,"Charlotte-Concord, NC-SC",2656704.0
+,"Charlotte-Concord, NC-SC",York County,South Carolina,Outlying,45091,258641,"Charlotte-Concord, NC-SC",2656704.0
+"Chicago-Naperville-Evanston, IL","Chicago-Naperville, IL-IN-WI",Cook County,Illinois,Central,17031,5223719,"Chicago-Naperville-Evanston, IL",7202457.0
+"Chicago-Naperville-Evanston, IL","Chicago-Naperville, IL-IN-WI",DuPage County,Illinois,Central,17043,931743,"Chicago-Naperville-Evanston, IL",7202457.0
+"Chicago-Naperville-Evanston, IL","Chicago-Naperville, IL-IN-WI",Grundy County,Illinois,Outlying,17063,50509,"Chicago-Naperville-Evanston, IL",7202457.0
+"Chicago-Naperville-Evanston, IL","Chicago-Naperville, IL-IN-WI",McHenry County,Illinois,Central,17111,307789,"Chicago-Naperville-Evanston, IL",7202457.0
+"Chicago-Naperville-Evanston, IL","Chicago-Naperville, IL-IN-WI",Will County,Illinois,Central,17197,688697,"Chicago-Naperville-Evanston, IL",7202457.0
+,"Columbus-Marion-Zanesville, OH",Ross County,Ohio,Central,39141,77051,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Dearborn County,Indiana,Outlying,18029,49501,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Franklin County,Indiana,Outlying,18047,22842,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Ohio County,Indiana,Outlying,18115,5887,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Union County,Indiana,Outlying,18161,7153,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Boone County,Kentucky,Central,21015,129095,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Bracken County,Kentucky,Outlying,21023,8306,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Campbell County,Kentucky,Central,21037,92267,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Gallatin County,Kentucky,Outlying,21077,8703,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Grant County,Kentucky,Outlying,21081,24915,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Kenton County,Kentucky,Central,21117,164688,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Pendleton County,Kentucky,Outlying,21191,14520,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Brown County,Ohio,Outlying,39015,43679,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Butler County,Ohio,Central,39017,378294,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Clermont County,Ohio,Central,39025,203216,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Hamilton County,Ohio,Central,39061,812037,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Warren County,Ohio,Central,39165,226564,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Cleveland-Akron-Canton, OH",Cuyahoga County,Ohio,Central,39035,1253783,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Geauga County,Ohio,Central,39055,93961,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Lake County,Ohio,Central,39085,230052,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Lorain County,Ohio,Outlying,39093,306713,"Cleveland-Akron-Canton, OH",3607736.0
+,"Cleveland-Akron-Canton, OH",Medina County,Ohio,Central,39103,177257,"Cleveland-Akron-Canton, OH",3607736.0
+,"San Juan-Bayamón, PR",Salinas Municipio,Puerto Rico,Central,72123,28633,"San Juan-Bayamón, PR",2432066.0
+,"Indianapolis-Carmel-Muncie, IN",Bartholomew County,Indiana,Central,18005,81893,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Columbus-Marion-Zanesville, OH",Delaware County,Ohio,Central,39041,197008,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Fairfield County,Ohio,Central,39045,152910,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Franklin County,Ohio,Central,39049,1275333,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Hocking County,Ohio,Outlying,39073,28495,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Licking County,Ohio,Outlying,39089,172293,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Madison County,Ohio,Outlying,39097,43988,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Morrow County,Ohio,Outlying,39117,34976,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Perry County,Ohio,Outlying,39127,35985,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Pickaway County,Ohio,Outlying,39129,57420,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Columbus-Marion-Zanesville, OH",Union County,Ohio,Outlying,39159,55654,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Merrimack County,New Hampshire,Central,33013,149452,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Habersham County,Georgia,Central,13137,44289,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Portland-Vancouver-Salem, OR-WA",Benton County,Oregon,Central,41003,89780,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Indianapolis-Carmel-Muncie, IN",Montgomery County,Indiana,Central,18107,38276,"Indianapolis-Carmel-Muncie, IN",2389982.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Collin County,Texas,Central,48085,944350,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Dallas County,Texas,Central,48113,2586552,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Denton County,Texas,Outlying,48121,807047,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Ellis County,Texas,Central,48139,168838,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Hunt County,Texas,Outlying,48231,92152,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Kaufman County,Texas,Outlying,48257,118910,"Dallas-Plano-Irving, TX",4811491.0
+"Dallas-Plano-Irving, TX","Dallas-Fort Worth, TX-OK",Rockwall County,Texas,Central,48397,93642,"Dallas-Plano-Irving, TX",4811491.0
+"Fort Worth-Arlington-Grapevine, TX","Dallas-Fort Worth, TX-OK",Johnson County,Texas,Central,48251,163475,"Fort Worth-Arlington-Grapevine, TX",2377893.0
+"Fort Worth-Arlington-Grapevine, TX","Dallas-Fort Worth, TX-OK",Parker County,Texas,Outlying,48367,129802,"Fort Worth-Arlington-Grapevine, TX",2377893.0
+"Fort Worth-Arlington-Grapevine, TX","Dallas-Fort Worth, TX-OK",Tarrant County,Texas,Central,48439,2019977,"Fort Worth-Arlington-Grapevine, TX",2377893.0
+"Fort Worth-Arlington-Grapevine, TX","Dallas-Fort Worth, TX-OK",Wise County,Texas,Outlying,48497,64639,"Fort Worth-Arlington-Grapevine, TX",2377893.0
+,"Orlando-Lakeland-Deltona, FL",Flagler County,Florida,Central,12035,107139,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Orlando-Lakeland-Deltona, FL",Volusia County,Florida,Central,12127,527634,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Denver-Aurora, CO",Adams County,Colorado,Central,08001,497115,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Arapahoe County,Colorado,Central,08005,636671,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Broomfield County,Colorado,Central,08014,66120,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Clear Creek County,Colorado,Outlying,08019,9379,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Denver County,Colorado,Central,08031,693417,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Douglas County,Colorado,Central,08035,328614,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Elbert County,Colorado,Outlying,08039,25162,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Gilpin County,Colorado,Outlying,08047,5924,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Jefferson County,Colorado,Central,08059,570427,"Denver-Aurora, CO",3466374.0
+,"Denver-Aurora, CO",Park County,Colorado,Outlying,08093,17392,"Denver-Aurora, CO",3466374.0
+"Detroit-Dearborn-Livonia, MI","Detroit-Warren-Ann Arbor, MI",Wayne County,Michigan,Central,26163,1761382,"Detroit-Dearborn-Livonia, MI",1761382.0
+"Warren-Troy-Farmington Hills, MI","Detroit-Warren-Ann Arbor, MI",Lapeer County,Michigan,Outlying,26087,88202,"Warren-Troy-Farmington Hills, MI",2555797.0
+"Warren-Troy-Farmington Hills, MI","Detroit-Warren-Ann Arbor, MI",Livingston County,Michigan,Outlying,26093,188482,"Warren-Troy-Farmington Hills, MI",2555797.0
+"Warren-Troy-Farmington Hills, MI","Detroit-Warren-Ann Arbor, MI",Macomb County,Michigan,Central,26099,868704,"Warren-Troy-Farmington Hills, MI",2555797.0
+"Warren-Troy-Farmington Hills, MI","Detroit-Warren-Ann Arbor, MI",Oakland County,Michigan,Central,26125,1250843,"Warren-Troy-Farmington Hills, MI",2555797.0
+"Warren-Troy-Farmington Hills, MI","Detroit-Warren-Ann Arbor, MI",St. Clair County,Michigan,Outlying,26147,159566,"Warren-Troy-Farmington Hills, MI",2555797.0
+,"Raleigh-Durham-Cary, NC",Chatham County,North Carolina,Central,37037,69791,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Durham County,North Carolina,Central,37063,306457,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Granville County,North Carolina,Outlying,37077,58874,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Orange County,North Carolina,Central,37135,142938,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Person County,North Carolina,Outlying,37145,39305,"Raleigh-Durham-Cary, NC",1964479.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Talbot County,Maryland,Central,24041,37211,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"New York-Newark, NY-NJ-CT-PA",Monroe County,Pennsylvania,Central,42089,167586,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Houston-The Woodlands, TX",Wharton County,Texas,Central,48481,41551,"Houston-The Woodlands, TX",6963733.0
+,"Virginia Beach-Norfolk, VA-NC",Pasquotank County,North Carolina,Central,37139,39479,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Perquimans County,North Carolina,Outlying,37143,13459,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Minneapolis-St. Paul, MN-WI",Rice County,Minnesota,Central,27131,65765,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"St. Louis-St. Charles-Farmington, MO-IL",St. Francois County,Missouri,Central,29187,66342,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Hall County,Georgia,Central,13139,195961,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Denver-Aurora, CO",Weld County,Colorado,Central,08123,295123,"Denver-Aurora, CO",3466374.0
+,"Greensboro--Winston-Salem--High Point, NC",Guilford County,North Carolina,Central,37081,523582,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Randolph County,North Carolina,Outlying,37151,142958,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Rockingham County,North Carolina,Outlying,37157,91270,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Indianapolis-Carmel-Muncie, IN",Decatur County,Indiana,Central,18031,26552,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"San Juan-Bayamón, PR",Arroyo Municipio,Puerto Rico,Central,72015,18111,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Guayama Municipio,Puerto Rico,Central,72057,41706,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Patillas Municipio,Puerto Rico,Central,72109,17334,"San Juan-Bayamón, PR",2432066.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Washington County,Maryland,Central,24043,149811,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Berkeley County,West Virginia,Central,54003,113495,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Morgan County,West Virginia,Outlying,54065,17624,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Salt Lake City-Provo-Orem, UT",Summit County,Utah,Central,49043,40511,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Wasatch County,Utah,Outlying,49051,30523,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Raleigh-Durham-Cary, NC",Vance County,North Carolina,Central,37181,44482,"Raleigh-Durham-Cary, NC",1964479.0
+,"Houston-The Woodlands, TX",Austin County,Texas,Outlying,48015,29565,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Brazoria County,Texas,Central,48039,353999,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Chambers County,Texas,Central,48071,40292,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Fort Bend County,Texas,Central,48157,739342,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Galveston County,Texas,Central,48167,327089,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Harris County,Texas,Central,48201,4602523,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Liberty County,Texas,Outlying,48291,81862,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Montgomery County,Texas,Outlying,48339,554445,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Waller County,Texas,Outlying,48473,49987,"Houston-The Woodlands, TX",6963733.0
+,"Houston-The Woodlands, TX",Walker County,Texas,Central,48471,71539,"Houston-The Woodlands, TX",6963733.0
+,"Minneapolis-St. Paul, MN-WI",McLeod County,Minnesota,Central,27085,35825,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Indiana County,Pennsylvania,Central,42063,85755,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Indianapolis-Carmel-Muncie, IN",Boone County,Indiana,Central,18011,64321,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Brown County,Indiana,Outlying,18013,15034,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Hamilton County,Indiana,Central,18057,316095,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Hancock County,Indiana,Central,18059,73830,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Hendricks County,Indiana,Central,18063,160940,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Johnson County,Indiana,Central,18081,151564,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Madison County,Indiana,Outlying,18095,129505,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Marion County,Indiana,Central,18097,944523,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Morgan County,Indiana,Central,18109,69727,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Putnam County,Indiana,Outlying,18133,37559,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Indianapolis-Carmel-Muncie, IN",Shelby County,Indiana,Outlying,18145,44399,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Jackson County,Georgia,Central,13157,65755,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Johnson County,Kansas,Central,20091,585502,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Leavenworth County,Kansas,Outlying,20103,80042,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Linn County,Kansas,Outlying,20107,9635,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Miami County,Kansas,Outlying,20121,33127,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Wyandotte County,Kansas,Central,20209,164345,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Bates County,Missouri,Outlying,29013,16374,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Caldwell County,Missouri,Outlying,29025,9049,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Cass County,Missouri,Central,29037,102678,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Clay County,Missouri,Central,29047,239164,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Clinton County,Missouri,Outlying,29049,20475,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Jackson County,Missouri,Central,29095,692003,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Lafayette County,Missouri,Outlying,29107,32589,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Platte County,Missouri,Central,29165,98824,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Ray County,Missouri,Outlying,29177,22825,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Virginia Beach-Norfolk, VA-NC",Dare County,North Carolina,Central,37055,35741,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"New York-Newark, NY-NJ-CT-PA",Ulster County,New York,Central,36111,179303,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Belknap County,New Hampshire,Central,33001,60640,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Chambers County,Alabama,Outlying,01017,33826,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Troup County,Georgia,Central,13285,69774,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Orlando-Lakeland-Deltona, FL",Polk County,Florida,Central,12105,668671,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Las Vegas-Henderson, NV",Clark County,Nevada,Central,32003,2141574,"Las Vegas-Henderson, NV",2185279.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Douglas County,Kansas,Central,20045,119319,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Nashville-Davidson--Murfreesboro, TN",Lawrence County,Tennessee,Central,47099,42937,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Marshall County,Tennessee,Central,47117,32269,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Portland-Vancouver-Salem, OR-WA",Cowlitz County,Washington,Central,53015,105112,"Portland-Vancouver-Salem, OR-WA",3152673.0
+"Anaheim-Santa Ana-Irvine, CA","Los Angeles-Long Beach, CA",Orange County,California,Central,06059,3164182,"Anaheim-Santa Ana-Irvine, CA",3164182.0
+"Los Angeles-Long Beach-Glendale, CA","Los Angeles-Long Beach, CA",Los Angeles County,California,Central,06037,10098052,"Los Angeles-Long Beach-Glendale, CA",10098052.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Hillsborough County,New Hampshire,Central,33011,411087,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Columbus-Marion-Zanesville, OH",Marion County,Ohio,Central,39101,65344,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Mason County,Kentucky,Central,21161,17153,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"San Jose-San Francisco-Oakland, CA",Merced County,California,Central,06047,269075,"San Jose-San Francisco-Oakland, CA",4876346.0
+"Fort Lauderdale-Pompano Beach-Sunrise, FL","Miami-Port St. Lucie-Fort Lauderdale, FL",Broward County,Florida,Central,12011,1909151,"Fort Lauderdale-Pompano Beach-Sunrise, FL",1909151.0
+"Miami-Miami Beach-Kendall, FL","Miami-Port St. Lucie-Fort Lauderdale, FL",Miami-Dade County,Florida,Central,12086,2715516,"Miami-Miami Beach-Kendall, FL",2715516.0
+,"Milwaukee-Racine-Waukesha, WI",Milwaukee County,Wisconsin,Central,55079,954209,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Milwaukee-Racine-Waukesha, WI",Ozaukee County,Wisconsin,Central,55089,88284,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Milwaukee-Racine-Waukesha, WI",Washington County,Wisconsin,Outlying,55131,134535,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Milwaukee-Racine-Waukesha, WI",Waukesha County,Wisconsin,Central,55133,398879,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Minneapolis-St. Paul, MN-WI",Anoka County,Minnesota,Central,27003,347431,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Carver County,Minnesota,Central,27019,100416,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Chisago County,Minnesota,Outlying,27025,54727,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Dakota County,Minnesota,Central,27037,418201,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Hennepin County,Minnesota,Central,27053,1235478,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Isanti County,Minnesota,Outlying,27059,38974,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Le Sueur County,Minnesota,Outlying,27079,27983,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Mille Lacs County,Minnesota,Outlying,27095,25728,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Ramsey County,Minnesota,Central,27123,541493,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Scott County,Minnesota,Central,27139,143372,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Sherburne County,Minnesota,Central,27141,93231,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Washington County,Minnesota,Central,27163,253317,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Wright County,Minnesota,Central,27171,132745,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Pierce County,Wisconsin,Outlying,55093,41603,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",St. Croix County,Wisconsin,Outlying,55109,87917,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"San Jose-San Francisco-Oakland, CA",Stanislaus County,California,Central,06099,539301,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"Greensboro--Winston-Salem--High Point, NC",Surry County,North Carolina,Central,37171,72099,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Columbus-Marion-Zanesville, OH",Knox County,Ohio,Central,39083,61215,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Indianapolis-Carmel-Muncie, IN",Delaware County,Indiana,Central,18035,115616,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"San Jose-San Francisco-Oakland, CA",Napa County,California,Central,06055,140530,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"Nashville-Davidson--Murfreesboro, TN",Cannon County,Tennessee,Outlying,47015,13976,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Cheatham County,Tennessee,Outlying,47021,39929,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Davidson County,Tennessee,Central,47037,684017,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Dickson County,Tennessee,Outlying,47043,51988,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Macon County,Tennessee,Outlying,47111,23487,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Maury County,Tennessee,Outlying,47119,89776,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Robertson County,Tennessee,Outlying,47147,69344,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Rutherford County,Tennessee,Outlying,47149,307128,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Smith County,Tennessee,Outlying,47159,19458,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Sumner County,Tennessee,Central,47165,179473,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Trousdale County,Tennessee,Outlying,47169,9573,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Williamson County,Tennessee,Central,47187,218648,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Nashville-Davidson--Murfreesboro, TN",Wilson County,Tennessee,Central,47189,132663,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"Indianapolis-Carmel-Muncie, IN",Henry County,Indiana,Central,18065,48483,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Lawrence County,Pennsylvania,Central,42073,87382,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"New York-Newark, NY-NJ-CT-PA",New Haven County,Connecticut,Central,09009,859339,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Cleveland-Akron-Canton, OH",Tuscarawas County,Ohio,Central,39157,92526,"Cleveland-Akron-Canton, OH",3607736.0
+"Nassau County-Suffolk County, NY","New York-Newark, NY-NJ-CT-PA",Nassau County,New York,Central,36059,1356564,"Nassau County-Suffolk County, NY",2844465.0
+"Nassau County-Suffolk County, NY","New York-Newark, NY-NJ-CT-PA",Suffolk County,New York,Central,36103,1487901,"Nassau County-Suffolk County, NY",2844465.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Essex County,New Jersey,Central,34013,793555,"Newark, NJ-PA",2163851.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Hunterdon County,New Jersey,Central,34019,125051,"Newark, NJ-PA",2163851.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Morris County,New Jersey,Central,34027,494383,"Newark, NJ-PA",2163851.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Sussex County,New Jersey,Central,34037,142298,"Newark, NJ-PA",2163851.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Union County,New Jersey,Central,34039,553066,"Newark, NJ-PA",2163851.0
+"Newark, NJ-PA","New York-Newark, NY-NJ-CT-PA",Pike County,Pennsylvania,Outlying,42103,55498,"Newark, NJ-PA",2163851.0
+"New Brunswick-Lakewood, NJ","New York-Newark, NY-NJ-CT-PA",Middlesex County,New Jersey,Central,34023,826698,"New Brunswick-Lakewood, NJ",2372200.0
+"New Brunswick-Lakewood, NJ","New York-Newark, NY-NJ-CT-PA",Monmouth County,New Jersey,Central,34025,623387,"New Brunswick-Lakewood, NJ",2372200.0
+"New Brunswick-Lakewood, NJ","New York-Newark, NY-NJ-CT-PA",Ocean County,New Jersey,Central,34029,591939,"New Brunswick-Lakewood, NJ",2372200.0
+"New Brunswick-Lakewood, NJ","New York-Newark, NY-NJ-CT-PA",Somerset County,New Jersey,Central,34035,330176,"New Brunswick-Lakewood, NJ",2372200.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Bergen County,New Jersey,Central,34003,929999,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Hudson County,New Jersey,Central,34017,668631,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Passaic County,New Jersey,Central,34031,504041,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Bronx County,New York,Central,36005,1437872,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Kings County,New York,Central,36047,2600747,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",New York County,New York,Central,36061,1632480,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Putnam County,New York,Central,36079,99070,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Queens County,New York,Central,36081,2298513,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Richmond County,New York,Central,36085,474101,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Rockland County,New York,Central,36087,323686,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+"New York-Jersey City-White Plains, NY-NJ","New York-Newark, NY-NJ-CT-PA",Westchester County,New York,Central,36119,968815,"New York-Jersey City-White Plains, NY-NJ",11937955.0
+,"Indianapolis-Carmel-Muncie, IN",Jennings County,Indiana,Central,18079,27727,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Cleveland-Akron-Canton, OH",Huron County,Ohio,Central,39077,58457,"Cleveland-Akron-Canton, OH",3607736.0
+,"Salt Lake City-Provo-Orem, UT",Box Elder County,Utah,Central,49003,53001,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Davis County,Utah,Central,49011,340621,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Morgan County,Utah,Outlying,49029,11391,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Weber County,Utah,Central,49057,247731,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Orlando-Lakeland-Deltona, FL",Lake County,Florida,Outlying,12069,335362,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Orlando-Lakeland-Deltona, FL",Orange County,Florida,Central,12095,1321194,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Orlando-Lakeland-Deltona, FL",Osceola County,Florida,Outlying,12097,338619,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Orlando-Lakeland-Deltona, FL",Seminole County,Florida,Central,12117,455086,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Franklin County,Kansas,Central,20059,25563,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Minneapolis-St. Paul, MN-WI",Steele County,Minnesota,Central,27147,36676,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Los Angeles-Long Beach, CA",Ventura County,California,Central,06111,848112,"Los Angeles-Long Beach, CA",5366811.0
+,"Las Vegas-Henderson, NV",Nye County,Nevada,Central,32023,43705,"Las Vegas-Henderson, NV",2185279.0
+,"Phoenix-Mesa, AZ",Gila County,Arizona,Central,04007,53400,"Phoenix-Mesa, AZ",4727034.0
+,"San Antonio-New Braunfels-Pearsall, TX",Frio County,Texas,Central,48163,19394,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+"Montgomery County-Bucks County-Chester County, PA","Philadelphia-Reading-Camden, PA-NJ-DE-MD",Bucks County,Pennsylvania,Central,42017,626370,"Montgomery County-Bucks County-Chester County, PA",1964827.0
+"Montgomery County-Bucks County-Chester County, PA","Philadelphia-Reading-Camden, PA-NJ-DE-MD",Chester County,Pennsylvania,Central,42029,517156,"Montgomery County-Bucks County-Chester County, PA",1964827.0
+"Montgomery County-Bucks County-Chester County, PA","Philadelphia-Reading-Camden, PA-NJ-DE-MD",Montgomery County,Pennsylvania,Central,42091,821301,"Montgomery County-Bucks County-Chester County, PA",1964827.0
+"Philadelphia, PA","Philadelphia-Reading-Camden, PA-NJ-DE-MD",Delaware County,Pennsylvania,Central,42045,563527,"Philadelphia, PA",2139049.0
+"Philadelphia, PA","Philadelphia-Reading-Camden, PA-NJ-DE-MD",Philadelphia County,Pennsylvania,Central,42101,1575522,"Philadelphia, PA",2139049.0
+,"Phoenix-Mesa, AZ",Maricopa County,Arizona,Central,04013,4253913,"Phoenix-Mesa, AZ",4727034.0
+,"Phoenix-Mesa, AZ",Pinal County,Arizona,Central,04021,419721,"Phoenix-Mesa, AZ",4727034.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Allegheny County,Pennsylvania,Central,42003,1225561,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Armstrong County,Pennsylvania,Outlying,42005,66331,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Beaver County,Pennsylvania,Central,42007,166896,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Butler County,Pennsylvania,Central,42019,186566,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Fayette County,Pennsylvania,Outlying,42051,132289,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Washington County,Pennsylvania,Central,42125,207547,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Westmoreland County,Pennsylvania,Central,42129,354751,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Portland-Vancouver-Salem, OR-WA",Clackamas County,Oregon,Central,41005,405788,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Columbia County,Oregon,Outlying,41009,50851,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Multnomah County,Oregon,Central,41051,798647,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Washington County,Oregon,Central,41067,581821,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Yamhill County,Oregon,Outlying,41071,103820,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Clark County,Washington,Central,53011,465384,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Skamania County,Washington,Outlying,53059,11620,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"New York-Newark, NY-NJ-CT-PA",Dutchess County,New York,Central,36027,293894,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"New York-Newark, NY-NJ-CT-PA",Orange County,New York,Central,36071,378227,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Bristol County,Massachusetts,Central,25005,558905,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Bristol County,Rhode Island,Central,44001,48900,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Kent County,Rhode Island,Central,44003,163861,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Newport County,Rhode Island,Central,44005,83075,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Providence County,Rhode Island,Central,44007,634533,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Washington County,Rhode Island,Central,44009,126242,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Salt Lake City-Provo-Orem, UT",Juab County,Utah,Outlying,49023,10948,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Utah County,Utah,Central,49049,590440,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Milwaukee-Racine-Waukesha, WI",Racine County,Wisconsin,Central,55101,195398,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Raleigh-Durham-Cary, NC",Franklin County,North Carolina,Outlying,37069,64902,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Johnston County,North Carolina,Central,37101,191172,"Raleigh-Durham-Cary, NC",1964479.0
+,"Raleigh-Durham-Cary, NC",Wake County,North Carolina,Central,37183,1046558,"Raleigh-Durham-Cary, NC",1964479.0
+,"Minneapolis-St. Paul, MN-WI",Goodhue County,Minnesota,Central,27049,46217,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Los Angeles-Long Beach, CA",Riverside County,California,Central,06065,2383286,"Los Angeles-Long Beach, CA",5366811.0
+,"Los Angeles-Long Beach, CA",San Bernardino County,California,Central,06071,2135413,"Los Angeles-Long Beach, CA",5366811.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Floyd County,Georgia,Central,13115,96824,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Sacramento-Roseville, CA",El Dorado County,California,Central,06017,186661,"Sacramento-Roseville, CA",2562195.0
+,"Sacramento-Roseville, CA",Placer County,California,Central,06061,380077,"Sacramento-Roseville, CA",2562195.0
+,"Sacramento-Roseville, CA",Sacramento County,California,Central,06067,1510023,"Sacramento-Roseville, CA",2562195.0
+,"Sacramento-Roseville, CA",Yolo County,California,Outlying,06113,214977,"Sacramento-Roseville, CA",2562195.0
+,"Minneapolis-St. Paul, MN-WI",Benton County,Minnesota,Central,27009,39779,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Minneapolis-St. Paul, MN-WI",Stearns County,Minnesota,Central,27145,156819,"Minneapolis-St. Paul, MN-WI",3923697.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Doniphan County,Kansas,Outlying,20043,7736,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Andrew County,Missouri,Outlying,29003,17403,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Buchanan County,Missouri,Central,29021,89076,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",DeKalb County,Missouri,Outlying,29063,12564,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Bond County,Illinois,Outlying,17005,16712,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Calhoun County,Illinois,Outlying,17013,4858,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Clinton County,Illinois,Outlying,17027,37628,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Jersey County,Illinois,Outlying,17083,22069,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Macoupin County,Illinois,Outlying,17117,45719,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Madison County,Illinois,Central,17119,265670,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Monroe County,Illinois,Central,17133,33936,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",St. Clair County,Illinois,Central,17163,263463,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Franklin County,Missouri,Outlying,29071,102781,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Jefferson County,Missouri,Central,29099,223302,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Lincoln County,Missouri,Outlying,29113,55563,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",St. Charles County,Missouri,Central,29183,389985,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",St. Louis County,Missouri,Central,29189,998684,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",Warren County,Missouri,Outlying,29219,33908,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"St. Louis-St. Charles-Farmington, MO-IL",St. Louis city,Missouri,Central,29510,311273,"St. Louis-St. Charles-Farmington, MO-IL",2909977.0
+,"Portland-Vancouver-Salem, OR-WA",Marion County,Oregon,Central,41047,335553,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Portland-Vancouver-Salem, OR-WA",Polk County,Oregon,Central,41053,81427,"Portland-Vancouver-Salem, OR-WA",3152673.0
+,"Salt Lake City-Provo-Orem, UT",Salt Lake County,Utah,Central,49035,1120805,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"Salt Lake City-Provo-Orem, UT",Tooele County,Utah,Outlying,49045,65185,"Salt Lake City-Provo-Orem, UT",2511156.0
+,"San Antonio-New Braunfels-Pearsall, TX",Atascosa County,Texas,Outlying,48013,48828,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Bandera County,Texas,Outlying,48019,21763,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Bexar County,Texas,Central,48029,1925865,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Comal County,Texas,Central,48091,135097,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Guadalupe County,Texas,Central,48187,155137,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Kendall County,Texas,Outlying,48259,41982,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Medina County,Texas,Outlying,48325,49334,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"San Antonio-New Braunfels-Pearsall, TX",Wilson County,Texas,Outlying,48493,48198,"San Antonio-New Braunfels-Pearsall, TX",2445598.0
+,"Cleveland-Akron-Canton, OH",Erie County,Ohio,Central,39043,75136,"Cleveland-Akron-Canton, OH",3607736.0
+"Oakland-Berkeley-Livermore, CA","San Jose-San Francisco-Oakland, CA",Alameda County,California,Central,06001,1643700,"Oakland-Berkeley-Livermore, CA",2776947.0
+"Oakland-Berkeley-Livermore, CA","San Jose-San Francisco-Oakland, CA",Contra Costa County,California,Outlying,06013,1133247,"Oakland-Berkeley-Livermore, CA",2776947.0
+,"San Jose-San Francisco-Oakland, CA",San Benito County,California,Outlying,06069,59416,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"San Jose-San Francisco-Oakland, CA",Santa Clara County,California,Central,06085,1922200,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"San Juan-Bayamón, PR",Aguas Buenas Municipio,Puerto Rico,Central,72007,26275,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Aibonito Municipio,Puerto Rico,Central,72009,23457,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Barceloneta Municipio,Puerto Rico,Outlying,72017,24299,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Barranquitas Municipio,Puerto Rico,Central,72019,28755,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Bayamón Municipio,Puerto Rico,Central,72021,182955,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Caguas Municipio,Puerto Rico,Central,72025,131363,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Canóvanas Municipio,Puerto Rico,Central,72029,46108,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Carolina Municipio,Puerto Rico,Central,72031,157453,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Cataño Municipio,Puerto Rico,Central,72033,24888,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Cayey Municipio,Puerto Rico,Central,72035,44530,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Ceiba Municipio,Puerto Rico,Outlying,72037,11853,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Ciales Municipio,Puerto Rico,Central,72039,16912,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Cidra Municipio,Puerto Rico,Central,72041,40343,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Comerío Municipio,Puerto Rico,Central,72045,19539,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Corozal Municipio,Puerto Rico,Central,72047,34165,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Dorado Municipio,Puerto Rico,Central,72051,37208,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Fajardo Municipio,Puerto Rico,Outlying,72053,32001,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Florida Municipio,Puerto Rico,Outlying,72054,11910,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Guaynabo Municipio,Puerto Rico,Central,72061,88663,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Gurabo Municipio,Puerto Rico,Central,72063,46894,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Humacao Municipio,Puerto Rico,Central,72069,53466,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Juncos Municipio,Puerto Rico,Central,72077,39128,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Las Piedras Municipio,Puerto Rico,Central,72085,37768,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Loíza Municipio,Puerto Rico,Central,72087,26463,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Luquillo Municipio,Puerto Rico,Outlying,72089,18547,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Manatí Municipio,Puerto Rico,Central,72091,39692,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Maunabo Municipio,Puerto Rico,Outlying,72095,11023,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Morovis Municipio,Puerto Rico,Central,72101,31320,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Naguabo Municipio,Puerto Rico,Outlying,72103,26266,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Naranjito Municipio,Puerto Rico,Central,72105,28557,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Orocovis Municipio,Puerto Rico,Central,72107,21407,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Río Grande Municipio,Puerto Rico,Central,72119,50550,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",San Juan Municipio,Puerto Rico,Central,72127,344606,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",San Lorenzo Municipio,Puerto Rico,Central,72129,37873,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Toa Alta Municipio,Puerto Rico,Central,72135,73405,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Toa Baja Municipio,Puerto Rico,Central,72137,79726,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Trujillo Alto Municipio,Puerto Rico,Central,72139,67780,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Vega Alta Municipio,Puerto Rico,Central,72143,37724,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Vega Baja Municipio,Puerto Rico,Central,72145,53371,"San Juan-Bayamón, PR",2432066.0
+,"San Juan-Bayamón, PR",Yabucoa Municipio,Puerto Rico,Central,72151,34149,"San Juan-Bayamón, PR",2432066.0
+,"San Jose-San Francisco-Oakland, CA",Santa Cruz County,California,Central,06087,273765,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"San Jose-San Francisco-Oakland, CA",Sonoma County,California,Central,06097,501317,"San Jose-San Francisco-Oakland, CA",4876346.0
+"Seattle-Bellevue-Kent, WA","Seattle-Tacoma, WA",King County,Washington,Central,53033,2163257,"Seattle-Bellevue-Kent, WA",2949877.0
+"Seattle-Bellevue-Kent, WA","Seattle-Tacoma, WA",Snohomish County,Washington,Central,53061,786620,"Seattle-Bellevue-Kent, WA",2949877.0
+,"Indianapolis-Carmel-Muncie, IN",Jackson County,Indiana,Central,18071,43938,"Indianapolis-Carmel-Muncie, IN",2389982.0
+,"Charlotte-Concord, NC-SC",Cleveland County,North Carolina,Central,37045,97159,"Charlotte-Concord, NC-SC",2656704.0
+,"Nashville-Davidson--Murfreesboro, TN",Bedford County,Tennessee,Central,47003,47558,"Nashville-Davidson--Murfreesboro, TN",1962224.0
+,"San Jose-San Francisco-Oakland, CA",San Joaquin County,California,Central,06077,732212,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"Orlando-Lakeland-Deltona, FL",Sumter County,Florida,Central,12119,120999,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Upson County,Georgia,Central,13293,26216,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Stephens County,Georgia,Central,13257,25676,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",6584708.0
+,"New York-Newark, NY-NJ-CT-PA",Litchfield County,Connecticut,Central,09005,183031,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"New York-Newark, NY-NJ-CT-PA",Mercer County,New Jersey,Central,34021,368762,"New York-Newark, NY-NJ-CT-PA",3374490.0
+,"Sacramento-Roseville, CA",Nevada County,California,Central,06057,99092,"Sacramento-Roseville, CA",2562195.0
+,"San Jose-San Francisco-Oakland, CA",Solano County,California,Central,06095,438530,"San Jose-San Francisco-Oakland, CA",4876346.0
+,"Virginia Beach-Norfolk, VA-NC",Camden County,North Carolina,Outlying,37029,10447,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Currituck County,North Carolina,Outlying,37053,25796,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Gates County,North Carolina,Outlying,37073,11563,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Gloucester County,Virginia,Central,51073,37161,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Isle of Wight County,Virginia,Outlying,51093,36372,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",James City County,Virginia,Outlying,51095,74153,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Mathews County,Virginia,Outlying,51115,8796,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Southampton County,Virginia,Outlying,51175,17939,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",York County,Virginia,Central,51199,67587,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Chesapeake city,Virginia,Central,51550,237820,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Franklin city,Virginia,Outlying,51620,8211,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Hampton city,Virginia,Central,51650,135583,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Newport News city,Virginia,Central,51700,180145,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Norfolk city,Virginia,Central,51710,245592,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Poquoson city,Virginia,Central,51735,12039,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Portsmouth city,Virginia,Central,51740,95311,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Suffolk city,Virginia,Central,51800,89160,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Virginia Beach city,Virginia,Central,51810,450135,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Virginia Beach-Norfolk, VA-NC",Williamsburg city,Virginia,Outlying,51830,14788,"Virginia Beach-Norfolk, VA-NC",1847277.0
+,"Kansas City-Overland Park-Kansas City, MO-KS",Johnson County,Missouri,Central,29101,53689,"Kansas City-Overland Park-Kansas City, MO-KS",2448345.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",District of Columbia,District of Columbia,Central,11001,684498,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Calvert County,Maryland,Outlying,24009,91082,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Charles County,Maryland,Outlying,24017,157671,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Prince George's County,Maryland,Central,24033,906202,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Arlington County,Virginia,Central,51013,231803,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Clarke County,Virginia,Outlying,51043,14365,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Culpeper County,Virginia,Outlying,51047,50450,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Fairfax County,Virginia,Central,51059,1143529,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Fauquier County,Virginia,Central,51061,69115,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Loudoun County,Virginia,Central,51107,385143,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Madison County,Virginia,Outlying,51113,13139,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Prince William County,Virginia,Central,51153,456749,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Rappahannock County,Virginia,Outlying,51157,7332,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Spotsylvania County,Virginia,Outlying,51177,131412,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Stafford County,Virginia,Central,51179,144012,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Warren County,Virginia,Outlying,51187,39449,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Alexandria city,Virginia,Central,51510,156505,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Fairfax city,Virginia,Central,51600,23865,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Falls Church city,Virginia,Central,51610,14067,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Fredericksburg city,Virginia,Outlying,51630,28469,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Manassas city,Virginia,Central,51683,41457,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Manassas Park city,Virginia,Central,51685,16423,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+"Washington-Arlington-Alexandria, DC-VA-MD-WV","Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Jefferson County,West Virginia,Outlying,54037,56179,"Washington-Arlington-Alexandria, DC-VA-MD-WV",4862916.0
+,"Columbus-Marion-Zanesville, OH",Fayette County,Ohio,Central,39047,28645,"Columbus-Marion-Zanesville, OH",2456974.0
+,"Milwaukee-Racine-Waukesha, WI",Jefferson County,Wisconsin,Central,55055,84652,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Orlando-Lakeland-Deltona, FL",Hardee County,Florida,Central,12049,27228,"Orlando-Lakeland-Deltona, FL",3901932.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Jefferson County,Ohio,Central,39081,66886,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Brooke County,West Virginia,Central,54009,22772,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Pittsburgh-New Castle-Weirton, PA-OH-WV",Hancock County,West Virginia,Central,54029,29680,"Pittsburgh-New Castle-Weirton, PA-OH-WV",2632416.0
+,"Milwaukee-Racine-Waukesha, WI",Walworth County,Wisconsin,Central,55127,103013,"Milwaukee-Racine-Waukesha, WI",2046746.0
+,"Cincinnati-Wilmington-Maysville, OH-KY-IN",Clinton County,Ohio,Central,39027,41896,"Cincinnati-Wilmington-Maysville, OH-KY-IN",2250716.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Frederick County,Virginia,Central,51069,85153,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Winchester city,Virginia,Central,51840,27789,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Hampshire County,West Virginia,Outlying,54027,23363,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",3512978.0
+,"Greensboro--Winston-Salem--High Point, NC",Davidson County,North Carolina,Central,37057,164664,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Davie County,North Carolina,Central,37059,41991,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Forsyth County,North Carolina,Central,37067,371573,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Stokes County,North Carolina,Central,37169,45905,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Greensboro--Winston-Salem--High Point, NC",Yadkin County,North Carolina,Outlying,37197,37665,"Greensboro--Winston-Salem--High Point, NC",1652283.0
+,"Cleveland-Akron-Canton, OH",Wayne County,Ohio,Central,39169,116208,"Cleveland-Akron-Canton, OH",3607736.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Windham County,Connecticut,Central,09015,116538,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Boston-Worcester-Providence, MA-RI-NH-CT",Worcester County,Massachusetts,Central,25027,822280,"Boston-Worcester-Providence, MA-RI-NH-CT",3389203.0
+,"Sacramento-Roseville, CA",Sutter County,California,Central,06101,95872,"Sacramento-Roseville, CA",2562195.0
+,"Sacramento-Roseville, CA",Yuba County,California,Central,06115,75493,"Sacramento-Roseville, CA",2562195.0
+,"Columbus-Marion-Zanesville, OH",Muskingum County,Ohio,Central,39119,86076,"Columbus-Marion-Zanesville, OH",2456974.0
