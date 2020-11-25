@@ -40,6 +40,7 @@ font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Ralew
 # from Sydney
 msa_index <- read_csv("data/msa/msa_mix_index.csv") # csa and msa with population 
 covid <- read_csv("data/msa/us_daily_msa_split_2020-11-16.csv") # split 
+covid_state <- read_csv("data/us_state_level_clean_2020-11-20.csv") # states only
 
 # metropolitan state areas delineation from file taken off Census Bureau
 msa <- read_csv("data/msa.csv") # using this bc FIPS code needs to be 5 digits
@@ -57,6 +58,8 @@ msa <- read_csv("data/msa.csv") # using this bc FIPS code needs to be 5 digits
 # CSA/MSA count 
 
 # View(msa)
+
+covid_state
 ```
 
 # Adding County Data (to match with spatial lines)
@@ -70,33 +73,17 @@ msa_w_fips <- msa %>%
   mutate(fips = paste(`FIPS State Code`, `FIPS County Code`, sep = "")) %>% #
   select(fips, `CSA Title`, `County/County Equivalent`, `State Name`) 
 
-# # left join index of 50 with fips codes
-# msa_index_fips <- msa_index %>% 
-#   left_join(msa_w_fips, by = c("CSA Title", "County/County Equivalent", "State Name")) %>% 
-#   rename(county = `County/County Equivalent`) %>% 
-#   rename(csa = `CSA Title`) %>%
-#   rename(state = `State Name`) %>%
-#   rename(agg_index = mix_index)
-
 msa_index_2 <- msa_index %>% 
   rename(county = `County/County Equivalent`) %>% 
   rename(csa = `CSA Title`) %>%
   rename(state = `State Name`) %>%
   rename(agg_index = mix_index) %>% 
-  rename(fips = FIPS_combined) %>% 
-  names()
-  
-# anti join to get the counties not in msa_index 
-region_fips <- msa_w_fips %>% 
-  anti_join(msa_index, by = "CSA Title") %>% 
-  rename(county = `County/County Equivalent`) %>%
-  mutate(agg_index = `State Name`) %>%
-  rename(state = `State Name`) %>%
-  rename(csa = `CSA Title`) 
+  rename(fips = FIPS_combined)
+
 
 # joining fips info with covid dataset (has states + selected msas)
 state_msa_fips_join <- covid %>% 
-  full_join(msa_index_fips, by = "agg_index")# %>% 
+  full_join(msa_index_2, by = "agg_index")# %>% 
 
 # keeping only msas and counties, since they have fips
 msa_covid_only <- state_msa_fips_join %>%
@@ -104,84 +91,180 @@ msa_covid_only <- state_msa_fips_join %>%
 
 # keeping only states, don't have counties
 state_covid_only <- state_msa_fips_join %>% 
-  anti_join(msa_covid_only) %>% 
-  select(-fips, -mix_index_population, -FIPS_population, -FIPS_combined, -`Central/Outlying County`, -state, -county, -csa, -`Metropolitan Division Title`)
+  anti_join(msa_covid_only) %>%
+  select(-fips, -mix_index_population, -FIPS_population, -`Central/Outlying County`, -state, -county, -csa, -`Metropolitan Division Title`)
 
 
-
-# problematic with states without fips 
-# region_fips_join <- msa_region %>% 
-#   full_join(region_fips, by = "agg_index") %>%
-#   drop_na(fips)
-
-
-# final_daily <- msa_fips_join %>% # or final total 
-#   bind_rows(region_fips_join) %>% 
-#   select(index, Date, state, agg_index, fips, csa, county, population, 
-#          Confirmed, Deaths, new_confirmed, new_deaths, 
-#          new_confirmed_7, new_deaths_7, new_confirmed_14, new_deaths_14,
-#          per_100k_new_confirmed_7, per_100k_new_deaths_7)
-#          
-# names(final_daily)
-# write.csv(final_daily, "data/final-50-county-daily.csv")
 
 ```
   
 
 # Getting Wave Count 
+  
+## for States  
 
 ```{r}
-
 wave_2 <- as.Date("2020-06-15") # start of wave 2
 wave_3 <- as.Date("2020-10-15") # start of wave 3
 
-state_covid_only <- state_covid_only %>% 
+state_covid_reg <- covid_state %>% 
+  rename("NAME" = "Province_State") %>%
+  filter(! NAME %in% c("Alaska", "Hawaii", "Rhode Island", "District of Columbia"))
+
+
+state_reg_total <- state_covid_reg %>% 
+  filter(Date == max(as.Date(state_covid_reg$Date), na.rm = TRUE)) %>% # need to remove NA
+  mutate(Date_total = Date)
+
+state_reg_w2_start <- state_covid_reg %>% 
+  filter(Date == wave_2) %>%
+  mutate(Date_W2 = Date)
+
+state_reg_w3_start <- state_covid_reg %>% 
+  filter(Date == wave_3) %>% 
+  mutate(Date_W3 = Date)
+
+View(state_reg_w2_start)
+View(state_reg_total)
+View(state_all)
+
+state_reg_all <- state_reg_total %>% 
+  rename(Confirmed_total = Confirmed) %>% # Start - Latest
+  rename(Deaths_total = Deaths) %>%
+  # joining wave 2 and beyond numbers
+  left_join(state_reg_w2_start, by = "NAME") %>%  # Start - June 15
+  # wave 1 only %>% 
+  rename(Confirmed_W1 = Confirmed) %>%  # Start - June 15
+  rename(Deaths_W1 = Deaths) %>% # Start - June 15
+  # wave 2 and beyond column 
+  mutate(Confirmed_W2_plus = Confirmed_total - Confirmed_W1) %>% # June 15 - Latest
+  mutate(Deaths_W2_plus = Deaths_total - Deaths_W1) %>% # June 15 - Latest
+  # joining wave 3 numbers 
+  left_join(state_reg_w3_start, by = "NAME") %>% # Start - Oct 15 ie Wave 1 & Wave 2
+  # only wave 2 
+  mutate(Deaths_W2_only = Deaths - Deaths_W1) %>% # June 15 - Oct 15
+  mutate(Confirmed_W2_only = Confirmed - Confirmed_W1) %>% # June 15 - Oct 15
+  # wave 3 and beyond
+  mutate(Deaths_W3 = Deaths_total - Deaths) %>%  # Oct 15 - Latest
+  mutate(Confirmed_W3 = Confirmed_total - Confirmed) %>% # Oct 15 - Latest
+  # tidy up, selecting only relevant variables
+  select(NAME, population, 
+         Date_total, Confirmed_total, Deaths_total, 
+         Confirmed_W1, Deaths_W1,
+         Date_W2, Confirmed_W2_plus, Confirmed_W2_only, Deaths_W2_plus, Deaths_W2_only, 
+         Date_W3, Confirmed_W3, Deaths_W3, stringency, containment, RegionCode)
+
+
+```
+
+
+## for States without MSA 
+  
+```{r}
+
+
+state_covid_only_2 <- state_covid_only %>% 
   rename("NAME" = "agg_index") %>%
   filter(! NAME %in% c("Alaska", "Hawaii", "Rhode Island", "District of Columbia"))
 
 
-state_total <- state_covid_only %>% 
-  filter(Date == max(as.Date(state_covid_only$Date), na.rm = TRUE)) %>% # need to remove NA
-  mutate(Date_Total = Date)
+state_total <- state_covid_only_2 %>% 
+  filter(Date == max(as.Date(state_covid_only_2$Date), na.rm = TRUE)) %>% # need to remove NA
+  mutate(Date_total = Date)
 
-state_w2_start <- state_covid_only %>% 
+state_w2_start <- state_covid_only_2 %>% 
   filter(Date == max(wave_2)) %>%
   mutate(Date_W2 = Date)
 
-state_w3_start <- state_covid_only %>% 
+state_w3_start <- state_covid_only_2 %>% 
   filter(Date == max(wave_3)) %>% 
   mutate(Date_W3 = Date)
 
+ 
 state_all <- state_total %>% 
+  rename(Confirmed_total = Confirmed) %>% # Start to Latest
+  rename(Deaths_total = Deaths) %>%
   # joining wave 2 and beyond numbers
-  left_join(state_w2_start, by = "NAME") %>% 
-  rename(Confirmed_total = Confirmed.x) %>%
-  rename(Deaths_total = Deaths.x) %>%
+  left_join(state_w2_start, by = "NAME") %>%  # Start to June 15
   # wave 1 only %>% 
-  mutate(Confirmed_W1 = Confirmed.y) %>% 
-  mutate(Deaths_W1 = Deaths.y) %>%
+  rename(Confirmed_W1 = Confirmed) %>%  # Start to June 15
+  rename(Deaths_W1 = Deaths) %>% # Start to June 15
   # wave 2 and beyond column 
-  mutate(Confirmed_W2_plus = Confirmed_total - Confirmed.y) %>% 
-  mutate(Deaths_W2_plus = Deaths_total - Deaths.y) %>% 
+  mutate(Confirmed_W2_plus = Confirmed_total - Confirmed_W1) %>% # June 15 to Latest
+  mutate(Deaths_W2_plus = Deaths_total - Deaths_W1) %>% # June 15 to Latest
   # joining wave 3 numbers 
-  left_join(state_w3_start, by = "NAME") %>%
+  left_join(state_w3_start, by = "NAME") %>% # Start to Oct 15 ie Wave 1 & Wave 2
   # only wave 2 
-  mutate(Deaths_W2_only = Deaths - Deaths_W2_plus) %>% 
-  mutate(Confirmed_W2_only = Confirmed - Confirmed_W2_plus) %>% 
+  mutate(Confirmed_W2_only = Confirmed - Confirmed_W1) %>% # June 15 to Oct 15
+  mutate(Deaths_W2_only = Deaths - Deaths_W1) %>% # June 15 to Oct 15
   # wave 3 and beyond
-  mutate(Deaths_W3 = Deaths_total - Deaths) %>% 
-  mutate(Confirmed_W3 = Confirmed_total - Confirmed) %>%
+  mutate(Deaths_W3 = Deaths_total - Deaths) %>%  # Oct 15 to Latest
+  mutate(Confirmed_W3 = Confirmed_total - Confirmed) %>% # Oct 15 to Latest
   # tidy up, selecting only relevant variables
   select(index, NAME, population, 
-         Date_Total, Confirmed_total, Deaths_total, 
+         Date_total, Confirmed_total, Deaths_total, 
          Confirmed_W1, Deaths_W1,
          Date_W2, Confirmed_W2_plus, Confirmed_W2_only, Deaths_W2_plus, Deaths_W2_only, 
          Date_W3, Confirmed_W3, Deaths_W3)
-  
- 
-View(state_all)
-```
 
+
+View(msa_all)
+
+```
+  
+## for MSAs/Top 50
+
+```{r}
+
+
+msa_covid_only_2 <- msa_covid_only %>% 
+  rename("NAME" = "agg_index")
+
+msa_total <- msa_covid_only_2 %>% 
+  filter(Date == max(as.Date(msa_covid_only_2$Date), na.rm = TRUE)) %>% # need to remove NA
+  mutate(Date_total = Date)
+
+
+msa_w2_start <- msa_covid_only_2 %>% 
+  filter(Date == max(wave_2)) %>%
+  mutate(Date_W2 = Date)
+
+msa_w3_start <- msa_covid_only_2 %>% 
+  filter(Date == max(wave_3)) %>% 
+  mutate(Date_W3 = Date)
+
+msa_all <- msa_total %>% 
+  rename(Confirmed_total = Confirmed) %>% # Start - Latest
+  rename(Deaths_total = Deaths) %>%
+  # joining wave 2 and beyond numbers
+  left_join(msa_w2_start, by = "NAME") %>%  # Start - June 15
+  # wave 1 only %>% 
+  rename(Confirmed_W1 = Confirmed) %>%  # Start - June 15
+  rename(Deaths_W1 = Deaths) %>% # Start - June 15
+  # wave 2 and beyond column 
+  mutate(Confirmed_W2_plus = Confirmed_total - Confirmed_W1) %>% # June 15 - Latest
+  mutate(Deaths_W2_plus = Deaths_total - Deaths_W1) %>% # June 15 - Latest
+ left_join(msa_w3_start, by = "NAME") %>% # Start - Oct 15 ie Wave 1 & Wave 2
+  # only wave 2 
+  mutate(Deaths_W2_only = Deaths - Deaths_W1) %>% # June 15 - Oct 15
+  mutate(Confirmed_W2_only = Confirmed - Confirmed_W1) %>% # June 15 - Oct 15
+  # wave 3 and beyond
+  mutate(Deaths_W3 = Deaths_total - Deaths) %>%  # Oct 15 - Latest
+  mutate(Confirmed_W3 = Confirmed_total - Confirmed) %>% # Oct 15 - Latest
+  # tidy up, rename
+  rename(metro_title = "Metropolitan Division Title") %>%
+  rename(central_outlying = "Central/Outlying County") %>%
+  # selecting only relevant variables
+  select(index, NAME, fips, csa, county, metro_title, population, FIPS_population, mix_index_population,
+         Date_total, Confirmed_total, Deaths_total,
+         Confirmed_W1, Deaths_W1,
+         Date_W2, Confirmed_W2_plus, Confirmed_W2_only, Deaths_W2_plus, Deaths_W2_only,
+         Date_W3, Confirmed_W3, Deaths_W3) %>%
+  distinct()
+
+
+```
+  
     
 # Adding spatial attributes  
   
@@ -202,7 +285,7 @@ county_lines <- county_lines %>%
   mutate(fips = paste(STATEFP, COUNTYFP, sep = ""))
 
 # add lat long attributes to county dataset          
-county_geo <- merge(county_lines, msa_covid_only, by = "fips")
+county_geo <- merge(county_lines, msa_all, by = "fips")
 county_map <- county_geo %>% st_transform('+proj=longlat +datum=WGS84') 
 
 
@@ -213,11 +296,16 @@ state_geo <- merge(state_lines, state_all, by = "NAME")
 state_map <- state_geo %>% st_transform('+proj=longlat +datum=WGS84')
 
 
+state_reg_geo <- merge(state_lines, state_reg_all, by = "NAME")
+state_reg_map <- state_reg_geo %>% st_transform('+proj=longlat +datum=WGS84')
+
 
 ```
 
 
 # Visualizations (finally)  
+  
+## state  
   
 ```{r}
 
@@ -226,41 +314,118 @@ options(scipen = 999)
 library(usmap) # to get US Map Data
 library(cowplot) # for grid plot
 
-names(map_w2)
-fips("New York")
+# fips("New York")
 #state_name, 
 
-g_total <- ggplot(data = state_map) +
-  geom_sf(aes(fill = Deaths_total/population), size = 0.3) +  # color = NA 
+g_total <- ggplot() +
+  geom_sf(data = state_map, 
+          aes(fill = Deaths_total/population), 
+          color = NA) +  # color = NA 
+  geom_sf(data = county_map, aes(fill = Deaths_total/population), color = NA) + # MSA Things
   scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
   labs(title = "Total Deaths\n") + 
   theme_void() + 
   theme(text = element_text(family = "raleway", size = 50))
 
-g_w1 <- ggplot(data = state_map) +
-  geom_sf(aes(fill = Deaths_W1/population), size = 0.3) + 
-  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
-  labs(title = "Wave 1 Deaths Only\n") + 
+
+max_W1 <- max(c(state_map$Deaths_W1 / state_map$population, county_map$Deaths_W1 / county_map$population))
+max_W2 <- max(c(state_map$Deaths_W2_only / state_map$population, county_map$Deaths_W2_only / county_map$population))
+max_W3 <- max(c(state_map$Deaths_W3 / state_map$population, county_map$Deaths_W3 / county_map$population))
+
+min_W1 <- min(c(state_map$Deaths_W1 / state_map$population, county_map$Deaths_W1 / county_map$population))
+min_W2 <- min(c(state_map$Deaths_W2_only / state_map$population, county_map$Deaths_W2_only / county_map$population))
+min_W3 <- min(c(state_map$Deaths_W3 / state_map$population, county_map$Deaths_W3 / county_map$population))
+
+
+max_W1 
+max_W2
+max_W3
+min_W1
+min_W2
+min_W3
+
+max(state_map$Deaths_W1 / state_map$population)
+max(county_map$Deaths_W1 / county_map$population)
+min(state_map$Deaths_W1 / state_map$population)
+min(county_map$Deaths_W1 / county_map$population)
+
+max(state_map$Deaths_W2_only / state_map$population)
+max(county_map$Deaths_W2_only / county_map$population)
+min(state_map$Deaths_W2_only / state_map$population)
+min(county_map$Deaths_W2_only / county_map$population)
+
+
+max(state_map$Deaths_W3 / state_map$population)
+max(county_map$Deaths_W3 / county_map$population)
+min(state_map$Deaths_W3 / state_map$population)
+min(county_map$Deaths_W3 / county_map$population)
+
+
+
+
+g_w1 <- ggplot(data = state_reg_map) +
+  geom_sf(aes(fill = Deaths_W1/population), color = NA) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W1, max_W1)) + 
+  labs(title = "U.S. States - Wave 1 Deaths per Capita",
+      subtitle = "Until 15 June 2020\n") + 
   theme_void() + 
-  theme(text = element_text(family = "raleway", size = 50))
+  theme(text = element_text(family = "raleway", size = 30)) 
 
-g_w2 <- ggplot(data = state_map) +
-  geom_sf(aes(fill = Deaths_W2_only/population), size = 0.3) + 
-  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
-  labs(title = "Wave 2 Deaths Only\n") + 
+
+g_w2 <- ggplot(data = state_reg_map) +
+  geom_sf(aes(fill = Deaths_W2_only/population), color = NA) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W2, max_W2)) + 
+  labs(title = "U.S. States - Wave 2 Deaths per Capita",
+       subtitle = "From 15 June 2020 - 15 October 2020\n") + 
   theme_void() + 
-  theme(text = element_text(family = "raleway", size = 50))
+  theme(text = element_text(family = "raleway", size = 30))
 
 
-g_w3 <- ggplot(data = state_map) +
-  geom_sf(aes(fill = Deaths_W3/population), size = 0.3) + 
-  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
-  labs(title = "Wave 3 Deaths Onwards\n") + 
+g_w3 <- ggplot(data = state_reg_map) +
+  geom_sf(aes(fill = Deaths_W3/population), color = NA) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W3, round(max_W3))) + 
+  labs(title = "U.S. States - Wave 3 Onwards Deaths per Capita",
+       subtitle = "After 15 October 2020\n") + 
   theme_void() + 
-  theme(text = element_text(family = "raleway", size = 50))
+  theme(text = element_text(family = "raleway", size = 30))
+
+# state and county msa 
+g_c_w1 <- ggplot() +
+  geom_sf(data = state_map, aes(fill = Deaths_W1/population), color = NA) +
+  geom_sf(data = county_map, aes(fill = Deaths_W1/population), color = NA) + # MSA Things
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W1, max_W1)) + 
+  labs(title = "Metropolitan State Areas, Regional Areas - Wave 1 Deaths per Capita", 
+       subtitle = "Until 15 June 2020\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 30))
+
+g_c_w2 <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_W2_only/population), color = NA) + # size = 0.3
+  geom_sf(data = county_map, aes(fill = Deaths_W2_only/population), color = NA) + # MSA Things
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W2, max_W2)) +
+  labs(title = "Metropolitan State Areas, Regional Areas - Wave 2 Deaths per Capita",
+       subtitle = "From 15 June 2020 - 15 October 2020\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 30))
 
 
+g_c_w3 <- ggplot(data = state_map) +
+  geom_sf(aes(fill = Deaths_W3/population), color = NA) + 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1, limits = c(min_W3, round(max_W3))) + 
+    geom_sf(data = county_map, aes(fill = Deaths_W3/population), color = NA) + # MSA Things
+  labs(title = "Metropolitan State Areas, Regional Areas - Wave 3 Deaths per Capita",
+       subtitle = "After 15 October 2020\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 30))
+
+
+# Grid Plots 
 p <- plot_grid(g_total, g_w2, g_w3, ncol = 3)
+
+
+p_2 <- plot_grid(g_w2, g_c_w2, ncol = 2)
+p_3 <- plot_grid(g_w3, g_c_w3, ncol = 2)
+
 
 title <- ggdraw() + 
   draw_label("Total Deaths per Capita in U.S. by State per Wave", fontface='bold') + 
@@ -268,11 +433,46 @@ title <- ggdraw() +
 
 plot_grid(title, p, ncol=1, rel_heights=c(0.1, 1))
 
+
+
 # ggsave("viz/state-waves.png", width = 8, height = 3, dpi = 300)
-ggsave("viz/state-waves-total.png", g_total, width = 8, height = 5, dpi = 300)
-ggsave("viz/state-waves-W1.png", g_w1, width = 8, height = 5, dpi = 300)
-ggsave("viz/state-waves-W2.png", g_w2, width = 8, height = 5, dpi = 300)
-ggsave("viz/state-waves-W3.png", g_w3, width = 8, height = 5, dpi = 300)
+# ggsave("viz/state-waves-total.png", g_total, width = 8, height = 5, dpi = 300)
+# ggsave("viz/state-waves-W1.png", g_w1, width = 8, height = 5, dpi = 300)
+# ggsave("viz/state-waves-W2.png", g_w2, width = 8, height = 5, dpi = 300)
+# ggsave("viz/state-waves-W3.png", g_w3, width = 8, height = 5, dpi = 300)
+
+ggsave("viz/state-wave-w1.png", g_w1, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-msa-wave-w1.png", g_c_w1, width = 8, height = 5, dpi = 300)
+
+ggsave("viz/state-wave-w2.png", g_w2, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-msa-wave-w2.png", g_c_w2, width = 8, height = 5, dpi = 300)
+
+ggsave("viz/state-wave-w3.png", g_w3, width = 8, height = 5, dpi = 300)
+ggsave("viz/state-msa-wave-w3.png", g_c_w3, width = 8, height = 5, dpi = 300)
+
+
+
+
+ggsave("viz/state-msa-waves-W1.png", plot_grid(g_w1, g_c_w1, ncol = 2), width = 14, height = 5, dpi = 300)
+ggsave("viz/state-msa-waves-W2.png", plot_grid(g_w2, g_c_w2, ncol = 2), width = 14, height = 5, dpi = 300)
+ggsave("viz/state-msa-waves-W3.png", plot_grid(g_w3, g_c_w3, ncol = 2), width = 14, height = 5, dpi = 300)
+
+# ggsave("viz/state-msa-waves-temp.png", width = 14, height = 5, dpi = 300)
+
+```
+  
+  
+## top 50  
+  
+```{r}
+
+c_total <- ggplot(data = county_map) +
+  geom_sf(aes(fill = Deaths_total/population), size = 0.3) +  # color = NA 
+  scale_fill_viridis_c(name = "Deaths per Capita", option = "viridis", direction = -1) + 
+  labs(title = "Total Deaths\n") + 
+  theme_void() + 
+  theme(text = element_text(family = "raleway", size = 50))
+
 
 ```
 
