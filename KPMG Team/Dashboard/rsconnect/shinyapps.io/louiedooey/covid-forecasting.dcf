@@ -1,0 +1,13 @@
+name: covid-forecasting
+title: covid-forecasting
+username:
+account: louiedooey
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3329534
+bundleId: 3927239
+url: https://louiedooey.shinyapps.io/covid-forecasting/
+when: 1606822218.09673
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: functions.R|server.R|setup.R|ui.R|visualization_scripts

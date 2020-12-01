@@ -45,6 +45,7 @@ covid_state <- read_csv("data/us_state_level_clean_2020-11-20.csv") # states onl
 # metropolitan state areas delineation from file taken off Census Bureau
 msa <- read_csv("data/msa.csv") # using this bc FIPS code needs to be 5 digits
 
+temp <- read_csv("data/us_state_level_clean_2020-11-29.csv")
 
 # -------------- MSA_INDEX dataset check
 # top 50 most populated csa and msas
