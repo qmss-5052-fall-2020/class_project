@@ -29,7 +29,7 @@ font_add(family = "raleway", regular = "fonts/Raleway-Regular.ttf")
 font_add(family = "instruction", regular = "fonts/Instruction.otf")
 font_add(family = "montserrat", regular = "fonts/Montserrat-Regular.ttf")
 font_add(family = "proxima-nova", regular = "fonts/ProximaNova-Reg.ttf")
-font_add(family = "proxima-nova-light", regular = "fonts/ProximaNova-Light.ttf")
+font_add(family = "proximanovalight", regular = "fonts/ProximaNova-Light.ttf")
 # font_add(family = "montserratlight", regular = "fonts/Montserrat-Light.ttf")
 # font_add(family = "montserratthin", regular = "fonts/Montserrat-Thin.ttf")
 
@@ -42,7 +42,10 @@ covid <- read_csv("data/us_state_level_clean_2020-11-29.csv")
 
 details <- covid %>%
   filter(Date == as.Date(max(Date))) %>%
-  select(Province_State, population, Deaths, Confirmed, stringency) %>%
+  mutate("Total Deaths per Capita" = signif(Deaths/population, 3)) %>%
+  mutate("Total Cases per Capita" = signif(Confirmed/population, 3)) %>%
+  select(Province_State, population, Deaths, Confirmed,
+         `Total Deaths per Capita`, `Total Cases per Capita`, stringency) %>%
   rename("State" = Province_State) %>%
   rename("Stringency Index" = stringency) %>%
   # rename("Containment Index" = containment) %>%
@@ -97,6 +100,8 @@ gCon_fun <- function(input_state) {
           axis.line = element_line(color = "grey60"))
 }
 
+
+gDeaths_fun(c("New York", "Florida", "California"))
 
 detailsFill_fun <- function(input_state) {
 
@@ -228,7 +233,6 @@ ui <- fluidPage(
     )
 
 )
-
 
 server <- function(input, output) {
 
