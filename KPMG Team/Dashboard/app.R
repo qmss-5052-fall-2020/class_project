@@ -6,16 +6,25 @@
 # KPMG x QMSS Practicum 2020
 # Team: Ariel Luo, Sydney Bolim Son, Andrew Thvedt, Sherry Huang, Jen Woo, Louisa Ong
 
-# Dashboard Lead: Louisa Ong
+# Visualizations Lead: Louisa Ong
 
 # ------------------------------------------------------------------------------------ #
 # ************************************************************************************ #
 
 
+
 # rShiny dashboard app app.R file
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+# ------------------------------------------------------------------ #
+# ---------------------------- SETUP ------------------------------- #
+# ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
 
 library(shiny)
 library(shinythemes)
+library(shinydashboard)
 library(plotly)
 library(tidyverse)
 library(ggplot2)
@@ -23,13 +32,14 @@ library(RColorBrewer)
 library(showtext)
 library(janitor)
 
+
 # Fonts
 showtext_auto()
 font_add(family = "raleway", regular = "fonts/Raleway-Regular.ttf")
 font_add(family = "instruction", regular = "fonts/Instruction.otf")
-font_add(family = "montserrat", regular = "fonts/Montserrat-Regular.ttf")
-font_add(family = "proxima-nova", regular = "fonts/ProximaNova-Reg.ttf")
-font_add(family = "proximanovalight", regular = "fonts/ProximaNova-Light.ttf")
+# font_add(family = "montserrat", regular = "fonts/Montserrat-Regular.ttf")
+# font_add(family = "proxima-nova", regular = "fonts/ProximaNova-Reg.ttf")
+# font_add(family = "proximanovalight", regular = "fonts/ProximaNova-Light.ttf")
 # font_add(family = "montserratlight", regular = "fonts/Montserrat-Light.ttf")
 # font_add(family = "montserratthin", regular = "fonts/Montserrat-Thin.ttf")
 
@@ -37,134 +47,342 @@ font_add(family = "proximanovalight", regular = "fonts/ProximaNova-Light.ttf")
 options(scipen = 999)
 
 # import latest csv with updated predictions
+# TO DO: use Sydney's branch on Andrew's Github
 covid <- read_csv("data/us_state_level_clean_2020-11-29.csv")
 
 
+# rename for State details table (mostly totals)
+# also selecting only variables to be displayed 
 details <- covid %>%
   filter(Date == as.Date(max(Date))) %>%
   mutate("Total Deaths per Capita" = signif(Deaths/population, 3)) %>%
   mutate("Total Cases per Capita" = signif(Confirmed/population, 3)) %>%
-  select(Province_State, population, Deaths, Confirmed,
-         `Total Deaths per Capita`, `Total Cases per Capita`, stringency) %>%
+  
   rename("State" = Province_State) %>%
-  rename("Stringency Index" = stringency) %>%
-  # rename("Containment Index" = containment) %>%
   rename("Population" = population) %>%
+  
   rename("Total Deaths" = Deaths) %>%
+  mutate("Total Deaths per 100k" = signif(`Total Deaths`/100000, 3)) %>% 
   rename("Total Cases" = Confirmed) %>%
+  mutate("Total Cases per 100k" = signif(`Total Cases`/100000, 3)) %>% 
   mutate("Spread Category" = "Semi-Controlled") %>% # arbitrary
-  mutate("Mobility Index" = -22)
+  mutate("Mobility Index" = round(-22)) %>% 
+  mutate("Containment Index" = round(containment)) %>%
+  # days since peak 
+  select("State", "Population", 
+  "Total Deaths", "Total Deaths per 100k", "Total Deaths per Capita", 
+  "Total Cases", "Total Cases per 100k", "Total Cases per Capita", 
+  "Containment Index", "Mobility Index")
+
+# Renaming so that the variable names in plotly shows up well
+covid_renamed <- covid %>% 
+  mutate("7-Day Average Deaths" = new_deaths_7) %>%
+  mutate("Daily Deaths per 100k" = new_deaths_7/100000) %>%
+  mutate("Daily Deaths per Capita" = covid$new_deaths_7/covid$population) %>%
+  rename("Province/State" = Province_State) %>%
+  mutate("7-Day Average Cases" = new_confirmed_7) %>%
+  mutate("Daily Cases per 100k" = new_confirmed_7/100000) %>%
+  mutate("Daily Cases per Capita" = covid$new_confirmed_7/covid$population)
 
 
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 # ------------------------------------------------------------------ #
 # --------------------------- FUNCTIONS ---------------------------- #
 # ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
-
-gDeaths_fun <- function(input_state) {
-
-  # filtering dataframe for states
-  covid %>%
-    filter(Province_State %in% as.vector(input_state)) %>%
-    ggplot(aes(x = Date, y = new_deaths_7,
-             group = Province_State, color = Province_State)) +
-    geom_line(size = 1.1) +
-    scale_color_viridis_d(option = "viridis", name = "State") +
-    geom_vline(xintercept = as.Date("2020-10-01"), color = "slategray", size = 2, alpha = 0.3) +
-    # geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = max(Date), ymin = 0, ymax = max(new_deaths_7)), alpha = 0.1, inherit_aes = FALSE) +
-    labs(title = "\nCOVID-19 Daily Deaths Count\n",
-         x = "\nDate\n",
-         y = "\n7-Day Average of Daily Deaths\n") +
-    theme_minimal() +
-    theme(text = element_text(family = "raleway"),
-          plot.title = element_text(family = "instruction", color = "grey20"),
-          axis.line = element_line(color = "grey60"))
-
-  }
-
-gCon_fun <- function(input_state) {
-
-  covid %>%
-    filter(Province_State %in% as.vector(input_state)) %>%
-    ggplot(aes(x = Date, y = new_confirmed_7,
-               group = Province_State, color = Province_State)) +
-    geom_line(size = 1.1) +
-    scale_color_viridis_d(option = "magma", name = "State") +
-    geom_vline(xintercept = as.Date(Sys.Date()), color = "slategray", size = 2, alpha = 0.3) +
-    labs(title = "\nCOVID-19 Daily Confirmed Cases Count\n",
-         x = "\nDate\n",
-         y = "\n7-Day Average of Confirmed Cases\n") +
-    theme_minimal() +
-    theme(text = element_text(family = "raleway"),
-          plot.title = element_text(family = "instruction", color = "grey20"),
-          axis.line = element_line(color = "grey60"))
-}
-
-
-gDeaths_fun(c("New York", "Florida", "California"))
+# ___________________________ Table of State Details  _________________________________ #
 
 detailsFill_fun <- function(input_state) {
+  
+  details %>%
+    filter(State %in% as.vector(input_state)) %>%
+    t() # transposing for columns to be for each state   
+  
+}
 
-  details_fil <- details %>%
-    filter(State %in% as.vector(input_state))
 
-  details_tbl <- gather(details_fil[1,]) %>%
-    left_join(gather(details_fil[2,]), by = "key") %>%
-    left_join(gather(details_fil[3,]), by = "key") %>%
-    left_join(gather(details_fil[4,]), by = "key") %>%
-    left_join(gather(details_fil[5,]), by = "key") %>%
-    left_join(gather(details_fil[6,]), by = "key") %>%
-    left_join(gather(details_fil[7,]), by = "key") %>%
-    left_join(gather(details_fil[8,]), by = "key") %>%
-    left_join(gather(details_fil[9,]), by = "key") %>%
-    left_join(gather(details_fil[10,]), by = "key") %>%
-    left_join(gather(details_fil[11,]), by = "key") %>%
-    left_join(gather(details_fil[12,]), by = "key") %>%
-    left_join(gather(details_fil[13,]), by = "key") %>%
-    left_join(gather(details_fil[14,]), by = "key") %>%
-    left_join(gather(details_fil[15,]), by = "key") %>%
-    left_join(gather(details_fil[16,]), by = "key") %>%
-    left_join(gather(details_fil[17,]), by = "key") %>%
-    left_join(gather(details_fil[18,]), by = "key") %>%
-    left_join(gather(details_fil[19,]), by = "key") %>%
-    left_join(gather(details_fil[20,]), by = "key") %>%
-    left_join(gather(details_fil[21,]), by = "key") %>%
-    left_join(gather(details_fil[22,]), by = "key") %>%
-    left_join(gather(details_fil[23,]), by = "key") %>%
-    left_join(gather(details_fil[24,]), by = "key") %>%
-    left_join(gather(details_fil[25,]), by = "key") %>%
-    left_join(gather(details_fil[26,]), by = "key") %>%
-    left_join(gather(details_fil[27,]), by = "key") %>%
-    left_join(gather(details_fil[28,]), by = "key") %>%
-    left_join(gather(details_fil[29,]), by = "key") %>%
-    left_join(gather(details_fil[30,]), by = "key") %>%
-    left_join(gather(details_fil[31,]), by = "key") %>%
-    left_join(gather(details_fil[32,]), by = "key") %>%
-    left_join(gather(details_fil[33,]), by = "key") %>%
-    left_join(gather(details_fil[34,]), by = "key") %>%
-    left_join(gather(details_fil[35,]), by = "key") %>%
-    left_join(gather(details_fil[36,]), by = "key") %>%
-    left_join(gather(details_fil[37,]), by = "key") %>%
-    left_join(gather(details_fil[38,]), by = "key") %>%
-    left_join(gather(details_fil[39,]), by = "key") %>%
-    left_join(gather(details_fil[40,]), by = "key") %>%
-    left_join(gather(details_fil[41,]), by = "key") %>%
-    left_join(gather(details_fil[42,]), by = "key") %>%
-    left_join(gather(details_fil[43,]), by = "key") %>%
-    left_join(gather(details_fil[44,]), by = "key") %>%
-    left_join(gather(details_fil[45,]), by = "key") %>%
-    left_join(gather(details_fil[46,]), by = "key") %>%
-    left_join(gather(details_fil[47,]), by = "key") %>%
-    left_join(gather(details_fil[48,]), by = "key") %>%
-    left_join(gather(details_fil[49,]), by = "key") %>%
-    left_join(gather(details_fil[50,]), by = "key") %>%
-    left_join(gather(details_fil[51,]), by = "key") %>%
-    remove_empty(which = "cols")
 
-  return(details_tbl)
+# ___________________________ Plot Line graph for Deaths _________________________________ #
+# 
+
+# TO DO: I could make the gDeaths functions simpler but if else has issueeeesss. 
+# Or use nested function but there are also issueeeeessss.  
+
+# Not working
+# datatype <- "Daily"
+# { 
+#   if(input_datatype == "Daily") {
+#    covid_renamed$y_val <- covid_renamed$"7-Day Average Deaths"
+#   } else_if (input_datatype == "Daily per Capita") {
+#     covid_renamed$y_val <- covid_renamed$"Daily Deaths per Capita"
+#   } else (input_datatype == "Daily per 100k") { 
+#     covid_renamed$y_val <- covid_renamed$"Daily Deaths per 100k"
+#   }
+# }
+#   
+# datatype <- c("Daily", "Daily per 100k", "Daily per Capita")
+# covid_renamed$y_val <- covid_renamed$"Daily Deaths per Capita"
+# 
+# covid_renamed$y_val <- covid_renamed$"Daily Deaths per Capita"
+# title_d <- "\nCOVID-19 Daily Deaths per Capita\n \n "
+# y_d <- " \n Daily Deaths per Capita\n \n "
+# 
+# datatype <- "Daily Deaths per Capita"
+# covid_renamed$y_val <- covid_renamed$datatype
+# 
+# covid_renamed$y_val <- covid_renamed$datatype
+# title_d <- "\nCOVID-19 Daily Deaths per Capita\n \n "
+# y_d <- " \n Daily Deaths per Capita\n \n "
+# 
+
+
+# gDeaths_fun <- function(input_state) {
+#   
+#   # if(input_datatype == "Daily") {
+#   #   
+#   #   covid_renamed$y_val <- covid_renamed$"7-Day Average Deaths"
+#   #   title_d <- "\nCOVID-19 Daily Deaths Count\n \n "
+#   #   y_d <- " \n 7-Day Average of Daily Deaths\n \n "
+#   #   
+#   # } else if (input_datatype == "Daily per Capita") {
+#   #   
+#   #   covid_renamed$y_val <- covid_renamed$"Daily Deaths per Capita"
+#   #   title_d <- "\nCOVID-19 Daily Deaths per Capita\n \n "
+#   #   y_d <- " \n Daily Deaths per Capita\n \n "
+#   #   
+#   # } else (input_datatype == "Daily per 100k") { 
+#   #   
+#   #   covid_renamed$y_val <- covid_renamed$"Daily Deaths per 100k"
+#   #   title_d <- "\nCOVID-19 Daily Deaths per 100k\n \n "
+#   #   y_d <- " \n Daily Deaths per 100k\n \n "
+#   # 
+#   #   }
+#   
+#   names(covid_renamed)
+#   
+# 
+# covid_renamed %>% 
+#   filter(`Province/State` %in% as.vector(input_state)) %>%
+#   ggplot(aes(x = Date, y = y_val)) +
+#   geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+#   # scale_fill_manual(values = "#EFEFEF", name = "Forecast") +
+#   geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+#   scale_color_viridis_d(option = "viridis", name = "State") +
+#   labs(title = title_d,
+#        x = " \nDate\n",
+#        y = y_d) +
+#   scale_x_date(date_labels = "%b", 
+#                date_breaks = "1 month") +
+#   theme_minimal() +
+#   theme(text = element_text(family = "raleway"),
+#         plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+#         axis.line = element_line(color = "grey60"))
+# #   
+# }
+
+
+# 3 types of Daily Deaths line plot output 
+# --------------------------------------------------------------------------------------
+
+gDeaths_daily <- function(input_state) {
+  
+  covid_renamed$y_val <- covid_renamed$`7-Day Average Deaths`
+  title_d <- "\nCOVID-19 Daily Death Count\n \n "
+  y_d <- " \n 7-Day Average Daily Deaths\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+  
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") +
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "viridis", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
+  
+}
+
+# 
+gDeaths_100 <- function(input_state) {
+
+  covid_renamed$y_val <- covid_renamed$`Daily Deaths per 100k`
+  title_d <- "\nCOVID-19 Daily Deaths per 100k\n \n "
+  y_d <- " \n Daily Deaths per 100k\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+
+  # gDeaths_fun(input_state) not working 
+  
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") + # trying to add a label 
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "viridis", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
+
+}
+# 
+gDeaths_pc <- function(input_state) {
+
+  covid_renamed$y_val <- covid_renamed$`Daily Deaths per Capita`
+  title_d <- "\nCOVID-19 Daily Deaths per Capita\n \n "
+  y_d <- " \n Daily Deaths per Capita\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") +
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "viridis", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
 
 }
 
+
+# ___________________________ Plot Line graph for Confimred Cases _________________________________ #
+
+# gCon_fun <- function(input_state) {
+#   
+#   y_max <- max(covid_renamed$`7-Day Average Cases`, na.rm = TRUE)
+#   
+#   covid_renamed %>% 
+#     filter(`Province/State` %in% as.vector(input_state)) %>%
+#     ggplot(aes(x = Date, y = `7-Day Average Cases`)) +
+#     geom_rect(aes(xmin = as.Date(Sys.Date()), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+#     geom_line(aes(color = `Province/State`), size = 1.1) +
+#     scale_color_viridis_d(option = "magma", name = "State") +
+#     labs(title = "\nCOVID-19 Daily Confirmed Cases Count \n \n ",
+#          x = " \nDate\n",
+#          y = "\n7-Day Average of Confirmed Cases\n \n ") +
+#     scale_x_date(date_labels = "%b", 
+#                  date_breaks = "1 month") +
+#     theme_minimal() +
+#     theme(text = element_text(family = "raleway"),
+#           plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+#           axis.line = element_line(color = "grey60"))
+# }
+
+# 3 types of Daily Cases line plot output 
+# --------------------------------------------------------------------------------------
+
+gCon_daily <- function(input_state) {
+  
+  covid_renamed$y_val <- covid_renamed$`7-Day Average Cases`
+  title_d <- "\nCOVID-19 Daily Case Count\n \n "
+  y_d <- " \n 7-Day Average Daily Cases\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+  
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") +
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "magma", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
+  
+}
+
+
+gCon_100 <- function(input_state) {
+  
+  covid_renamed$y_val <- covid_renamed$`Daily Cases per 100k`
+  title_d <- "\nCOVID-19 Daily Cases per 100k\n \n "
+  y_d <- " \n Daily Cases per 100k\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+  
+  # gCases_fun(input_state) not working 
+  
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") + # trying to add a label 
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "magma", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
+  
+}
+
+gCon_pc <- function(input_state) {
+  
+  covid_renamed$y_val <- covid_renamed$`Daily Cases per Capita`
+  title_d <- "\nCOVID-19 Daily Cases per Capita\n \n "
+  y_d <- " \n Daily Cases per Capita\n \n "
+  y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+  
+  covid_renamed %>% 
+    filter(`Province/State` %in% as.vector(input_state)) %>%
+    ggplot(aes(x = Date, y = y_val)) +
+    geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
+    # scale_fill_manual(values = "#EFEFEF", name = "Forecast") +
+    geom_line(aes(group = `Province/State`, color = `Province/State`), size = 1.1) +
+    scale_color_viridis_d(option = "magma", name = "State") +
+    labs(title = title_d,
+         x = " \nDate\n",
+         y = y_d) +
+    scale_x_date(date_labels = "%b", 
+                 date_breaks = "1 month") +
+    theme_minimal() +
+    theme(text = element_text(family = "raleway"),
+          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+          axis.line = element_line(color = "grey60"))
+  
+}
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+# ------------------------------------------------------------------ #
+# ----------------------------- CSS -------------------------------- #
+# ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+
+# css style sheet attempt but I don't think it works
+# for later
 
 css <- HTML("
 
@@ -185,71 +403,164 @@ css <- HTML("
 
 ")
 
-# source('setup.R')
+# source('setup.R') ----------- to add later when all these are in separate scripts
 
-# define UI
 
-ui <- fluidPage(
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+# ------------------------------------------------------------------ #
+# ----------------------------- UI --------------------------------- #
+# ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+
+
+# define UI - structure 
+ui <- navbarPage(
 
     theme = shinytheme("cosmo"),
-
-    title = "COVID-19 Forecasting",
-
-    titlePanel(h1("QMSS x KPMG: COVID-19 INTELLIGENT FORECASTING", align = "center", style = {'line-height: 4; font-family: raleway;'})),
-
-              # style = "font-family: 'Raleway', sans-serif;
-               # font-weight: 500;
-               # line-height: 2;
-               # color: #777;"),
-    sidebarLayout(
-
-      sidebarPanel(
-        checkboxGroupInput(
-          inputId = "state", label = "Select States:",
-          choices = unique(covid$Province_State),
-          selected = c("New York", "Texas", "Florida"), width = "100%"),
-        width = 3,
-        style = {
-          'font-family: raleway;'
-        }
-      ),
-
-      mainPanel(
-
-        tabPanel("Details", tableOutput("details")),
-
-        tabPanel("Deaths Count",
-                 plotlyOutput("gdeaths")),
-
-        tabPanel("Confirmed Cases Count",
-                 plotlyOutput("gconfirmed")),
-
-        style = {
-          'font-family: raleway;'
-        }
-
-      )
-
+    title = "QMSS x KPMG: COVID-19 Intelligent Forecasting", 
+    
+    # -------------------------------------------------------------------------------------------------- #
+    # ----------------------------------- First Tab - PREDICTIONS -------------------------------------- #
+    # -------------------------------------------------------------------------------------------------- #
+    
+    tabPanel("Predictions by State",
+  
+              sidebarLayout( # sidebar panel and main panel
+                sidebarPanel(
+                  
+                  h3(),
+                  
+                # ____________________________ Select States Checkboxes Side Panel  ____________________________ #
+                
+                  checkboxGroupInput(
+                    inputId = "state", label = "Select States:",
+                    choices = unique(covid$Province_State),
+                    selected = c("New York", "Texas", "Florida"), width = "100%"),
+                  width = 3,
+                  
+                  style = {
+                    'font-family: raleway;'
+                  }
+                  
+                ),
+          
+                mainPanel(
+                
+                  # ____________________________ States Table Details  ____________________________ # 
+                  
+                  h1("State-level Details"),
+                  tableOutput("details"),
+                  br(),
+                  
+                  
+                  # ____________________________ Line Plot Viz - Deaths & Cases ____________________________ # 
+                  
+                  h1("State-level Visualization"),
+                  
+                  # Selection for line graph output 
+                  tabsetPanel(type = "tabs",
+                              
+                              # daily deaths & cases
+                              tabPanel("Daily", 
+                                       plotlyOutput("gdeaths_daily"), br(),
+                                       plotlyOutput("gconfirmed_daily")),
+                              
+                              # daily per 100k deaths & cases
+                              tabPanel("Daily per 100k",
+                                       plotlyOutput("gdeaths_100"), br(),
+                                      plotlyOutput("gconfirmed_100")),
+                              
+                              # daily per capitadeaths & cases
+                              tabPanel("Daily per Capita",
+                                       plotlyOutput("gdeaths_pc"), br(),
+                                       plotlyOutput("gconfirmed_pc")), 
+                  
+                  # # Line graphs for deaths and confirmed cases 
+                  # plotlyOutput("gdeaths"),
+                  # plotlyOutput("gconfirmed"),
+                  
+                               br()
+                  )
+                )
+              ),
+              
+              style = {
+                'font-family: raleway;'
+              }
+             
+     ),
+    
+    # ------------------------------------------------------------------------------------------------------ #
+    # ----------------------------------- Second Tab - U.S. MAPS VIZ  -------------------------------------- #
+    # ------------------------------------------------------------------------------------------------------ #
+        
+    tabPanel("U.S. Mapping", h2("U.S. Mapping"),
+             
+       tabsetPanel(type = "tabs",
+                   tabPanel("Daily Figures"),
+                   tabPanel("Daily per Capita"),
+                   tabPanel("Daily per 100k")
+       ),
+       
+      style = {
+        'font-family: raleway;'
+      }
+    ),
+    
+    # ---------------------------------------------------------------------------------------------------- #
+    # ----------------------------------- Third Tab - MODEL THINGS  -------------------------------------- #
+    # ---------------------------------------------------------------------------------------------------- #
+    
+    tabPanel("Model Analysis", h2("Model Analysis"),
+             
+             tabsetPanel(type = "pills",
+                         tabPanel("Tab 1"),
+                         tabPanel("Tab 2"),
+                         tabPanel("Tab 3")
+             ),
+             
+             style = {
+               'font-family: raleway;'
+             }
     )
+  )
 
-)
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+# ------------------------------------------------------------------ #
+# ----------------------------- SERVER ----------------------------- #
+# ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
+# server (for outputs)
 server <- function(input, output) {
 
 
   # list of states that are selected
-  output$states_sel <- renderText(paste(input$state, sep = "", collapse = ", "))
+  # output$states_sel <- renderText(paste(input$state, sep = "", collapse = ", "))
 
   # graph of deaths
-  output$gdeaths <- renderPlotly(gDeaths_fun(input$state))
+  output$gdeaths_daily <- renderPlotly(gDeaths_daily(input$state))
+  output$gdeaths_100 <- renderPlotly(gDeaths_100(input$state))
+  output$gdeaths_pc <- renderPlotly(gDeaths_pc(input$state))
 
   # graph of confirmed cases
-  output$gconfirmed <- renderPlotly(gCon_fun(input$state))
+  output$gconfirmed_daily <- renderPlotly(gCon_daily(input$state))
+  output$gconfirmed_100 <- renderPlotly(gCon_100(input$state))
+  output$gconfirmed_pc <- renderPlotly(gCon_pc(input$state))
 
-  output$details <- renderTable(detailsFill_fun(input$state), colnames = FALSE)
+  output$details <- renderTable(detailsFill_fun(input$state), colnames = FALSE, rownames = TRUE)
+  # idaelly - bold first "row" / detailsFill_fun(input$state)[,1] 
 
 
 }
+
+
+
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
+# ------------------------------------------------------------------ #
+# ----------------------------- RUN APP ---------------------------- #
+# ------------------------------------------------------------------ #
+# \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
 
 
 # run the app
@@ -259,3 +570,4 @@ shinyApp(
   server
 
 )
+
