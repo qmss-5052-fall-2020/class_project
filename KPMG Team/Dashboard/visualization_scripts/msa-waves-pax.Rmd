@@ -29,6 +29,11 @@ showtext_auto()
 font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Raleway-Regular.ttf")
 
 
+install.packages("profvis")
+library(profvis)
+
+
+
 ```
 
 
@@ -38,14 +43,18 @@ font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Ralew
 
 # MSA Things
 # from Sydney
-msa_index <- read_csv("data/msa/msa_mix_index.csv") # csa and msa with population 
-covid <- read_csv("data/msa/us_daily_msa_split_2020-11-16.csv") # split 
-covid_state <- read_csv("data/us_state_level_clean_2020-11-20.csv") # states only
+# msa_index <- read_csv("data/msa/msa_mix_index.csv") # csa and msa with population 
+# covid <- read_csv("data/msa/us_daily_msa_split_2020-11-16.csv") # split 
+# covid_state <- read_csv("data/us_state_level_clean_2020-11-20.csv") # states only
+
+msa_index <- read_csv("data/msa/msa_mix_index.csv") # csa and msa with population
+covid <- read_csv("data/msa/us_daily_msa_final_2020-12-02.csv") # split
+covid_state <- read_csv("data/us_state_level_clean_2020-12-02.csv") # states only
+
+
 
 # metropolitan state areas delineation from file taken off Census Bureau
 msa <- read_csv("data/msa.csv") # using this bc FIPS code needs to be 5 digits
-
-temp <- read_csv("data/us_state_level_clean_2020-11-29.csv")
 
 # -------------- MSA_INDEX dataset check
 # top 50 most populated csa and msas
@@ -60,7 +69,6 @@ temp <- read_csv("data/us_state_level_clean_2020-11-29.csv")
 
 # View(msa)
 
-covid_state
 ```
 
 # Adding County Data (to match with spatial lines)
@@ -96,7 +104,6 @@ state_covid_only <- state_msa_fips_join %>%
   select(-fips, -mix_index_population, -FIPS_population, -`Central/Outlying County`, -state, -county, -csa, -`Metropolitan Division Title`)
 
 
-
 ```
   
 
@@ -124,10 +131,6 @@ state_reg_w2_start <- state_covid_reg %>%
 state_reg_w3_start <- state_covid_reg %>% 
   filter(Date == wave_3) %>% 
   mutate(Date_W3 = Date)
-
-View(state_reg_w2_start)
-View(state_reg_total)
-View(state_all)
 
 state_reg_all <- state_reg_total %>% 
   rename(Confirmed_total = Confirmed) %>% # Start - Latest

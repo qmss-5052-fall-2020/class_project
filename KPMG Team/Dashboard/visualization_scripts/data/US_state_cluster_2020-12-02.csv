@@ -1,0 +1,51 @@
+Province_State,RegionCode,Cluster,Cluster_code,Peak_Date,days_since_peak,per_100k_new_deaths_14,containment
+Alabama,AL,Uncontrolled Spread,4,2020-11-20,13.0,0.5344647541051004,40.97
+Alaska,AK,Semi-Controlled Spread,3,2020-11-28,5.0,0.21278192638054846,53.47
+Arizona,AZ,Mitigation,2,2020-07-21,135.0,0.38456163931840465,51.74
+Arkansas,AR,Semi-Controlled Spread,3,2020-09-15,79.0,0.5899297228901855,51.39
+California,CA,Mitigation,2,2020-08-10,115.0,0.17460870499383085,68.4
+Colorado,CO,Semi-Controlled Spread,3,2020-12-02,1.0,0.6999330827813957,52.78
+Connecticut,CT,Semi-Controlled Spread,3,2020-04-26,221.0,0.6122727052258332,71.53
+Delaware,DE,Mitigation,2,2020-06-23,163.0,0.27834345024009,53.47
+Florida,FL,Semi-Controlled Spread,3,2020-08-05,120.0,0.3623767037539514,30.21
+Georgia,GA,Semi-Controlled Spread,3,2020-11-09,24.0,0.3482126591033582,49.65
+Hawaii,HI,Suppression,1,2020-10-07,57.0,0.10548308086543946,79.86
+Idaho,ID,Semi-Controlled Spread,3,2020-11-23,10.0,0.7575332449177772,55.21
+Illinois,IL,Uncontrolled Spread,4,2020-11-25,8.0,1.0746460751479665,57.29
+Indiana,IN,Uncontrolled Spread,4,2020-12-02,1.0,0.9566961650495237,47.57
+Iowa,IA,Uncontrolled Spread,4,2020-11-26,7.0,0.9485808523573581,40.62
+Kansas,KS,Uncontrolled Spread,4,2020-11-23,10.0,0.8668349063071792,50.35
+Kentucky,KY,Semi-Controlled Spread,3,2020-12-01,2.0,0.3716045478991506,65.97
+Louisiana,LA,Uncontrolled Spread,4,2020-04-18,229.0,0.4855214739561994,49.31
+Maine,ME,Semi-Controlled Spread,3,2020-12-02,1.0,0.2572432463197334,65.28
+Maryland,MD,Semi-Controlled Spread,3,2020-05-08,209.0,0.43308539194644396,63.89
+Massachusetts,MA,Semi-Controlled Spread,3,2020-04-25,222.0,0.43608891118763826,67.36
+Michigan,MI,Uncontrolled Spread,4,2020-04-23,224.0,0.9102984321232136,65.97
+Minnesota,MN,Uncontrolled Spread,4,2020-11-25,8.0,0.8852072080109779,65.28
+Mississippi,MS,Uncontrolled Spread,4,2020-08-05,120.0,0.597476241237772,41.67
+Missouri,MO,Semi-Controlled Spread,3,2020-11-26,7.0,0.6908210223710131,51.04
+Montana,MT,Uncontrolled Spread,4,2020-11-26,7.0,1.042220346225599,47.22
+Nebraska,NE,Uncontrolled Spread,4,2020-12-02,1.0,1.1325011325011327,47.92
+Nevada,NV,Semi-Controlled Spread,3,2020-08-20,105.0,0.6231688915262374,51.39
+New Hampshire,NH,Mitigation,2,2020-05-13,204.0,0.17543199330934273,53.47
+New Jersey,NJ,Mitigation,2,2020-04-20,227.0,0.39406226971986114,60.42
+New Mexico,NM,Uncontrolled Spread,4,2020-11-27,6.0,1.1572305608820024,75.69
+New York,NY,Mitigation,2,2020-04-12,235.0,0.19333110224629554,75.35
+North Carolina,NC,Mitigation,2,2020-11-05,28.0,0.3291631457463513,59.03
+North Dakota,ND,Uncontrolled Spread,4,2020-11-10,23.0,1.718765519930368,39.24
+Ohio,OH,Semi-Controlled Spread,3,2020-12-01,2.0,0.517834915529652,59.72
+Oklahoma,OK,Uncontrolled Spread,4,2020-12-02,1.0,0.44117176825910587,38.89
+Oregon,OR,Semi-Controlled Spread,3,2020-12-01,2.0,0.28872804656297957,55.56
+Pennsylvania,PA,Semi-Controlled Spread,3,2020-05-05,212.0,0.677364014650853,65.62
+Rhode Island,RI,Semi-Controlled Spread,3,2020-05-31,186.0,0.7233368896270379,59.72
+South Carolina,SC,Semi-Controlled Spread,3,2020-07-28,128.0,0.37761438509028517,48.96
+South Dakota,SD,Uncontrolled Spread,4,2020-11-24,9.0,2.6528824766451304,21.18
+Tennessee,TN,Uncontrolled Spread,4,2020-11-25,8.0,0.68732031272301,47.92
+Texas,TX,Semi-Controlled Spread,3,2020-07-29,127.0,0.5115361651329932,51.74
+Utah,UT,Uncontrolled Spread,4,2020-11-25,8.0,0.38935238501790786,44.79
+Vermont,VT,Mitigation,2,2020-04-18,229.0,0.16000588821668638,64.58
+Virginia,VA,Mitigation,2,2020-09-20,74.0,0.21478386003033328,51.74
+Washington,WA,Mitigation,2,2020-04-08,239.0,0.2526422066185521,57.64
+West Virginia,WV,Semi-Controlled Spread,3,2020-11-26,7.0,0.6482664184405085,57.64
+Wisconsin,WI,Uncontrolled Spread,4,2020-11-25,8.0,0.9617106166770313,56.6
+Wyoming,WY,Uncontrolled Spread,4,2020-11-25,8.0,1.0312184189359201,52.78

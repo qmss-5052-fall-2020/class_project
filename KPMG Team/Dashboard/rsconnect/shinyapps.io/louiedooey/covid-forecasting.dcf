@@ -5,9 +5,9 @@ account: louiedooey
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3329534
-bundleId: 3931303
+bundleId: 3946245
 url: https://louiedooey.shinyapps.io/covid-forecasting/
-when: 1606888412.95516
+when: 1607142106.91405
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: for later/functions.R|for later/server.R|for later/setup.R|for later/ui.R|www/bootstrap.min.css|visualization_scripts
+ignoredFiles: for later/functions.R|for later/server.R|for later/setup.R|for later/ui.R|viz/cases_deaths_per_100k.png|viz/deaths_per_100k.png|www/bootstrap.min.css|visualization_scripts
