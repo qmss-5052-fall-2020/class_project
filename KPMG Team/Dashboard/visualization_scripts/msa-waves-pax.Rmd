@@ -29,8 +29,6 @@ showtext_auto()
 font_add(family = "raleway", regular = "C:/Users/louis/Dropbox/Stuff/Fonts/Raleway-Regular.ttf")
 
 
-install.packages("profvis")
-library(profvis)
 
 
 

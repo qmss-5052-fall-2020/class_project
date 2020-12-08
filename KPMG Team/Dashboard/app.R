@@ -92,7 +92,6 @@ covid_current <- covid_state %>%
     filter(Date == as.Date(min(c(Sys.Date(), max(Date)))))
   
 
-
 details <- function(covid_type) {
   
   covid_type %>%
@@ -376,8 +375,14 @@ g_c_w3 <- ggplot() +
         axis.line = element_line(color = NA))
 
 
-
+# attempts to make it faster
 gp_c_w1 <- ggplotly(g_c_w1) %>% 
+  partial_bundle()
+
+gp_c_w2 <- ggplotly(g_c_w2) %>% 
+  partial_bundle()
+
+gp_c_w3 <- ggplotly(g_c_w3) %>% 
   partial_bundle()
 
 
@@ -507,6 +512,69 @@ detailsCurrent_fun <- function(input_state) {
 # }
 
 
+# 
+#  
+# covid_renamed %>% select(y_val)
+# 
+# 
+# y_id <- c("death_7", "death_100", "death_cap", 
+#           "case_7", "case_100", "case_cap")
+# 
+# y_var <- c("7-Day Average Deaths", "Daily Deaths per 100k", "Daily Deaths per Capita", 
+#            "7-Day Average Cases", "Daily Cases per 100k", "Daily Cases per Capita")
+# 
+# g_title <- c("\nCOVID-19 Daily Death Count\n \n ", 
+#              "\nCOVID-19 Daily Deaths per 100k\n \n ", 
+#              "\nCOVID-19 Daily Deaths per Capita\n \n ",
+#              "\nCOVID-19 Daily Case Count\n \n ", 
+#              "\nCOVID-19 Daily Cases per 100k\n \n ", 
+#              "\nCOVID-19 Daily Cases per Capita\n \n ")y
+# 
+# y_lab <- c(" \n 7-Day Average Daily Deaths\n \n ", 
+#            "\n Daily Deaths per 100k\n \n ",
+#            " \n Daily Deaths per Capita\n \n ",
+#            " \n 7-Day Average Daily Cases\n \n ", 
+#            "\n Daily Cases per 100k\n \n ",
+#            " \n Daily Cases per Capita\n \n ")
+# 
+# g_df <- data.frame(y_id, y_var, g_title, y_lab)
+# 
+# g_row <- g_df %>% 
+#   filter(y_id == "death_7")
+# 
+# covid_renamed$y_val <- covid_renamed %>% select(g_row$y_var)
+# y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+# 
+# input_state <- "New York"
+# 
+# as_vector(g_row$y_var)
+# 
+# covid_filt <- covid_renamed %>% 
+#   filter(`Province/State` %in% "New York")
+# 
+# g_row$y_var
+# 
+# names(covid_filt)
+# 
+# ggplot() +
+#     # geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = 1016.286), fill = "black", alpha = 0.1) #+
+#     geom_line(aes(x = covid_filt$Date, y = y_val, group = `Province/State`, color = `Province/State`), size = 1.1) #+
+#   
+#     scale_color_viridis_d(option = "viridis", name = "State") +
+#   
+#     # labs(title = "title",
+#     #    x = " \nDate\n",
+#     #    y = "y_lab") +
+#     # scale_x_date(date_labels = "%b", 
+#     #            date_breaks = "1 month") + 
+#     # 
+#     theme_minimal() +
+#     theme(text = element_text(family = "raleway"),
+#          plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
+#         axis.line = element_line(color = "grey60"))
+
+
+
 # 3 types of Daily Deaths line plot output 
 # --------------------------------------------------------------------------------------
 
@@ -516,8 +584,9 @@ gDeaths_daily <- function(input_state) {
   title_d <- "\nCOVID-19 Daily Death Count\n \n "
   y_d <- " \n 7-Day Average Daily Deaths\n \n "
   y_max <- max(covid_renamed$y_val, na.rm = TRUE)
+
   
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -533,14 +602,13 @@ gDeaths_daily <- function(input_state) {
     theme(text = element_text(family = "raleway"),
           plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
           axis.line = element_line(color = "grey60"))
-  
+ 
+    ggplotly(gp) %>% 
+      partial_bundle()
+   
 }
 
 
-# gDeaths_daily("New York") + 
-#   transition_reveal(Date)
-# 
-# # 
 gDeaths_100 <- function(input_state) {
 
   covid_renamed$y_val <- covid_renamed$`Daily Deaths per 100k`
@@ -550,7 +618,7 @@ gDeaths_100 <- function(input_state) {
 
   # gDeaths_fun(input_state) not working 
   
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -567,6 +635,8 @@ gDeaths_100 <- function(input_state) {
           plot.title = element_text(family = "instruction", color = "grey20"),
           axis.line = element_line(color = "grey60"))
 
+  ggplotly(gp) %>% 
+    partial_bundle()
 }
 # 
 gDeaths_pc <- function(input_state) {
@@ -576,7 +646,7 @@ gDeaths_pc <- function(input_state) {
   y_d <- " \n Daily Deaths per Capita\n \n "
   y_max <- max(covid_renamed$y_val, na.rm = TRUE)
 
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -591,7 +661,9 @@ gDeaths_pc <- function(input_state) {
     theme(text = element_text(family = "raleway"),
           plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
           axis.line = element_line(color = "grey60"))
-
+  
+  ggplotly(gp) %>% 
+    partial_bundle()
 }
 
 
@@ -628,7 +700,7 @@ gCon_daily <- function(input_state) {
   y_d <- " \n 7-Day Average Daily Cases\n \n "
   y_max <- max(covid_renamed$y_val, na.rm = TRUE)
   
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date(Sys.Date()), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -645,6 +717,11 @@ gCon_daily <- function(input_state) {
           plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
           axis.line = element_line(color = "grey60"))
   
+  ggplotly(gp) %>% 
+    partial_bundle()
+  
+ 
+   
 }
 
 
@@ -657,7 +734,7 @@ gCon_100 <- function(input_state) {
   
   # gCases_fun(input_state) not working 
   
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -683,7 +760,7 @@ gCon_pc <- function(input_state) {
   y_d <- " \n Daily Cases per Capita\n \n "
   y_max <- max(covid_renamed$y_val, na.rm = TRUE)
   
-  covid_renamed %>% 
+  gp <- covid_renamed %>% 
     filter(`Province/State` %in% as.vector(input_state)) %>%
     ggplot(aes(x = Date, y = y_val)) +
     geom_rect(aes(xmin = as.Date("2020-10-01"), xmax = as.Date(max(Date)), ymin = 0, ymax = y_max), fill = "black", alpha = 0.1) +
@@ -699,6 +776,10 @@ gCon_pc <- function(input_state) {
     theme(text = element_text(family = "raleway"),
           plot.title = element_text(family = "instruction", color = "grey20", hjust = 0.5),
           axis.line = element_line(color = "grey60"))
+  
+  ggplotly(gp) %>% 
+    partial_bundle()
+  
   
 }
 
@@ -932,8 +1013,8 @@ server <- function(input, output) {
 
   # different waves
   output$wave_1 <- renderPlotly(gp_c_w1)
-  output$wave_2 <- renderPlotly(g_c_w2)
-  output$wave_3 <- renderPlotly(g_c_w3)
+  output$wave_2 <- renderPlotly(gp_c_w2)
+  output$wave_3 <- renderPlotly(gp_c_w3)
   
   # ideally - bold first "row" / detailsFill_fun(input$state)[,1] 
   
