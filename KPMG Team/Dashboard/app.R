@@ -393,6 +393,8 @@ gcw3 <- gWave(state_map_2$`Wave 3 Cases per Capita`,
 
 # split up to make it *hopefully* faster
 
+# Include cluster data 
+
 detailsForecast_fun <- function(input_state) {
   
   details_forecast %>%
@@ -555,24 +557,24 @@ ui <- navbarPage(
 
                               # daily deaths & cases
                               tabPanel("Daily", br(),
-                                       dygraphOutput("gdeaths_daily"), 
-                                       br(),
-                                       br(),
-                                       dygraphOutput("gconfirmed_daily")),
+                                       dygraphOutput("gdeaths_daily")), 
+                                       # br(),
+                                       # br(),
+                                       # dygraphOutput("gconfirmed_daily")),
                               
                               # daily per 100k deaths & cases
                               tabPanel("Daily per 100k", br(),
-                                       dygraphOutput("gdeaths_100"), 
-                                       br(),
-                                       br(),
-                                       dygraphOutput("gconfirmed_100")),
+                                       dygraphOutput("gdeaths_100")), 
+                                       # br(),
+                                       # br(),
+                                       # dygraphOutput("gconfirmed_100")),
                               
                               # daily per capitadeaths & cases
                               tabPanel("Daily per Capita", br(),
-                                       dygraphOutput("gdeaths_pc"), 
-                                       br(),
-                                       br(),
-                                       dygraphOutput("gconfirmed_pc")), 
+                                       dygraphOutput("gdeaths_pc")), 
+                                       # br(),
+                                       # br(),
+                                       # dygraphOutput("gconfirmed_pc")), 
                   
                                br()
                   ),
@@ -725,7 +727,7 @@ server <- function(input, output) {
 
 
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
-# ------------------------------------------------------------------ #
+# -----------------------------------------            ------------------------- #
 # ----------------------------- RUN APP ---------------------------- #
 # ------------------------------------------------------------------ #
 # \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ #
