@@ -97,27 +97,23 @@ covid_forecast <- covid_state %>%
 covid_current <- covid_state %>%
     filter(Date == as.Date(min(c(Sys.Date(), max(Date)))))
   
-
 details <- function(covid_type) {
   
   covid_type %>%
-    mutate("Total Deaths per Capita" = signif(Deaths/population, 3)) %>%
-    mutate("Total Cases per Capita" = signif(Confirmed/population, 3)) %>%
-    
+
     rename("State" = Province_State) %>%
     rename("Population" = population) %>%
-    
     rename("Total Deaths" = Deaths) %>%
-    mutate("Total Deaths per 100k" = signif(`Total Deaths`/100000, 3)) %>% 
-    rename("Total Cases" = Confirmed) %>%
-    mutate("Total Cases per 100k" = signif(`Total Cases`/100000, 3)) %>% 
+    mutate("Total Deaths per 100k" = signif(per_100k_new_deaths_7, 3)) %>% 
+    # rename("Total Cases" = Confirmed) %>%
+    # mutate("Total Cases per 100k" = signif(`Total Cases`/100000, 3)) %>% 
     mutate("Spread Category" = "Semi-Controlled") %>% # arbitrary
     mutate("Mobility Index" = round(-22)) %>% 
     mutate("Containment Index" = round(containment)) %>%
     # days since peak 
     select("State", "Population", 
-    "Total Deaths", "Total Deaths per 100k", "Total Deaths per Capita", 
-    "Total Cases", "Total Cases per 100k", "Total Cases per Capita", 
+    "Total Deaths", "Total Deaths per 100k",
+    # "Total Cases", "Total Cases per 100k", "Total Cases per Capita", 
     "Containment Index", "Mobility Index")
   
 }
@@ -127,17 +123,16 @@ details_forecast <- details(covid_forecast)
 details_current <- details(covid_current)
 
 
+
 # ------------------------ Renaming Variables for Line Plot -------------------------- # 
 
 # Renaming so that the variable names in plotly shows up well
 covid_renamed <- covid_state %>% 
   mutate("7-Day Average Deaths" = round(new_deaths_7)) %>%
-  mutate("Daily Deaths per 100k" = signif(new_deaths_7/100000), 3) %>%
-  mutate("Daily Deaths per Capita" = signif(covid_state$new_deaths_7/covid_state$population), 3) %>%
-  rename("State" = Province_State) %>%
-  mutate("7-Day Average Cases" = round(new_confirmed_7)) %>%
-  mutate("Daily Cases per 100k" = signif(new_confirmed_7/100000), 3) %>%
-  mutate("Daily Cases per Capita" = signif(covid_state$new_confirmed_7/covid_state$population), 3)
+  mutate("Daily Deaths per 100k" = signif(per_100k_new_deaths_7, 3)) %>%
+  rename("State" = Province_State) #%>%
+  # mutate("7-Day Average Cases" = round(new_confirmed_7)) %>%
+  # mutate("Daily Cases per 100k" = per_100k_new_deaths_7) 
 
 
 
@@ -211,7 +206,6 @@ waveSep <- function(covid_area) {
     mutate(Date_W3 = Date)
 
 
-
   # Creating Dataset with numbers for each wave
   area_waves_all <- covid_area_total %>%
     rename(Confirmed_total = Confirmed) %>% # Start - Latest
@@ -239,7 +233,8 @@ waveSep <- function(covid_area) {
     mutate(Confirmed_W3 = Confirmed_total - Confirmed) # Oct 15 - Latest
 
 }
-#
+
+
 #
 # WAVES IN MSAs
 msa_only_waves <- msa_covid_only %>%
@@ -308,22 +303,22 @@ state_map <- state_geo %>% st_transform('+proj=longlat +datum=WGS84')
 state_map_2 <- state_map %>% 
   rename(State = "NAME") %>%
   group_by(State) %>%
-  mutate(`Wave 1 Deaths per Capita` = Deaths_W1/population) %>%
-  mutate(`Wave 2 Deaths per Capita` = Deaths_W2_only/population) %>%
-  mutate(`Wave 3 Deaths per Capita` = Deaths_W3/population) %>%
-  mutate(`Wave 1 Cases per Capita` = Confirmed_W1/population) %>%
-  mutate(`Wave 2 Cases per Capita` = Confirmed_W2_only/population) %>%
-  mutate(`Wave 3 Cases per Capita` = Confirmed_W3/population)
+  mutate(`Wave 1 Deaths per Capita` = signif(Deaths_W1/population*100000, 3)) %>%
+  mutate(`Wave 2 Deaths per Capita` = signif(Deaths_W2_only/population*100000, 3)) %>%
+  mutate(`Wave 3 Deaths per Capita` = signif(Deaths_W3/population*100000, 3)) %>%
+  mutate(`Wave 1 Cases per Capita` = Confirmed_W1/population*100000) %>%
+  mutate(`Wave 2 Cases per Capita` = Confirmed_W2_only/population*100000) %>%
+  mutate(`Wave 3 Cases per Capita` = Confirmed_W3/population*100000)
 
 county_map_2 <- county_map %>% 
   rename(`Metropolitan State Area` = "NAME.y") %>%
   group_by(`Metropolitan State Area`) %>%
-  mutate(`Wave 1 Deaths per Capita` = Deaths_W1/population) %>%
-  mutate(`Wave 2 Deaths per Capita` = Deaths_W2_only/population) %>%
-  mutate(`Wave 3 Deaths per Capita` = Deaths_W3/population) %>%
-  mutate(`Wave 1 Cases per Capita` = Confirmed_W1/population) %>%
-  mutate(`Wave 2 Cases per Capita` = Confirmed_W2_only/population) %>%
-  mutate(`Wave 3 Cases per Capita` = Confirmed_W3/population)
+  mutate(`Wave 1 Deaths per Capita` = signif(Deaths_W1/population*100000, 3)) %>%
+  mutate(`Wave 2 Deaths per Capita` = signif(Deaths_W2_only/population*100000, 3)) %>%
+  mutate(`Wave 3 Deaths per Capita` = signif(Deaths_W3/population*100000, 3)) %>%
+  mutate(`Wave 1 Cases per Capita` = Confirmed_W1/population*100000) %>%
+  mutate(`Wave 2 Cases per Capita` = Confirmed_W2_only/population*100000) %>%
+  mutate(`Wave 3 Cases per Capita` = Confirmed_W3/population*100000)
 
 
 # state and county msa
@@ -542,7 +537,7 @@ ui <- navbarPage(
                               tabPanel("With Forecasts", 
                                        tableOutput("details_f")),
                               
-                              tabPanel("Without Forecasts",
+                              tabPanel("Current",
                                       tableOutput("details_c"))
                               ),
                   br(),
@@ -569,13 +564,6 @@ ui <- navbarPage(
                                        # br(),
                                        # dygraphOutput("gconfirmed_100")),
                               
-                              # daily per capitadeaths & cases
-                              tabPanel("Daily per Capita", br(),
-                                       dygraphOutput("gdeaths_pc")), 
-                                       # br(),
-                                       # br(),
-                                       # dygraphOutput("gconfirmed_pc")), 
-                  
                                br()
                   ),
                   br(),
@@ -692,10 +680,6 @@ server <- function(input, output) {
                                                       "Daily Deaths per 100k", 
                                                       "Daily Deaths per 100k",
                                                       viridis(7)))
-  output$gdeaths_pc <- renderDygraph(covidLineGraphs(input$state, 
-                                                     "Daily Deaths per Capita", 
-                                                     "Daily Deaths per Capita",
-                                                     viridis(7)))
 
   # # graph of confirmed cases
   # output$gconfirmed_daily <- renderDygraph(covidLineGraphs(input$state, 
@@ -718,9 +702,9 @@ server <- function(input, output) {
   output$wave_2_d <- renderPlotly(gdw2)
   output$wave_3_d <- renderPlotly(gdw3)
   
-  output$wave_1_c <- renderPlotly(gcw1)
-  output$wave_2_c <- renderPlotly(gcw2)
-  output$wave_3_c <- renderPlotly(gcw3)
+  # output$wave_1_c <- renderPlotly(gcw1)
+  # output$wave_2_c <- renderPlotly(gcw2)
+  # output$wave_3_c <- renderPlotly(gcw3)
   
 }
 
